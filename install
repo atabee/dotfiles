@@ -1,0 +1,94 @@
+#! /usr/bin/env bash
+
+e_newline() {
+    printf "\n"
+}
+
+e_header() {
+    printf "\033[37;1m%s\033[m\n" "$*"
+}
+
+e_error() {
+    printf "\033[31m%s\033[m\n" "✖ $*" 1>&2
+}
+
+e_warning() {
+    printf "\033[31m%s\033[m\n" "$*"
+}
+
+is_exists() {
+    which "$1" >/dev/null 2>&1
+    return $?
+}
+
+install_brew() {
+    if is_exists "brew" || [[ $(uname) != 'Darwin' ]] ; then
+        return 0
+    fi
+
+    /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+}
+
+install_git() {
+    if is_exists "git" ; then
+        return 0
+    fi
+
+    case "$(uname)" in
+        *'Linux'*)
+            if [[ -f /etc/os-release ]]; then
+                sudo apt install git 
+            fi
+            ;;
+        *'Darwin'*)
+            install_brew
+            brew install git
+            ;;
+        *)
+            e_error "このOSでは使えません"
+            exit 1
+            ;;
+    esac
+}
+
+install_fzf() {
+    case "$(uname)" in
+        *'Linux'*)
+            pushd $DOTPATH
+            curl -LSfs https://raw.githubusercontent.com/junegunn/fzf/master/install | bash -s  -- --bin
+            popd
+            ;;
+        *'Darwin'*)
+            install_brew
+            brew install fzf
+            ;;
+        *)
+            e_error "このOSでは使えません"
+            exit 1
+            ;;
+    esac
+}
+
+DOTPATH=${DOTPATH:-$HOME/.dotfiles}
+REPO=TanakaGeruge/dotfiles
+
+if [ -d "$DOTPATH" ]; then
+    e_error "$DOTPATH: already exists"
+#    exit 1
+fi
+
+install_git
+
+e_newline
+e_header "Downloading dotfiles..."
+git clone --recursive "https://github.com/$REPO" "$DOTPATH"
+
+e_newline
+e_header "Updating Submodule..."
+git submodule update --init --recursive
+
+e_header "Symlink z files..."
+source $DOTPATH/etc/symlink.sh
+
+e_header "Install fzf..."
+install_fzf
