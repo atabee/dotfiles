@@ -83,10 +83,6 @@ e_newline
 e_header "Downloading dotfiles..."
 git clone --recursive "https://github.com/$REPO" "$DOTPATH"
 
-e_newline
-e_header "Updating Submodule..."
-git submodule update --init --recursive
-
 e_header "Symlink z files..."
 source $DOTPATH/etc/symlink.sh
 
