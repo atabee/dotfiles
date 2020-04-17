@@ -1,0 +1,16 @@
+#
+# .gitignore
+#
+
+# zplug install directory
+plugins/
+
+# vim dein directory
+vim/dein/
+
+# command history directory
+.zcompcache
+.zcompdump*
+
+# auto install binaries
+bin/fzf
