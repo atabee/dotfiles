@@ -37,8 +37,11 @@ zstyle ':prezto:load' pmodule \
   'completion' \
   'osx' \
   'python' \
+  'syntax-highlighting' \
+  'history-substring-search' \
   'git' \
-  'fzf'
+  'fzf' \
+  "prompt"
 
 #
 # Autosuggestions
@@ -116,7 +119,7 @@ zstyle ':prezto:module:editor' key-bindings 'emacs'
 # Set the prompt theme to load.
 # Setting it to 'random' loads a random theme.
 # Auto set to 'off' on dumb terminals.
-zstyle ':prezto:module:prompt' theme 'sorin'
+zstyle ':prezto:module:prompt' theme 'paradox'
 
 # Set the working directory prompt display length.
 # By default, it is set to 'short'. Set it to 'long' (without '~' expansion)
