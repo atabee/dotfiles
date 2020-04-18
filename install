@@ -1,5 +1,21 @@
 #! /usr/bin/env bash
 
+newline() {
+    printf "\n"
+}
+
+println() {
+    printf "\033[37;1m%s\033[m\n" "$*"
+}
+
+warning() {
+    printf "\033[31m%s\033[m\n" "$*"
+}
+
+err() {
+    printf "\033[31m%s\033[m\n" "✖ $*" 1>&2
+}
+
 is_exists() {
     which "$1" >/dev/null 2>&1
     return $?
@@ -56,4 +72,3 @@ source $DOTPATH/etc/init.sh
 
 println "Deploying..."
 source $DOTPATH/etc/deploy.sh
-
