@@ -11,3 +11,4 @@ source $DOTPATH/etc/init.sh
 
 println "Deploying..."
 source $DOTPATH/etc/deploy.sh
+
