@@ -1,7 +1,39 @@
 #! /usr/bin/env bash
 
+install_git() {
+    if is_exists "git" ; then
+        return 0
+    fi
+
+    case "$(uname)" in
+        *'Linux'*)
+            if [[ -f /etc/os-release ]]; then
+                sudo apt install git 
+            fi
+            ;;
+        *'Darwin'*)
+            install_brew
+            brew install git
+            ;;
+        *)
+            err "このOSでは使えません"
+            exit 1
+            ;;
+    esac
+}
+
 # Path settings
 DOTPATH=${DOTPATH:-$HOME/.dotfiles}
+REPO=TanakaGeruge/dotfiles
+
+# install tools
+install_git
+
+# Download dotfiles
+if [ ! -d "$DOTPATH" ]; then
+  println "Downloading dotfiles..."
+  git clone --recursive "https://github.com/$REPO" "$DOTPATH"
+fi
 
 # load environment
 source $DOTPATH/etc/env.sh
