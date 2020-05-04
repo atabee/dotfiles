@@ -19,3 +19,6 @@ install_go
 
 println "Install ghq..."
 install_ghq
+
+println "Install other software..."
+install_other

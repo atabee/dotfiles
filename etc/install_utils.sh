@@ -79,3 +79,20 @@ install_ghq() {
             ;;
     esac
 }
+
+install_other() {
+    case "$(uname)" in
+        *'Linux'*)
+            #TODO
+            ;;
+        *'Darwin'*)
+            install_brew
+            println "install lv for mac os x..."
+            brew install lv
+            ;;
+        *)
+            err "このOSでは使えません"
+            exit 1
+            ;;
+    esac
+}
