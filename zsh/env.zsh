@@ -36,19 +36,8 @@ fi
 #export GEM_HOME="$XDG_DATA_HOME/gem"
 #export GEM_SPEC_CACHE="$XDG_CACHE_HOME/gem"
 
-# Golang
-if (( $+commands[go] )); then
-  export GOROOT=/usr/local/opt/go/libexec
-  export GOPATH=$HOME
-  export GO111MODULE=on
-  PATH=$PATH:$GOROOT/bin:$GOPATH/bin
-fi
-
 # openssl
 #export PATH=/usr/local/opt/openssl@1.1/bin:$PATH
-
-# ghq
-export GHQ_ROOT=$GOPATH/src
 
 # krew
 #export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
@@ -71,3 +60,14 @@ if (( $+commands[fzf] )); then
     ag -g "" "$1"
   }
 fi
+
+# Golang
+if (( $+commands[go] )); then
+  export GOROOT=/usr/local/opt/go/libexec
+  export GOPATH=$HOME
+  export GO111MODULE=on
+  PATH=$PATH:$GOROOT/bin:$GOPATH/bin
+fi
+
+# ghq
+export GHQ_ROOT=$GOPATH/src

@@ -14,29 +14,6 @@ install_brew() {
     brew install cask
 }
 
-install_vcode() {
-    if is_exists "code" ; then
-        return 0
-    fi
-
-    case "$(uname)" in
-        *'Linux'*)
-            #TODO
-            ;;
-        *'Darwin'*)
-            println "install visual studio code for mac..."
-            sudo xcodebuild -license accept
-            install_brew
-            brew update
-            brew cask install visual-studio-code
-            ;;
-        *)
-            err "このOSでは使えません"
-            exit 1
-            ;;
-    esac
-}
-
 install_fzf() {
     if is_exists "fzf" ; then
         return 0
@@ -51,9 +28,50 @@ install_fzf() {
             ;;
         *'Darwin'*)
             println "install fzf for mac..."
-            sudo xcodebuild -license accept
             install_brew
             brew install fzf
+            ;;
+        *)
+            err "このOSでは使えません"
+            exit 1
+            ;;
+    esac
+}
+
+install_go() {
+    if is_exists "go" ; then
+        return 0
+    fi
+
+    case "$(uname)" in
+        *'Linux'*)
+            #TODO
+            ;;
+        *'Darwin'*)
+            println "install go for mac os x..."
+            install_brew
+            brew install go
+            ;;
+        *)
+            err "このOSでは使えません"
+            exit 1
+            ;;
+    esac
+}
+
+install_ghq() {
+    if is_exists "ghq" ; then
+        return 0
+    fi
+
+    case "$(uname)" in
+        *'Linux'*)
+            #TODO
+            ;;
+        *'Darwin'*)
+            println "install ghq for mac os x..."
+            install_brew
+            brew install ghq
             ;;
         *)
             err "このOSでは使えません"

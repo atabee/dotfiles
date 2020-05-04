@@ -3,3 +3,5 @@
 	email = tanakageruge@gmail.com
 [core]
 	editor = vim -c \"set fenc=utf-8\"
+[ghq]
+  root = $GOPATH/src

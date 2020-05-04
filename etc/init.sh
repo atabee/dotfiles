@@ -11,8 +11,11 @@ println "Install fonts..."
 $DOTPATH/res/common/fonts/install.sh
 
 # install tools
-println "Install visual studio code..."
-install_vcode
-
 println "Install fzf..."
 install_fzf
+
+println "Install go..."
+install_go
+
+println "Install ghq..."
+install_ghq
