@@ -5,6 +5,28 @@ is_exists() {
     return $?
 }
 
+install_vcode() {
+    if is_exists "fzf" ; then
+        return 0
+    fi
+
+    case "$(uname)" in
+        *'Linux'*)
+            #TODO
+            ;;
+        *'Darwin'*)
+            sudo xcodebuild -license accept
+            install_brew
+            brew update
+            brew cask install visual-studio-code
+            ;;
+        *)
+            err "このOSでは使えません"
+            exit 1
+            ;;
+    esac
+}
+
 install_fzf() {
     if is_exists "fzf" ; then
         return 0
