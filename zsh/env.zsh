@@ -6,6 +6,7 @@ PATH="${PATH:+${PATH}:}$DOTPATH/bin"
 #if (( $+commands[android] )); then
 #  export ANDROID_HOME=/usr/local/share/android-sdk
 #fi
+export PATH=~/Library/Android/sdk/platform-tools:$PATH
 
 # docker
 #export DOCKER_BUILDKIT=1
