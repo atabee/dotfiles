@@ -71,3 +71,6 @@ fi
 
 # ghq
 export GHQ_ROOT=$GOPATH/src
+
+# flutter
+export PATH=$HOME/Develop/flutter/bin:$PATH
