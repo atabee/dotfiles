@@ -11,6 +11,7 @@ vim/dein/
 # command history directory
 .zcompcache
 .zcompdump*
+.zsh_history
 
 # auto install binaries
 bin/fzf
