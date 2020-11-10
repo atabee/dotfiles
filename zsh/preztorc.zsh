@@ -41,7 +41,8 @@ zstyle ':prezto:load' pmodule \
   'history-substring-search' \
   'git' \
   'fzf' \
-  "prompt"
+  "prompt" \
+  "tmux"
 
 #
 # Autosuggestions
@@ -209,7 +210,7 @@ zstyle ':prezto:module:prompt' theme 'paradox'
 #
 
 # Auto start a session when Zsh is launched in a local terminal.
-# zstyle ':prezto:module:tmux:auto-start' local 'yes'
+zstyle ':prezto:module:tmux:auto-start' local 'yes'
 
 # Auto start a session when Zsh is launched in a SSH connection.
 # zstyle ':prezto:module:tmux:auto-start' remote 'yes'
@@ -218,7 +219,7 @@ zstyle ':prezto:module:prompt' theme 'paradox'
 # zstyle ':prezto:module:tmux:iterm' integrate 'yes'
 
 # Set the default session name:
-# zstyle ':prezto:module:tmux:session' name 'YOUR DEFAULT SESSION NAME'
+zstyle ':prezto:module:tmux:session' name 'DEFAULT SESSION'
 
 #
 # Utility

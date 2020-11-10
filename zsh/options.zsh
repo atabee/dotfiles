@@ -16,6 +16,9 @@ zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
 # ../ の後は今いるディレクトリを補完しない
 zstyle ':completion:*' ignore-parents parent pwd ..
 
+# 履歴を複数の端末で共有する
+setopt share_history
+
 # ヒストリに保存するときに余分なスペースを削除する
 setopt hist_reduce_blanks
 

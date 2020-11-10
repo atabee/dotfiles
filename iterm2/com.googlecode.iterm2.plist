@@ -2,6 +2,10 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>AllowClipboardAccess</key>
+	<true/>
+	<key>AlternateMouseScroll</key>
+	<true/>
 	<key>AppleAntiAliasingThreshold</key>
 	<integer>1</integer>
 	<key>ApplePressAndHoldEnabled</key>
@@ -333,7 +337,7 @@
 	<key>NSWindow Frame NSNavPanelAutosaveName</key>
 	<string>722 700 347 181 0 0 1792 1097 </string>
 	<key>NSWindow Frame iTerm Window 0</key>
-	<string>0 1097 1792 954 0 0 1792 1097 </string>
+	<string>0 166 1792 954 0 0 1792 1097 </string>
 	<key>NSWindow Frame iTerm Window 1</key>
 	<string>982 138 810 502 0 0 1792 1097 </string>
 	<key>New Bookmarks</key>
@@ -635,7 +639,7 @@
 			<key>Idle Code</key>
 			<integer>0</integer>
 			<key>Initial Text</key>
-			<string>tmux</string>
+			<string></string>
 			<key>Jobs to Ignore</key>
 			<array>
 				<string>rlogin</string>
@@ -1343,7 +1347,7 @@
 			<key>Idle Code</key>
 			<integer>0</integer>
 			<key>Initial Text</key>
-			<string>tmux</string>
+			<string></string>
 			<key>Jobs to Ignore</key>
 			<array>
 				<string>rlogin</string>
@@ -1745,7 +1749,11 @@
 	<key>NoSyncInstallationId</key>
 	<string>3D3138F4-0E1F-4DC2-8FD7-152285BD7214</string>
 	<key>NoSyncLaunchExperienceControllerRunCount</key>
-	<integer>8</integer>
+	<integer>10</integer>
+	<key>NoSyncNeverRemindPrefsChangesLostForFile</key>
+	<true/>
+	<key>NoSyncNeverRemindPrefsChangesLostForFile_selection</key>
+	<integer>0</integer>
 	<key>NoSyncNextAnnoyanceTime</key>
 	<real>625760943.50567198</real>
 	<key>NoSyncOnboardingWindowHasBeenShown</key>

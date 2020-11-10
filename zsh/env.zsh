@@ -79,3 +79,8 @@ export GHQ_ROOT=$GOPATH/src
 
 # flutter
 export PATH=$HOME/Develop/flutter/bin:$PATH
+
+# history
+export HISTFILE=${HOME}/.zsh_history
+export HISTSIZE=10000
+export SAVEHIST=100000
