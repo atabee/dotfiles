@@ -27,3 +27,8 @@ if [ -e $HOME/.gitconfig ]; then
 fi
 ln -fs $DOTPATH/git/.gitconfig $HOME/.gitconfig
 
+println "create symlink for tmux..."
+if [ -e $HOME/.tmux.conf ]; then
+  cp $HOME/.tmux.conf $BACKUP/.tmux.conf.$(date +%Y%m%d)
+fi
+ln -fs $DOTPATH/tmux/.tmux.conf $HOME/.tmux.conf
