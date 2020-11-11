@@ -1,12 +1,6 @@
-# init prezto settings
-source "${ZDOTDIR}/preztorc.zsh"
-
 if [[ -s "${ZDOTDIR}/.zprezto/init.zsh" ]]; then
     source "${ZDOTDIR}/.zprezto/init.zsh"
 fi
-
-# defined base environment.
-source "${ZDOTDIR}/profile.zsh"
 
 # envs
 source "${ZDOTDIR}/env.zsh"

@@ -16,10 +16,10 @@ fi
 println "create symlink for dotfiles..."
 
 println "create symlink for zsh..."
-if [ -e $HOME/.zshrc ]; then
-  cp $HOME/.zshrc $BACKUP/.zshrc.$(date +%Y%m%d)
+if [ -e $HOME/.zshenv ]; then
+  cp $HOME/.zshenv $BACKUP/.zshenv.$(date +%Y%m%d)
 fi
-ln -fs $DOTPATH/zsh/.zshrc $HOME/.zshrc
+ln -fs $DOTPATH/zsh/.zshenv $HOME/.zshenv
 
 println "create symlink for git..."
 if [ -e $HOME/.gitconfig ]; then

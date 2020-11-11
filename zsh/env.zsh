@@ -1,5 +1,4 @@
 # bin files
-export DOTPATH=${DOTPATH:-$HOME/.dotfiles}
 PATH="${PATH:+${PATH}:}$DOTPATH/bin"
 
 # Java
@@ -81,6 +80,6 @@ export GHQ_ROOT=$GOPATH/src
 export PATH=$HOME/Develop/flutter/bin:$PATH
 
 # history
-export HISTFILE=${HOME}/.zsh_history
+export HISTFILE=${ZDOTDIR:-$HOME}/.zsh_history
 export HISTSIZE=10000
 export SAVEHIST=100000

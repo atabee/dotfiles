@@ -1,5 +1,3 @@
-#! /usr/bin/env zsh
-
 #
 # General
 #
@@ -219,7 +217,7 @@ zstyle ':prezto:module:tmux:auto-start' local 'yes'
 # zstyle ':prezto:module:tmux:iterm' integrate 'yes'
 
 # Set the default session name:
-zstyle ':prezto:module:tmux:session' name 'DEFAULT SESSION'
+# zstyle ':prezto:module:tmux:session' name 'DEFAULT SESSION NAME'
 
 #
 # Utility
