@@ -1,16 +1,6 @@
 # bin files
 PATH="${PATH:+${PATH}:}$DOTPATH/bin"
 
-# Java
-export JAVA_HOME=`/usr/libexec/java_home -v "1.8"`
-PATH=${JAVA_HOME}/bin:${PATH}
-
-# Android
-#if (( $+commands[android] )); then
-#  export ANDROID_HOME=/usr/local/share/android-sdk
-#fi
-export PATH=~/Library/Android/sdk/platform-tools:$PATH
-
 # docker
 #export DOCKER_BUILDKIT=1
 
