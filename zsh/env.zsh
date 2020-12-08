@@ -35,7 +35,8 @@ export NVM_DIR="$HOME/.nvm"
 #export GEM_HOME="$XDG_DATA_HOME/gem"
 #export GEM_SPEC_CACHE="$XDG_CACHE_HOME/gem"
 export PATH="/usr/local/opt/ruby/bin:$PATH"
-export PATH="$HOME/.gem/ruby/2.7.0/bin:$PATH"
+export GEM_HOME=$HOME/.gem/ruby/2.7.0
+export PATH="$GEM_HOME/bin:$PATH"
 
 # openssl
 #export PATH=/usr/local/opt/openssl@1.1/bin:$PATH
