@@ -9,7 +9,9 @@ brew "git"
 brew "go"
 brew "lv"
 brew "mas"
+brew "nvm"
 brew "openjdk"
+brew "ruby"
 brew "tmux"
 brew "wget"
 cask "adoptopenjdk8"
@@ -25,6 +27,7 @@ cask "sketch"
 cask "visual-studio-code"
 mas "1Password 7", id: 1333542190
 mas "AdGuard for Safari", id: 1440147259
+mas "Apple Configurator 2", id: 1037126344
 mas "DuckDuckGo Privacy Essentials", id: 1482920575
 mas "GarageBand", id: 682658836
 mas "iMovie", id: 408981434
