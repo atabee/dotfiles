@@ -36,8 +36,14 @@ export NVM_DIR="$HOME/.nvm"
 # npm
 #export NPM_CONFIG_USERCONFIG="$XDG_CONFIG_HOME/npm/npmrc"
 
+# python
+export PYENV_ROOT="$HOME/.pyenv"
+export PATH="$PYENV_ROOT/shims:$PATH"
+eval "$(pyenv init -)"
+
 # Ruby
-export PATH="$HOME/.rbenv/shims:$PATH"
+export RBENV_ROOT="$HOME/.rbenv"
+export PATH="$RBENV_ROOT/shims:$PATH"
 eval "$(rbenv init -)"
 
 # Ruby Gem
