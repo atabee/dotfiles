@@ -38,6 +38,7 @@ export NVM_DIR="$HOME/.nvm"
 
 # Ruby
 export PATH="$HOME/.rbenv/shims:$PATH"
+export RUBY_CONFIGURE_OPTS="--with-openssl-dir=$(brew --prefix openssl@1.1)"
 eval "$(rbenv init -)"
 
 # Ruby Gem
