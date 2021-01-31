@@ -6,5 +6,5 @@ if (( $+commands[ghq] )); then
   }
 
   zle -N _fast_move_git_repo
-  bindkey '^j' _fast_move_git_repo
+  bindkey '^e' _fast_move_git_repo
 fi
