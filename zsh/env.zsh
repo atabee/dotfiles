@@ -28,6 +28,9 @@ fi
 #export IPYTHONDIR="$XDG_CONFIG_HOME/jupyter"
 #export JUPYTER_CONFIG_DIR="$XDG_CONFIG_HOME/jupyter"
 
+# nodebrew
+export PATH=$HOME/.nodebrew/current/bin:$PATH
+
 # nvm
 export NVM_DIR="$HOME/.nvm"
 [ -s "/usr/local/opt/nvm/nvm.sh" ] && . "/usr/local/opt/nvm/nvm.sh"  # This loads nvm
