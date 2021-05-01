@@ -1,8 +1,12 @@
 [user]
 	name = Tanaka Geruge
 	email = tanakageruge@gmail.com
+[credential]
+	helper = osxkeychain
 [core]
 	editor = vim -c \"set fenc=utf-8\"
+[pull]
+	rebase = false
 [ghq]
   root = $GOPATH/src
 [filter "lfs"]
@@ -10,5 +14,4 @@
 	clean = git-lfs clean -- %f
 	smudge = git-lfs smudge -- %f
 	process = git-lfs filter-process
-[pull]
-	rebase = false
+
