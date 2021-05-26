@@ -21,6 +21,11 @@ if [ -e $HOME/.zshenv ]; then
 fi
 ln -fs $DOTPATH/zsh/.zshenv $HOME/.zshenv
 
+if [ -e $HOME/.zprofile ]; then
+  cp $HOME/.zshenv $BACKUP/.zprofile.$(date +%Y%m%d)
+fi
+ln -fs $DOTPATH/zsh/.zprofile $HOME/.zprofile
+
 println "create symlink for git..."
 if [ -e $HOME/.gitconfig ]; then
   cp $HOME/.gitconfig $BACKUP/.gitconfig.$(date +%Y%m%d)

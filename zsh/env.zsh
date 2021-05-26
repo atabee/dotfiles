@@ -40,8 +40,6 @@ export NVM_DIR="$HOME/.nvm"
 #export NPM_CONFIG_USERCONFIG="$XDG_CONFIG_HOME/npm/npmrc"
 
 # python
-export PYENV_ROOT="$HOME/.pyenv"
-export PATH="$PYENV_ROOT/shims:$PATH"
 eval "$(pyenv init -)"
 
 # Ruby
