@@ -89,9 +89,6 @@ fi
 # ghq
 export GHQ_ROOT=$GOPATH/src
 
-# flutter
-export PATH=$HOME/Develop/flutter/bin:$PATH
-
 # history
 export HISTFILE=${ZDOTDIR:-$HOME}/.zsh_history
 export HISTSIZE=10000
