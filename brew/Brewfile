@@ -1,7 +1,12 @@
+tap "adoptopenjdk/openjdk"
+tap "dart-lang/dart"
 tap "homebrew/bundle"
 tap "homebrew/cask"
 tap "homebrew/cask-versions"
 tap "homebrew/core"
+tap "leoafarias/fvm"
+brew "arp-scan"
+brew "pkg-config"
 brew "cask"
 brew "fzf"
 brew "ghq"
@@ -9,32 +14,44 @@ brew "git"
 brew "go"
 brew "lv"
 brew "mas"
+brew "nodebrew"
 brew "nvm"
 brew "openjdk"
 brew "pipenv"
 brew "pyenv"
+brew "ruby-build"
 brew "rbenv"
 brew "scrcpy"
+brew "sl"
+brew "snapcraft"
 brew "tmux"
 brew "wget"
+brew "zsh"
+brew "leoafarias/fvm/fvm"
 cask "adoptopenjdk8"
 cask "alfred"
 cask "android-studio"
+cask "appcleaner"
 cask "cheatsheet"
+cask "dropbox"
 cask "github"
 cask "google-chrome"
 cask "google-japanese-ime"
 cask "iterm2"
-cask "java"
 cask "miniconda"
+cask "openemu"
 cask "sketch"
 cask "visual-studio-code"
+cask "wireshark"
 mas "1Password 7", id: 1333542190
 mas "AdGuard for Safari", id: 1440147259
 mas "Apple Configurator 2", id: 1037126344
+mas "Discovery", id: 1381004916
+mas "Disk Speed Test", id: 425264550
 mas "DuckDuckGo Privacy Essentials", id: 1482920575
 mas "GarageBand", id: 682658836
 mas "iMovie", id: 408981434
+mas "Keepa - Price Tracker", id: 1533805339
 mas "Keynote", id: 409183694
 mas "Kindle", id: 405399194
 mas "LINE", id: 539883307
@@ -42,4 +59,5 @@ mas "Microsoft Word", id: 462054704
 mas "Numbers", id: 409203825
 mas "Pages", id: 409201541
 mas "The Unarchiver", id: 425424353
+mas "Twitter", id: 1482454543
 mas "Xcode", id: 497799835
