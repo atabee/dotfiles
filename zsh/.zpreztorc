@@ -39,8 +39,7 @@ zstyle ':prezto:load' pmodule \
   'history-substring-search' \
   'git' \
   'fzf' \
-  "prompt" \
-  "tmux"
+  "prompt"
 
 #
 # Autosuggestions
@@ -208,7 +207,7 @@ zstyle ':prezto:module:prompt' theme 'powerlevel10k'
 #
 
 # Auto start a session when Zsh is launched in a local terminal.
-zstyle ':prezto:module:tmux:auto-start' local 'yes'
+# zstyle ':prezto:module:tmux:auto-start' local 'yes'
 
 # Auto start a session when Zsh is launched in a SSH connection.
 # zstyle ':prezto:module:tmux:auto-start' remote 'yes'
