@@ -41,6 +41,7 @@ export NVM_DIR="$HOME/.nvm"
 
 # python
 eval "$(pyenv init -)"
+export PATH="/usr/local/opt/tcl-tk/bin:$PATH"
 
 # Ruby
 export RUBY_CONFIGURE_OPTS="--with-openssl-dir=$(brew --prefix openssl@1.1)"
