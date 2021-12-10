@@ -39,8 +39,12 @@ export NVM_DIR="$HOME/.nvm"
 # npm
 #export NPM_CONFIG_USERCONFIG="$XDG_CONFIG_HOME/npm/npmrc"
 
-# python
-eval "$(pyenv init -)"
+# Python
+export PYENV_ROOT="$HOME/.pyenv"
+export PATH="$PYENV_ROOT/bin:$PATH"
+eval "$(pyenv init --path)"
+
+# Python tcl-tk
 export PATH="/usr/local/opt/tcl-tk/bin:$PATH"
 
 # Ruby
