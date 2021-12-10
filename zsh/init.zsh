@@ -1,3 +1,6 @@
+# local environment dependent settings
+[ -s "${ZDOTDIR}/local.zsh" ] && source "${ZDOTDIR}/local.zsh"
+
 # prezto
 [ -s "${ZDOTDIR}/.zprezto/init.zsh" ] && source "${ZDOTDIR}/.zprezto/init.zsh"
 
@@ -9,9 +12,6 @@
 
 # os dependent settings
 [ -s "${ZDOTDIR}/os/$(uname).zsh" ] && source "${ZDOTDIR}/os/$(uname).zsh"
-
-# local environment dependent settings
-[ -s "${ZDOTDIR}/local.zsh" ] && source "${ZDOTDIR}/local.zsh"
 
 # functions
 for func (${ZDOTDIR}/functions/*) source $func:a
