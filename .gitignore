@@ -21,3 +21,6 @@ bin/fzf
 
 # p10k
 zsh/.p10k.zsh
+
+# local dependent settings
+local.zsh

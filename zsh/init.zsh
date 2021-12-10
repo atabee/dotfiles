@@ -1,15 +1,17 @@
-if [[ -s "${ZDOTDIR}/.zprezto/init.zsh" ]]; then
-    source "${ZDOTDIR}/.zprezto/init.zsh"
-fi
+# prezto
+[ -s "${ZDOTDIR}/.zprezto/init.zsh" ] && source "${ZDOTDIR}/.zprezto/init.zsh"
 
 # envs
-source "${ZDOTDIR}/env.zsh"
+[ -s "${ZDOTDIR}/env.zsh" ] && source "${ZDOTDIR}/env.zsh"
 
 # options
-source "${ZDOTDIR}/options.zsh"
+[ -s "${ZDOTDIR}/options.zsh" ] && source "${ZDOTDIR}/options.zsh"
 
-# os settings
-source "${ZDOTDIR}/os/$(uname).zsh"
+# os dependent settings
+[ -s "${ZDOTDIR}/os/$(uname).zsh" ] && source "${ZDOTDIR}/os/$(uname).zsh"
+
+# local environment dependent settings
+[ -s "${ZDOTDIR}/local.zsh" ] && source "${ZDOTDIR}/local.zsh"
 
 # functions
 for func (${ZDOTDIR}/functions/*) source $func:a
@@ -20,4 +22,6 @@ if [ -e /usr/local/share/zsh-completions ]; then
 fi
 
 # zsh site-functions
-fpath=(/usr/local/share/zsh/site-functions $fpath)
+if [ -e /usr/local/share/zsh-completions ]; then
+    fpath=(/usr/local/share/zsh/site-functions $fpath)
+fi
