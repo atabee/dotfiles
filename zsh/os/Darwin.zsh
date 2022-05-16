@@ -12,7 +12,7 @@ fi
 
 # java
 if (( $+commands[java] )); then
-  export JAVA_HOME=$(/usr/libexec/java_home -v 1.8)
+  export JAVA_HOME=$(/usr/libexec/java_home -v 11)
   PATH=$JAVA_HOME/bin:$PATH
 fi
 
