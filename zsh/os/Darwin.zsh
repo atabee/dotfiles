@@ -23,3 +23,5 @@ if (( $+commands[android] )); then
   export ANDROID_HOME=~/Library/Android/sdk
 fi
 
+# dart
+export PATH=~/.pub-cache/bin:$PATH
