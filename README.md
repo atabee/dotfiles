@@ -3,5 +3,5 @@ Personal dotfiles setting.
 
 ## How to install
 ```
-curl -L raw.githubusercontent.com/yasekawazu/dotfiles/main/install | bash
+curl -L raw.githubusercontent.com/tailorsnine/dotfiles/main/install | bash
 ```
