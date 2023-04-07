@@ -8,7 +8,8 @@
 [pull]
 	rebase = false
 [ghq]
-  root = $GOPATH/src
+	root = ~/go/src
+	root = ~/src
 [filter "lfs"]
 	required = true
 	clean = git-lfs clean -- %f

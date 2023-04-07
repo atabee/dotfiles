@@ -83,17 +83,6 @@ if (( $+commands[fzf] )); then
   }
 fi
 
-# Golang
-if (( $+commands[go] )); then
-  export GOROOT=/usr/local/opt/go/libexec
-  export GOPATH=$HOME
-  export GO111MODULE=on
-  PATH=$PATH:$GOROOT/bin:$GOPATH/bin
-fi
-
-# ghq
-export GHQ_ROOT=$GOPATH/src
-
 # history
 export HISTFILE=$HOME/.zsh_history
 export HISTSIZE=10000
