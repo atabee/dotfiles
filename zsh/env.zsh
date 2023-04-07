@@ -9,24 +9,10 @@ PATH="${PATH:+${PATH}:}$DOTPATH/bin"
 # docker
 #export DOCKER_BUILDKIT=1
 
-# bundle
-export BUNDLE_USER_CONFIG="$XDG_CONFIG_HOME/bundle"
-export BUNDLE_USER_CACHE="$XDG_CACHE_HOME/bundle"
-export BUNDLE_USER_PLUGIN="$XDG_DATA_HOME/bundle"
-
 # gradle
 if (( $+commands[gradle] )); then
   export GRADLE_USER_HOME="$XDG_DATA_HOME/gradle"
 fi
-
-# httpie
-#if (( $+commands[http] )); then
-#  export HTTPIE_CONFIG_DIR="$XDG_CONFIG_HOME/httpie"
-#fi
-
-# ipython/juniper
-#export IPYTHONDIR="$XDG_CONFIG_HOME/jupyter"
-#export JUPYTER_CONFIG_DIR="$XDG_CONFIG_HOME/jupyter"
 
 # nodebrew
 export PATH=$HOME/.nodebrew/current/bin:$PATH
@@ -35,9 +21,6 @@ export PATH=$HOME/.nodebrew/current/bin:$PATH
 export NVM_DIR="$HOME/.nvm"
 [ -s "/usr/local/opt/nvm/nvm.sh" ] && . "/usr/local/opt/nvm/nvm.sh"  # This loads nvm
 #[ -s "/usr/local/opt/nvm/etc/bash_completion.d/nvm" ] && . "/usr/local/opt/nvm/etc/bash_completion.d/nvm"  # This loads nvm bash_completion
-
-# npm
-#export NPM_CONFIG_USERCONFIG="$XDG_CONFIG_HOME/npm/npmrc"
 
 # Python
 export PYENV_ROOT="$HOME/.pyenv"
@@ -53,22 +36,6 @@ export RBENV_ROOT="$HOME/.rbenv"
 export PATH="$RBENV_ROOT/shims:$PATH"
 eval "$(rbenv init -)"
 
-# Ruby Gem
-export GEM_HOME="$XDG_DATA_HOME/gem"
-export GEM_SPEC_CACHE="$XDG_CACHE_HOME/gem"
-export PATH="$GEM_HOME/bin:$PATH"
-
-# openssl
-#export PATH=/usr/local/opt/openssl@1.1/bin:$PATH
-
-# krew
-#export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
-
-# pipenv
-#if (( $+commands[pipenv] )); then
-#  export PIPENV_VENV_IN_PROJECT=1
-#fi
-
 # fzf
 if (( $+commands[fzf] )); then
   export FZF_DEFAULT_OPTS='--height 40% --reverse --border'
@@ -82,6 +49,9 @@ if (( $+commands[fzf] )); then
     ag -g "" "$1"
   }
 fi
+
+# flutter
+export PATH="$HOME/fvm/default/bin:$PATH"
 
 # history
 export HISTFILE=$HOME/.zsh_history
