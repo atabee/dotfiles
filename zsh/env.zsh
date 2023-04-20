@@ -53,6 +53,11 @@ fi
 # flutter
 export PATH="$HOME/fvm/default/bin:$PATH"
 
+# go
+export GOPATH=$HOME/go
+export GOROOT="$(brew --prefix golang)/libexec"
+export PATH="$PATH:${GOPATH}/bin:${GOROOT}/bin"
+
 # history
 export HISTFILE=$HOME/.zsh_history
 export HISTSIZE=10000
