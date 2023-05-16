@@ -39,14 +39,15 @@ zstyle ':prezto:load' pmodule \
   'history-substring-search' \
   'git' \
   'fzf' \
-  "prompt"
+  'prompt' \
+  'autosuggestions'
 
 #
 # Autosuggestions
 #
 
 # Set the query found color.
-# zstyle ':prezto:module:autosuggestions:color' found ''
+zstyle ':prezto:module:autosuggestions:color' found 'fg=245'
 
 #
 # Completions
