@@ -1,57 +1,70 @@
+tap "adoptopenjdk/openjdk"
 tap "dart-lang/dart"
 tap "homebrew/bundle"
 tap "homebrew/cask"
 tap "homebrew/cask-versions"
 tap "homebrew/core"
 tap "leoafarias/fvm"
+brew "webp"
 brew "arp-scan"
-brew "nghttp2"
+brew "pkg-config"
 brew "cask"
+brew "dex2jar"
+brew "openjpeg"
+brew "leptonica"
+brew "ffmpeg"
 brew "fzf"
 brew "ghq"
 brew "git"
+brew "git-lfs"
 brew "go"
+brew "jadx"
+brew "jq"
 brew "lv"
 brew "mas"
-brew "nodebrew"
-brew "nvm"
+brew "nghttp2"
+brew "portaudio"
 brew "pyenv"
 brew "ruby-build"
 brew "rbenv"
+brew "rustup-init"
 brew "sl"
 brew "tcl-tk"
 brew "tmux"
+brew "volta"
 brew "wget"
 brew "zsh"
 brew "leoafarias/fvm/fvm"
 cask "adoptopenjdk"
+cask "adoptopenjdk11"
 cask "alfred"
 cask "android-studio"
 cask "appcleaner"
-cask "cheatsheet"
 cask "dropbox"
 cask "fork"
 cask "github"
+cask "gitup"
 cask "google-chrome"
 cask "google-japanese-ime"
 cask "iterm2"
 cask "visual-studio-code"
+cask "warp"
 cask "wireshark"
-mas "1Password 7", id: 1333542190
 mas "AdGuard for Safari", id: 1440147259
-mas "Apple Configurator 2", id: 1037126344
+mas "Apple Configurator", id: 1037126344
 mas "Discovery", id: 1381004916
-mas "Disk Speed Test", id: 425264550
-mas "DuckDuckGo Privacy Essentials", id: 1482920575
+mas "DuckDuckGo Privacy for Safari", id: 1482920575
 mas "GarageBand", id: 682658836
 mas "iMovie", id: 408981434
 mas "Keepa - Price Tracker", id: 1533805339
 mas "Keynote", id: 409183694
 mas "Kindle", id: 405399194
 mas "LINE", id: 539883307
+mas "Microsoft PowerPoint", id: 462062816
 mas "Microsoft Word", id: 462054704
 mas "Numbers", id: 409203825
 mas "Pages", id: 409201541
 mas "The Unarchiver", id: 425424353
+mas "Transporter", id: 1450874784
 mas "Twitter", id: 1482454543
 mas "Xcode", id: 497799835

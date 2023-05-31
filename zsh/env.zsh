@@ -14,13 +14,9 @@ if (( $+commands[gradle] )); then
   export GRADLE_USER_HOME="$XDG_DATA_HOME/gradle"
 fi
 
-# nodebrew
-export PATH=$HOME/.nodebrew/current/bin:$PATH
-
-# nvm
-export NVM_DIR="$HOME/.nvm"
-[ -s "/usr/local/opt/nvm/nvm.sh" ] && . "/usr/local/opt/nvm/nvm.sh"  # This loads nvm
-#[ -s "/usr/local/opt/nvm/etc/bash_completion.d/nvm" ] && . "/usr/local/opt/nvm/etc/bash_completion.d/nvm"  # This loads nvm bash_completion
+# volta
+export VOLTA_HOME="$HOME/.volta"
+export PATH="$VOLTA_HOME/bin:$PATH"
 
 # Python
 export PYENV_ROOT="$HOME/.pyenv"
