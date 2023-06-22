@@ -26,6 +26,9 @@ eval "$(pyenv init --path)"
 # Python tcl-tk
 export PATH="/usr/local/opt/tcl-tk/bin:$PATH"
 
+# Rye
+source "$HOME/.rye/env"
+
 # Ruby
 export RUBY_CONFIGURE_OPTS="--with-openssl-dir=$(brew --prefix openssl@1.1)"
 export RBENV_ROOT="$HOME/.rbenv"
