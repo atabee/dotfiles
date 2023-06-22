@@ -1,34 +1,17 @@
+# zsh history
+export HISTFILE=$HOME/.zsh_history
+export HISTSIZE=10000
+export SAVEHIST=100000
+
 # XDG Base Directory Specification
 export XDG_CONFIG_HOME=~/.config
 export XDG_CACHE_HOME=~/.cache
 export XDG_DATA_HOME=~/.share
 
-# bin files
-PATH="${PATH:+${PATH}:}$DOTPATH/bin"
-
-# docker
-#export DOCKER_BUILDKIT=1
-
 # gradle
 if (( $+commands[gradle] )); then
   export GRADLE_USER_HOME="$XDG_DATA_HOME/gradle"
 fi
-
-# volta
-export VOLTA_HOME="$HOME/.volta"
-export PATH="$VOLTA_HOME/bin:$PATH"
-
-# Python tcl-tk
-export PATH="/usr/local/opt/tcl-tk/bin:$PATH"
-
-# Rye
-source "$HOME/.rye/env"
-
-# Ruby
-export RUBY_CONFIGURE_OPTS="--with-openssl-dir=$(brew --prefix openssl@1.1)"
-export RBENV_ROOT="$HOME/.rbenv"
-export PATH="$RBENV_ROOT/shims:$PATH"
-eval "$(rbenv init -)"
 
 # fzf
 if (( $+commands[fzf] )); then
@@ -44,15 +27,31 @@ if (( $+commands[fzf] )); then
   }
 fi
 
-# flutter
-export PATH="$HOME/fvm/default/bin:$PATH"
-
 # go
 export GOPATH=$HOME/go
 export GOROOT="$(brew --prefix golang)/libexec"
-export PATH="$PATH:${GOPATH}/bin:${GOROOT}/bin"
+export PATH="${GOPATH}/bin:${GOROOT}/bin:$PATH"
 
-# history
-export HISTFILE=$HOME/.zsh_history
-export HISTSIZE=10000
-export SAVEHIST=100000
+# Node volta
+export VOLTA_HOME="$HOME/.volta"
+export PATH="$VOLTA_HOME/bin:$PATH"
+
+# Ruby rbenv
+export RUBY_CONFIGURE_OPTS="--with-openssl-dir=$(brew --prefix openssl@1.1)"
+export RBENV_ROOT="$HOME/.rbenv"
+eval "$(rbenv init -)"
+
+# Python Rye
+source "$HOME/.rye/env"
+
+# Python tcl-tk
+export PATH="/usr/local/opt/tcl-tk/bin:$PATH"
+
+# Rust cargo
+source "$HOME/.cargo/env"
+
+# flutter
+export PATH="$HOME/fvm/default/bin:$PATH"
+
+# bin files
+export PATH="$DOTPATH/bin:${PATH:+${PATH}:}"

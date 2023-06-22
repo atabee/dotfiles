@@ -13,15 +13,15 @@ fi
 # java
 if (( $+commands[java] )); then
   export JAVA_HOME=$(/usr/libexec/java_home -v 11)
-  PATH=$JAVA_HOME/bin:$PATH
+  export PATH="$JAVA_HOME/bin:$PATH"
 fi
 
 # Android
-export PATH=~/Library/Android/sdk/platform-tools:$PATH
-export PATH=~/Library/Android/sdk/tools:$PATH
+export PATH="$HOME/Library/Android/sdk/platform-tools:$PATH"
+export PATH="$HOME/Library/Android/sdk/tools:$PATH"
 if (( $+commands[android] )); then
-  export ANDROID_HOME=~/Library/Android/sdk
+  export ANDROID_HOME="$HOME/Library/Android/sdk"
 fi
 
 # dart
-export PATH=~/.pub-cache/bin:$PATH
+export PATH="$HOME/.pub-cache/bin:$PATH"
