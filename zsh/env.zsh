@@ -55,8 +55,5 @@ export PATH="/usr/local/opt/tcl-tk/bin:$PATH"
 # Rust cargo
 source "$HOME/.cargo/env"
 
-# flutter
-export PATH="$HOME/fvm/default/bin:$PATH"
-
 # bin files
 export PATH="$DOTPATH/bin:${PATH:+${PATH}:}"
