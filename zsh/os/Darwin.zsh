@@ -11,10 +11,10 @@ if (( $+commands[brew] )); then
 fi
 
 # java
-if (( $+commands[java] )); then
-  export JAVA_HOME=$(/usr/libexec/java_home -v 11)
-  export PATH="$JAVA_HOME/bin:$PATH"
-fi
+#if (( $+commands[java] )); then
+#  export JAVA_HOME=$(/usr/libexec/java_home -v 11)
+#  export PATH="$JAVA_HOME/bin:$PATH"
+#fi
 
 # Android
 export PATH="$HOME/Library/Android/sdk/platform-tools:$PATH"
