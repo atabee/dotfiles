@@ -57,3 +57,9 @@ source "$HOME/.cargo/env"
 
 # bin files
 export PATH="$DOTPATH/bin:${PATH:+${PATH}:}"
+
+# trash
+if type trash > /dev/null 2>&1; then
+    alias rm='trash -F'
+fi
+
