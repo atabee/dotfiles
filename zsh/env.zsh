@@ -27,6 +27,9 @@ if (( $+commands[fzf] )); then
   }
 fi
 
+# flutter fvm
+export PATH="$PATH:$HOME/fvm/default/bin"
+
 # go
 export GOPATH=$HOME/go
 export GOROOT="$(brew --prefix golang)/libexec"
