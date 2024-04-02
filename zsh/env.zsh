@@ -41,11 +41,6 @@ export RUBY_CONFIGURE_OPTS="--with-openssl-dir=$(brew --prefix openssl@1.1)"
 export RBENV_ROOT="$HOME/.rbenv"
 eval "$(rbenv init -)"
 
-# Python pyenv
-export PYENV_ROOT="$HOME/.pyenv"
-command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
-eval "$(pyenv init -)"
-
 # Python Rye
 source "$HOME/.rye/env"
 
