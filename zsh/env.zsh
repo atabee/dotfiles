@@ -51,7 +51,7 @@ source "$HOME/.rye/env"
 export PATH="/usr/local/opt/tcl-tk/bin:$PATH"
 
 # Rust cargo
-source "$HOME/.cargo/env"
+. $HOME/.cargo/env
 
 # bin files
 export PATH="$DOTPATH/bin:${PATH:+${PATH}:}"
