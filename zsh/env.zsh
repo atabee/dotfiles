@@ -8,6 +8,10 @@ export XDG_CONFIG_HOME=~/.config
 export XDG_CACHE_HOME=~/.cache
 export XDG_DATA_HOME=~/.share
 
+# Java
+export PATH="$HOME/.jenv/bin:$PATH"
+eval "$(jenv init -)"
+
 # gradle
 if (( $+commands[gradle] )); then
   export GRADLE_USER_HOME="$XDG_DATA_HOME/gradle"
