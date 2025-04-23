@@ -6,19 +6,20 @@ export SAVEHIST=100000
 # XDG Base Directory Specification
 export XDG_CONFIG_HOME=~/.config
 export XDG_CACHE_HOME=~/.cache
-export XDG_DATA_HOME=~/.share
+export XDG_DATA_HOME=~/.local/share
+export XDG_STATE_HOME=~/.local/state
 
 # Java
 export PATH="$HOME/.jenv/bin:$PATH"
 eval "$(jenv init -)"
 
 # gradle
-if (( $+commands[gradle] )); then
+if (($ + commands[gradle])); then
   export GRADLE_USER_HOME="$XDG_DATA_HOME/gradle"
 fi
 
 # fzf
-if (( $+commands[fzf] )); then
+if (($ + commands[fzf])); then
   export FZF_DEFAULT_OPTS='--height 40% --reverse --border'
   export FZF_COMPLETION_OPTS='+c -x'
 
@@ -61,7 +62,6 @@ export PATH="/usr/local/opt/tcl-tk/bin:$PATH"
 export PATH="$DOTPATH/bin:${PATH:+${PATH}:}"
 
 # trash
-if type trash > /dev/null 2>&1; then
-    alias rm='trash -F'
+if type trash >/dev/null 2>&1; then
+  alias rm='trash -F'
 fi
-
