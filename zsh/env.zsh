@@ -49,9 +49,6 @@ export RUBY_CONFIGURE_OPTS="--with-openssl-dir=$(brew --prefix openssl)"
 export RBENV_ROOT="$HOME/.rbenv"
 eval "$(rbenv init -)"
 
-# Python Rye
-source "$HOME/.rye/env"
-
 # Python uv
 export PATH="$HOME/.local/bin:$PATH"
 eval "$(uv generate-shell-completion zsh)"
