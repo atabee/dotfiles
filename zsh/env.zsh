@@ -53,6 +53,7 @@ eval "$(rbenv init -)"
 source "$HOME/.rye/env"
 
 # Python uv
+export PATH="$HOME/.local/bin:$PATH"
 eval "$(uv generate-shell-completion zsh)"
 
 # Python tcl-tk
