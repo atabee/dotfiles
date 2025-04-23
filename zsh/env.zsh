@@ -52,6 +52,9 @@ eval "$(rbenv init -)"
 # Python Rye
 source "$HOME/.rye/env"
 
+# Python uv
+eval "$(uv generate-shell-completion zsh)"
+
 # Python tcl-tk
 export PATH="/usr/local/opt/tcl-tk/bin:$PATH"
 
