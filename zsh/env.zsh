@@ -9,6 +9,9 @@ export XDG_CACHE_HOME=~/.cache
 export XDG_DATA_HOME=~/.local/share
 export XDG_STATE_HOME=~/.local/state
 
+# mise
+eval "$(mise activate zsh)"
+
 # Java
 export PATH="$HOME/.jenv/bin:$PATH"
 eval "$(jenv init -)"
