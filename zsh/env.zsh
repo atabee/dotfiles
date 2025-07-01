@@ -40,15 +40,6 @@ export GOPATH=$HOME/go
 export GOROOT="$(brew --prefix golang)/libexec"
 export PATH="${GOPATH}/bin:${GOROOT}/bin:$PATH"
 
-# Node volta
-export VOLTA_HOME="$HOME/.volta"
-export PATH="$VOLTA_HOME/bin:$PATH"
-
-# Ruby rbenv
-export RUBY_CONFIGURE_OPTS="--with-openssl-dir=$(brew --prefix openssl)"
-export RBENV_ROOT="$HOME/.rbenv"
-eval "$(rbenv init -)"
-
 # Python uv
 export PATH="$HOME/.local/bin:$PATH"
 eval "$(uv generate-shell-completion zsh)"
