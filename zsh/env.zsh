@@ -44,9 +44,6 @@ export PATH="${GOPATH}/bin:${GOROOT}/bin:$PATH"
 export PATH="$HOME/.local/bin:$PATH"
 eval "$(uv generate-shell-completion zsh)"
 
-# Python tcl-tk
-export PATH="/usr/local/opt/tcl-tk/bin:$PATH"
-
 # Rust cargo
 . $HOME/.cargo/env
 
