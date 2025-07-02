@@ -47,12 +47,15 @@ ln -fs "$DOTPATH"/vim/.vimrc "$HOME"/.vimrc
 
 println "create symlink for rye..."
 if [ -e "$HOME"/.rye/config.toml ]; then
-  cp "$HOME"/.rye/config.toml "$BACKUP"/config.toml."$(date +%Y%m%d)"
+  mkdir -p "$BACKUP"/.rye
+  cp "$HOME"/.rye/config.toml "$BACKUP"/.rye/config.toml."$(date +%Y%m%d)"
 fi
+mkdir -p "$HOME"/.rye
 ln -fs "$DOTPATH"/rye/config.toml "$HOME"/.rye/config.toml
 
 println "create symlink for ghostty..."
 if [ -e "$HOME"/.config/ghostty/config ]; then
+  mkdir -p "$BACKUP"/.config/ghostty
   cp "$HOME"/.config/ghostty/config "$BACKUP"/.config/ghostty/config."$(date +%Y%m%d)"
 fi
 mkdir -p "$HOME"/.config/ghostty
