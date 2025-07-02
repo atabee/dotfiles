@@ -54,7 +54,7 @@ install_git() {
 
 # Path settings
 DOTPATH=${DOTPATH:-$HOME/.dotfiles}
-REPO=yasegaeru/dotfiles
+REPO=atabichi/dotfiles
 
 # install tools
 install_git
