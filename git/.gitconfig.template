@@ -1,10 +1,5 @@
-[user]
-	name = atabichi
-	email = atabicher@gmail.com
-[credential]
-	helper = osxkeychain
 [core]
-	editor = vim -c \"set fenc=utf-8\"
+	editor = vim -c "set fenc=utf-8"
 [pull]
 	rebase = false
 [ghq]
@@ -15,4 +10,5 @@
 	clean = git-lfs clean -- %f
 	smudge = git-lfs smudge -- %f
 	process = git-lfs filter-process
-
+[include]
+	path = ~/.dotfiles/git/.gitconfig.local

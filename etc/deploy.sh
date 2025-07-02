@@ -29,11 +29,15 @@ if [ -e "$HOME"/.zprofile ]; then
 fi
 ln -fs "$DOTPATH"/zsh/.zprofile "$HOME"/.zprofile
 
-println "create symlink for git..."
-if [ -e "$HOME"/.gitconfig ]; then
-  cp "$HOME"/.gitconfig "$BACKUP"/.gitconfig."$(date +%Y%m%d)"
+println "setup git configuration..."
+if [ ! -e "$HOME"/.gitconfig ]; then
+  println "Creating .gitconfig from template..."
+  cp "$DOTPATH"/git/.gitconfig.template "$HOME"/.gitconfig
+  println "Please edit git/.gitconfig.local with your user information"
+  println "See git/README.md for setup instructions"
+else
+  println "Git configuration already exists, skipping..."
 fi
-ln -fs "$DOTPATH"/git/.gitconfig "$HOME"/.gitconfig
 
 println "create symlink for vim..."
 if [ -e "$HOME"/.vimrc ]; then

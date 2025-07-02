@@ -24,3 +24,6 @@ zsh/.p10k.zsh
 
 # local dependent settings
 local.zsh
+
+# git local configuration
+git/.gitconfig.local
