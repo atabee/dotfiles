@@ -12,7 +12,7 @@ This is a personal dotfiles repository for macOS/Linux development environment s
 
 ```bash
 # Initial installation (from web)
-curl -L raw.githubusercontent.com/atabichi/dotfiles/main/install | bash
+curl -L raw.githubusercontent.com/atabee/dotfiles/main/install | bash
 
 # Manual installation (if repository already exists)
 ./install
