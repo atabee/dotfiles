@@ -27,3 +27,6 @@ local.zsh
 
 # git local configuration
 git/.gitconfig.local
+
+# serena
+.serena

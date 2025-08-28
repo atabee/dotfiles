@@ -1,5 +1,6 @@
 [core]
-	editor = vim -c \"set fenc=utf-8"\
+	editor = vim -c \"set fenc=utf-8\"
+	autocrlf = input
 [pull]
 	rebase = false
 [ghq]
