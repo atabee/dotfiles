@@ -57,3 +57,7 @@ export PATH="$DOTPATH/bin:${PATH:+${PATH}:}"
 if type trash > /dev/null 2>&1; then
 	alias rm='trash -F'
 fi
+
+# eza
+alias ls='eza --icons=auto --git --git-repos --group-directories-first --sort=name --time-style=long-iso -hi --hyperlink -F always'
+
