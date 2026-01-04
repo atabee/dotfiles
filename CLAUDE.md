@@ -21,7 +21,7 @@ echo "experimental-features = nix-command flakes" > ~/.config/nix/nix.conf
 # 3. Clone and apply dotfiles
 git clone https://github.com/atabee/dotfiles ~/.dotfiles
 cd ~/.dotfiles
-nix run home-manager/master -- switch --flake ".#$(uname -m)-$(uname -s | tr '[:upper:]' '[:lower:]')" --impure
+nix run home-manager/master -- switch --flake ".#$(uname -m)-$(uname -s | tr '[:upper:]' '[:lower:]')"
 
 # 4. Create local configuration files
 cp config/git/.gitconfig.local.template git/.gitconfig.local
@@ -33,12 +33,12 @@ vim git/.gitconfig.local
 
 ```bash
 # Add packages to nix/packages.nix, then apply changes
-home-manager switch --flake ~/.dotfiles#$(uname -m)-$(uname -s | tr '[:upper:]' '[:lower:]') --impure
+home-manager switch --flake ~/.dotfiles#$(uname -m)-$(uname -s | tr '[:upper:]' '[:lower:]')
 
 # Update all packages
 cd ~/.dotfiles
 nix flake update
-home-manager switch --flake ".#$(uname -m)-$(uname -s | tr '[:upper:]' '[:lower:]')" --impure
+home-manager switch --flake ".#$(uname -m)-$(uname -s | tr '[:upper:]' '[:lower:]')"
 
 # Rollback to previous generation
 home-manager generations
@@ -74,7 +74,7 @@ Configuration files are organized by purpose:
 - All packages managed declaratively through Nix
 - No git submodules (removed in favor of Nix packages)
 - Platform detection handled at runtime in shell scripts
-- Dynamic user configuration using `builtins.getEnv` with `--impure` flag
+- Automatic user detection (Home Manager auto-detects username and home directory)
 
 ### Deployment Strategy
 
@@ -90,13 +90,13 @@ Configuration files are organized by purpose:
 1. Add configuration files to appropriate directory (e.g., `config/newtool/`)
 2. Create Nix module in `nix/programs/newtool.nix`
 3. Import module in `nix/home.nix`
-4. Apply changes: `home-manager switch --flake ~/.dotfiles#... --impure`
+4. Apply changes: `home-manager switch --flake ~/.dotfiles#...`
 
 ### Modifying Existing Configurations
 
 **For Nix-managed settings** (`nix/programs/*.nix`):
 1. Edit the `.nix` file
-2. Apply changes: `home-manager switch --flake ~/.dotfiles#... --impure`
+2. Apply changes: `home-manager switch --flake ~/.dotfiles#...`
 
 **For native config files** (`config/`, `ghostty/`, etc.):
 - Edit files directly in the repository
@@ -105,7 +105,7 @@ Configuration files are organized by purpose:
 ### Package Management
 
 1. Edit `nix/packages.nix` to add/remove packages
-2. Apply changes: `home-manager switch --flake ~/.dotfiles#... --impure`
+2. Apply changes: `home-manager switch --flake ~/.dotfiles#...`
 3. Commit changes to repository
 
 ### Local Customization
