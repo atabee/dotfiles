@@ -69,9 +69,24 @@
       fi
     '';
 
-    # Shell aliases
+    # Shell aliases (Prezto-style ls aliases using eza)
     shellAliases = {
-      # Will be populated as needed
+      # ls aliases using eza (modern ls replacement)
+      ls = "eza --icons --git";
+      l = "eza -1 --icons";                    # One column
+      la = "eza -lah --icons --git";           # All files, long format
+      ll = "eza -lh --icons --git";            # Long format
+      lt = "eza -lh --icons --git -snew";      # Sort by modified time
+      lr = "eza -lhR --icons --git";           # Recursive
+      tree = "eza --tree --icons";             # Tree view
+
+      # Safety aliases
+      rm = "trash-put";                        # Use trash instead of rm
+
+      # Other common aliases
+      ".." = "cd ..";
+      "..." = "cd ../..";
+      "...." = "cd ../../..";
     };
 
     # Zsh plugins (replacing Prezto)
