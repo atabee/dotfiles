@@ -1,5 +1,20 @@
 #! /usr/bin/env bash
 
+# ============================================
+# 非推奨 (DEPRECATED)
+# ============================================
+# このスクリプトは非推奨です。
+# 新しいNixベースのインストール方法を使用してください。
+#
+# 推奨インストール:
+#   nix/README.md を参照
+#
+# クイックインストール:
+#   git clone https://github.com/atabee/dotfiles ~/.dotfiles
+#   cd ~/.dotfiles
+#   nix run home-manager/master -- switch --flake ".#$(uname -m)-$(uname -s | tr '[:upper:]' '[:lower:]')" --impure
+# ============================================
+
 newline() {
     printf "\n"
 }

@@ -1,0 +1,17 @@
+# Local Zsh configuration
+# This file is for machine-specific settings that should not be tracked in git
+# Copy this file to ~/.config/zsh/local.zsh and customize as needed
+
+# Example: Set locale
+# export LC_ALL=en_US.UTF-8
+
+# Example: Machine-specific environment variables
+# export SOME_API_KEY="your-key-here"
+
+# Example: Machine-specific aliases
+# alias work='cd ~/work/project'
+
+# Example: Manual tool installations
+# If jenv is installed manually:
+#   export PATH="$HOME/.jenv/bin:$PATH"
+#   eval "$(jenv init -)"
