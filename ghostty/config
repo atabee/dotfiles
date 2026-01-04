@@ -1,5 +1,5 @@
 # theme
-theme = "iceberg-dark"
+theme = /Applications/Ghostty.app/Contents/Resources/ghostty/themes/Catppuccin Mocha
 
 macos-titlebar-style = hidden
 macos-non-native-fullscreen = true
