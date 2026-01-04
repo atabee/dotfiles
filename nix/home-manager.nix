@@ -20,7 +20,6 @@
     ./modules/eza
     ./modules/gh
     ./modules/go
-    ./modules/mise
     ./modules/node
     ./modules/ripgrep
     ./modules/ruby
