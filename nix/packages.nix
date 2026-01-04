@@ -2,7 +2,7 @@
 
 {
   home.packages = with pkgs; [
-    # Core tools (from etc/init.sh)
+    # Utilities
     fzf
     go
     ghq
