@@ -19,7 +19,7 @@
   };
 
   # Tool initialization and activation
-  programs.zsh.initExtra = lib.mkAfter ''
+  programs.zsh.initContent = lib.mkAfter ''
     # mise (polyglot version manager)
     if command -v mise &> /dev/null; then
       eval "$(${pkgs.mise}/bin/mise activate zsh)"

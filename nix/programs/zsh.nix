@@ -4,6 +4,9 @@
   programs.zsh = {
     enable = true;
 
+    # Use XDG config directory for Zsh dotfiles
+    dotDir = "${config.xdg.configHome}/zsh";
+
     # History configuration (from env.zsh)
     history = {
       path = "${config.home.homeDirectory}/.zsh_history";
@@ -20,54 +23,68 @@
       DOTPATH = "${config.home.homeDirectory}/.dotfiles";
     };
 
-    # Zsh options (from options.zsh)
-    initExtra = ''
-      # Japanese filename support
-      setopt print_eight_bit
+    # Zsh initialization content (replaces initExtra and initExtraBeforeCompInit)
+    initContent = lib.mkMerge [
+      # Content before compinit (lib.mkOrder 550)
+      (lib.mkOrder 550 ''
+        # Enable Powerlevel10k instant prompt
+        if [[ -r "''${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-''${(%):-%n}.zsh" ]]; then
+          source "''${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-''${(%):-%n}.zsh"
+        fi
 
-      # Disable beep
-      setopt no_beep
+        # Load Powerlevel10k configuration
+        [[ -f ${config.xdg.configHome}/zsh/.p10k.zsh ]] && source ${config.xdg.configHome}/zsh/.p10k.zsh
+      '')
 
-      # Disable flow control
-      setopt no_flow_control
+      # Content after compinit (default order)
+      ''
+        # Japanese filename support
+        setopt print_eight_bit
 
-      # Enable comments in interactive shell
-      setopt interactive_comments
+        # Disable beep
+        setopt no_beep
 
-      # Share history between sessions
-      setopt share_history
+        # Disable flow control
+        setopt no_flow_control
 
-      # Remove extra spaces from history
-      setopt hist_reduce_blanks
+        # Enable comments in interactive shell
+        setopt interactive_comments
 
-      # Auto-remove extra commas for smooth input
-      setopt auto_param_keys
+        # Share history between sessions
+        setopt share_history
 
-      # Enable brace expansion (e.g., mkdir {1-3})
-      setopt brace_ccl
+        # Remove extra spaces from history
+        setopt hist_reduce_blanks
 
-      # Complete from cursor position
-      setopt complete_in_word
+        # Auto-remove extra commas for smooth input
+        setopt auto_param_keys
 
-      # Extended glob patterns
-      setopt extended_glob
+        # Enable brace expansion (e.g., mkdir {1-3})
+        setopt brace_ccl
 
-      # Completion configuration
-      zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
-      zstyle ':completion:*' ignore-parents parent pwd ..
-      zstyle ':completion:*' use-cache on
-      zstyle ':completion:*' cache-path "${config.xdg.cacheHome}/zsh/compcache"
+        # Complete from cursor position
+        setopt complete_in_word
 
-      # Source local config if exists
-      [ -f ${config.xdg.configHome}/zsh/local.zsh ] && source ${config.xdg.configHome}/zsh/local.zsh
+        # Extended glob patterns
+        setopt extended_glob
 
-      # Source custom functions
-      if [ -d ${config.xdg.configHome}/zsh/functions ]; then
-        for func in ${config.xdg.configHome}/zsh/functions/*; do
-          [ -f "$func" ] && source "$func"
-        done
-      fi
-    '';
+        # Completion configuration
+        zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
+        zstyle ':completion:*' ignore-parents parent pwd ..
+        zstyle ':completion:*' use-cache on
+        zstyle ':completion:*' cache-path "${config.xdg.cacheHome}/zsh/compcache"
+
+        # Source local config if exists
+        [ -f ${config.xdg.configHome}/zsh/local.zsh ] && source ${config.xdg.configHome}/zsh/local.zsh
+
+        # Source custom functions
+        if [ -d ${config.xdg.configHome}/zsh/functions ]; then
+          for func in ${config.xdg.configHome}/zsh/functions/*; do
+            [ -f "$func" ] && source "$func"
+          done
+        fi
+      ''
+    ];
 
     # Shell aliases (Prezto-style ls aliases using eza)
     shellAliases = {
@@ -112,17 +129,6 @@
         file = "share/zsh-history-substring-search/zsh-history-substring-search.zsh";
       }
     ];
-
-    # Powerlevel10k instant prompt
-    initExtraBeforeCompInit = ''
-      # Enable Powerlevel10k instant prompt
-      if [[ -r "''${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-''${(%):-%n}.zsh" ]]; then
-        source "''${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-''${(%):-%n}.zsh"
-      fi
-
-      # Load Powerlevel10k configuration
-      [[ -f ${config.xdg.configHome}/zsh/.p10k.zsh ]] && source ${config.xdg.configHome}/zsh/.p10k.zsh
-    '';
 
     # Enable completion
     enableCompletion = true;

@@ -5,7 +5,7 @@
     enable = true;
 
     # Common Git configuration (from .gitconfig.template)
-    extraConfig = {
+    settings = {
       core = {
         editor = "vim -c \"set fenc=utf-8\"";
         autocrlf = "input";

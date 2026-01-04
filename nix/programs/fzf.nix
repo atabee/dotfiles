@@ -18,7 +18,7 @@
   };
 
   # Custom fzf keybindings and functions in Zsh
-  programs.zsh.initExtra = lib.mkAfter ''
+  programs.zsh.initContent = lib.mkAfter ''
     # fzf completion options
     export FZF_COMPLETION_OPTS='+c -x'
 
