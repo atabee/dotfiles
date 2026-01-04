@@ -7,32 +7,33 @@
     go
     ghq
     lv
+    nixfmt-rfc-style
 
     # Development version managers
-    mise             # Polyglot runtime manager (formerly rtx)
+    mise # Polyglot runtime manager (formerly rtx)
 
     # Rust toolchain
     rustup
 
     # Python tools
-    uv               # Fast Python package installer
+    uv # Fast Python package installer
 
     # Git tools
     git
     git-lfs
-    delta            # Better git diff
+    delta # Better git diff
 
     # Search and find tools
-    ripgrep          # rg - fast grep alternative
-    silver-searcher  # ag - code search tool (used by fzf)
-    fd               # fast find alternative
+    ripgrep # rg - fast grep alternative
+    silver-searcher # ag - code search tool (used by fzf)
+    fd # fast find alternative
 
     # File utilities
-    trash-cli        # Safe rm replacement
+    trash-cli # Safe rm replacement
 
     # Other useful tools
-    bat              # cat with syntax highlighting
-    eza              # modern ls replacement
+    bat # cat with syntax highlighting
+    eza # modern ls replacement
   ];
 
   # Note: jenv is not available in nixpkgs.

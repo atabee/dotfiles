@@ -9,15 +9,18 @@
     };
   };
 
-  outputs = { nixpkgs, home-manager, ... }:
+  outputs =
+    { nixpkgs, home-manager, ... }:
     let
       # Helper function to create Home Manager configuration for a system
-      mkHomeConfiguration = system:
+      mkHomeConfiguration =
+        system:
         home-manager.lib.homeManagerConfiguration {
           pkgs = import nixpkgs { inherit system; };
           modules = [ ./nix/home.nix ];
         };
-    in {
+    in
+    {
       homeConfigurations = {
         # macOS Intel
         "x86_64-darwin" = mkHomeConfiguration "x86_64-darwin";
