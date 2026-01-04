@@ -23,10 +23,10 @@ Clone this repository and apply the configuration:
 ```bash
 git clone https://github.com/atabee/dotfiles ~/.dotfiles && \
 cd ~/.dotfiles && \
-nix run home-manager/master -- switch --flake ".#$(uname -m)-$(uname -s | tr '[:upper:]' '[:lower:]')"
+nix run home-manager/master -- switch --flake ".#$(uname -m)-$(uname -s | tr '[:upper:]' '[:lower:]')" --impure
 ```
 
-Home Manager automatically detects your username and home directory, so the same configuration works on any machine without hardcoded values.
+The `--impure` flag allows the configuration to use your current `$USER` and `$HOME` environment variables, making it work on any machine without hardcoded usernames.
 
 ## Supported Platforms
 
@@ -41,13 +41,13 @@ After making changes to the configuration:
 
 ```bash
 cd ~/.dotfiles
-home-manager switch --flake ".#$(uname -m)-$(uname -s | tr '[:upper:]' '[:lower:]')"
+home-manager switch --flake ".#$(uname -m)-$(uname -s | tr '[:upper:]' '[:lower:]')" --impure
 ```
 
 Or create an alias:
 
 ```bash
-alias hms='home-manager switch --flake ~/.dotfiles#$(uname -m)-$(uname -s | tr "[:upper:]" "[:lower:]")'
+alias hms='home-manager switch --flake ~/.dotfiles#$(uname -m)-$(uname -s | tr "[:upper:]" "[:lower:]") --impure'
 ```
 
 ## Updating Packages
@@ -57,7 +57,7 @@ Update flake inputs (nixpkgs, home-manager):
 ```bash
 cd ~/.dotfiles
 nix flake update
-home-manager switch --flake ".#$(uname -m)-$(uname -s | tr '[:upper:]' '[:lower:]')"
+home-manager switch --flake ".#$(uname -m)-$(uname -s | tr '[:upper:]' '[:lower:]')" --impure
 ```
 
 ## Rollback

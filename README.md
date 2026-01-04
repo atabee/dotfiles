@@ -17,7 +17,7 @@ echo "experimental-features = nix-command flakes" > ~/.config/nix/nix.conf
 # 3. dotfilesをクローンして適用
 git clone https://github.com/atabee/dotfiles ~/.dotfiles && \
 cd ~/.dotfiles && \
-nix run home-manager/master -- switch --flake ".#$(uname -m)-$(uname -s | tr '[:upper:]' '[:lower:]')"
+nix run home-manager/master -- switch --flake ".#$(uname -m)-$(uname -s | tr '[:upper:]' '[:lower:]')" --impure
 ```
 
 詳細は [nix/README.md](nix/README.md) を参照してください。

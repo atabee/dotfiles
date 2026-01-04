@@ -13,9 +13,10 @@
     # using runtime platform detection to avoid Nix evaluation issues
   ];
 
-  # Home Manager automatically detects username and home directory
-  # No manual configuration needed - works across different machines
-  # home.username and home.homeDirectory are set automatically
+  # Dynamic user configuration (requires --impure flag)
+  # This allows the same config to work on different machines without hardcoding usernames
+  home.username = builtins.getEnv "USER";
+  home.homeDirectory = builtins.getEnv "HOME";
 
   # Home Manager version
   home.stateVersion = "24.05";
