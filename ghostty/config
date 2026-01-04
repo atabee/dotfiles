@@ -3,15 +3,3 @@ theme = /Applications/Ghostty.app/Contents/Resources/ghostty/themes/Catppuccin M
 
 macos-titlebar-style = hidden
 macos-non-native-fullscreen = true
-
-# クイックターミナルの位置を画面上部に設定
-quick-terminal-position = "top"
-
-# クイックターミナルを表示するスクリーンを設定
-quick-terminal-screen = "mouse"
-
-# アニメーション時間を設定（0で即時表示）
-quick-terminal-animation-duration = 0
-
-# グローバルホットキーを設定
-keybind = "global:shift+ctrl+@=toggle_quick_terminal"
