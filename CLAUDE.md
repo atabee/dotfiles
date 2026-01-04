@@ -4,90 +4,112 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Repository Overview
 
-This is a personal dotfiles repository for macOS/Linux development environment setup. It uses a modular structure with shell scripts to deploy configuration files and install development tools.
+This is a personal dotfiles repository for macOS/Linux development environment setup. It uses Nix with Home Manager for declarative, reproducible configuration management.
 
 ## Key Commands
 
 ### Installation and Setup
 
 ```bash
-# Initial installation (from web)
-curl -L raw.githubusercontent.com/atabee/dotfiles/main/install | bash
+# 1. Install Nix (if not already installed)
+sh <(curl -L https://nixos.org/nix/install) --daemon
 
-# Manual installation (if repository already exists)
-./install
+# 2. Enable Flakes feature
+mkdir -p ~/.config/nix
+echo "experimental-features = nix-command flakes" > ~/.config/nix/nix.conf
 
-# Deploy configuration files only
-source etc/deploy.sh
+# 3. Clone and apply dotfiles
+git clone https://github.com/atabee/dotfiles ~/.dotfiles
+cd ~/.dotfiles
+nix run home-manager/master -- switch --flake ".#$(uname -m)-$(uname -s | tr '[:upper:]' '[:lower:]')" --impure
 
-# Install tools only  
-source etc/init.sh
+# 4. Create local configuration files
+cp config/git/.gitconfig.local.template git/.gitconfig.local
+# Edit with your Git user information
+vim git/.gitconfig.local
 ```
 
 ### Package Management
 
 ```bash
-# Install all packages via Homebrew
-brew bundle --file=brew/Brewfile
+# Add packages to nix/packages.nix, then apply changes
+home-manager switch --flake ~/.dotfiles#$(uname -m)-$(uname -s | tr '[:upper:]' '[:lower:]') --impure
 
-# Update Brewfile with currently installed packages
-brew bundle dump --file=brew/Brewfile --force
+# Update all packages
+cd ~/.dotfiles
+nix flake update
+home-manager switch --flake ".#$(uname -m)-$(uname -s | tr '[:upper:]' '[:lower:]')" --impure
+
+# Rollback to previous generation
+home-manager generations
+/nix/store/XXXXX-home-manager-generation/activate
 ```
 
 ## Architecture
 
 ### Core Structure
 
-- **`install`**: Main installation script that orchestrates the entire setup
-- **`etc/`**: Core shell scripts for environment setup
-  - `env.sh`: Loads utility functions and environment
-  - `init.sh`: Installs development tools (fzf, go, ghq, fonts)
-  - `deploy.sh`: Creates symlinks for configuration files
-  - `install_utils.sh`: Platform-specific installation functions
-  - `log_utils.sh`: Logging and output utilities
+- **`flake.nix`**: Nix Flakes entry point with multi-platform support
+- **`nix/home.nix`**: Main Home Manager configuration
+- **`nix/packages.nix`**: Declarative package definitions
+- **`nix/programs/`**: Program-specific configurations (zsh, git, fzf, ghostty)
+- **`nix/modules/`**: Custom modules (environment variables, tool integrations)
+- **`nix/platform/`**: Platform-specific settings (darwin, linux)
 
-### Configuration Modules
+### Configuration Files
 
-Each directory represents a tool/application configuration:
+Configuration files are organized by purpose:
 
-- **`zsh/`**: Zsh shell configuration with Prezto framework
-- **`git/`**: Git configuration files
-- **`vim/`**: Vim editor configuration
-- **`tmux/`**: Terminal multiplexer configuration
-- **`brew/`**: Homebrew package definitions (Brewfile)
+- **`config/zsh/`**: Zsh configuration files
+  - `.p10k.zsh`: Powerlevel10k theme configuration
+  - `functions/`: Custom Zsh functions
+  - `local.zsh.template`: Template for machine-specific settings
+- **`config/git/`**: Git configuration templates
+  - `.gitconfig.local.template`: Template for user-specific Git settings
 - **`ghostty/`**: Ghostty terminal configuration
 - **`iterm2/`**: iTerm2 terminal configuration
-- **`rye/`**: Python package manager configuration
 
 ### Dependencies Management
 
-- Uses git submodules for external dependencies (Prezto, fzf, fonts)
-- Homebrew Brewfile manages system packages and applications
-- Platform detection supports both macOS and Linux
+- All packages managed declaratively through Nix
+- No git submodules (removed in favor of Nix packages)
+- Platform detection handled at runtime in shell scripts
+- Dynamic user configuration using `builtins.getEnv` with `--impure` flag
 
 ### Deployment Strategy
 
-- Creates backup copies of existing configuration files with timestamps
-- Uses symbolic links to maintain connection with repository
-- Supports incremental updates by re-running deployment scripts
+- Home Manager manages all dotfiles declaratively
+- Configuration files deployed via `home.file` in `nix/home.nix`
+- Sensitive data (Git user info) kept in local files not tracked by git
+- Supports multiple machines without hardcoded usernames
 
 ## Development Workflow
 
 ### Adding New Configurations
 
-1. Create new directory for the tool (e.g., `newtool/`)
-2. Add configuration files to the directory
-3. Update `etc/deploy.sh` to create symlinks
-4. If the tool requires installation, add to `etc/init.sh`
+1. Add configuration files to appropriate directory (e.g., `config/newtool/`)
+2. Create Nix module in `nix/programs/newtool.nix`
+3. Import module in `nix/home.nix`
+4. Apply changes: `home-manager switch --flake ~/.dotfiles#... --impure`
 
 ### Modifying Existing Configurations
 
+**For Nix-managed settings** (`nix/programs/*.nix`):
+1. Edit the `.nix` file
+2. Apply changes: `home-manager switch --flake ~/.dotfiles#... --impure`
+
+**For native config files** (`config/`, `ghostty/`, etc.):
 - Edit files directly in the repository
-- Changes are reflected immediately due to symlink structure
-- No redeployment needed for configuration changes
+- Changes are reflected immediately (Home Manager creates symlinks)
 
 ### Package Management
 
-- Add new packages to `brew/Brewfile`
-- Run `brew bundle` to install new packages
-- Commit updated Brewfile to repository
+1. Edit `nix/packages.nix` to add/remove packages
+2. Apply changes: `home-manager switch --flake ~/.dotfiles#... --impure`
+3. Commit changes to repository
+
+### Local Customization
+
+**Machine-specific settings** (not tracked in git):
+- `~/.dotfiles/git/.gitconfig.local`: Git user information
+- `~/.config/zsh/local.zsh`: Machine-specific Zsh settings

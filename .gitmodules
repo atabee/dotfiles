@@ -1,9 +1,0 @@
-[submodule "zsh/.zprezto"]
-	path = zsh/.zprezto
-	url = https://github.com/sorin-ionescu/prezto.git
-[submodule "zsh/modules/fzf/external"]
-	path = zsh/modules/fzf/external
-	url = https://github.com/junegunn/fzf
-[submodule "res/common/fonts"]
-	path = res/common/fonts
-	url = https://github.com/powerline/fonts.git

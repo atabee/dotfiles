@@ -2,25 +2,13 @@
 # .gitignore
 #
 
-# zplug install directory
-plugins/
-
-# vim dein directory
-vim/dein/
-
 # command history directory
 .zcompcache
 .zcompdump*
 .zsh_history
 
-# auto install binaries
-bin/fzf
-
-# maxosx
+# macOS
 .DS_Store
-
-# p10k
-zsh/.p10k.zsh
 
 # local dependent settings
 local.zsh
@@ -30,3 +18,6 @@ git/.gitconfig.local
 
 # serena
 .serena
+
+# nix
+result
