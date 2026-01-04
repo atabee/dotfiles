@@ -11,13 +11,10 @@
 .DS_Store
 
 # local dependent settings
-local.zsh
+zsh/local.zsh.template
 
 # git local configuration
 git/.gitconfig.local
-
-# serena
-.serena
 
 # nix
 result
