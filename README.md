@@ -51,6 +51,14 @@ curl -L raw.githubusercontent.com/atabee/dotfiles/main/install | bash
 - ✅ Zsh + Powerlevel10k
 - ✅ fzf統合
 - ✅ Git、Ghostty設定管理
+- ✅ プログラムごとにフォルダで整理
+
+## 新しく追加されたツール
+
+- **gh**: GitHub CLI - リポジトリやissueの管理
+- **aria2**: マルチプロトコルダウンローダー
+- **tree**: ディレクトリツリー可視化
+- **jq**: JSONプロセッサ
 
 ## 構成
 
@@ -58,12 +66,14 @@ curl -L raw.githubusercontent.com/atabee/dotfiles/main/install | bash
 nix/                # Nix設定ファイル
 ├── home.nix        # メイン設定
 ├── packages.nix    # パッケージ一覧
-├── programs/       # プログラム別設定
-└── modules/        # カスタムモジュール
+├── programs/       # プログラム別設定（各プログラムがフォルダ構成）
+│   ├── fzf/       # fzf設定
+│   ├── git/       # Git設定
+│   ├── ghostty/   # Ghostty設定
+│   └── zsh/       # Zsh設定
+├── modules/        # カスタムモジュール
+└── platform/       # プラットフォーム固有設定
 
-config/             # ネイティブ設定ファイル
-├── zsh/           # Zsh設定（.p10k.zsh等）
-└── git/           # Gitローカル設定テンプレート
-
-etc/                # レガシースクリプト（非推奨）
+git/                # ローカルGit設定（.gitconfig.local）
+iterm2/             # iTerm2設定
 ```

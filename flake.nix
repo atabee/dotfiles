@@ -17,7 +17,7 @@
         system:
         home-manager.lib.homeManagerConfiguration {
           pkgs = import nixpkgs { inherit system; };
-          modules = [ ./nix/home.nix ];
+          modules = [ ./nix/home-manager.nix ];
         };
     in
     {

@@ -19,13 +19,10 @@
       save = 100000;
     };
 
-    # Session variables (from env.zsh)
+    # Session variables
     sessionVariables = {
       # XDG Base Directory (already set in home.nix, but can override here)
       HISTFILE = "${config.home.homeDirectory}/.zsh_history";
-
-      # DOTPATH for custom scripts
-      DOTPATH = "${config.home.homeDirectory}/.dotfiles";
     };
 
     # Zsh initialization content (replaces initExtra and initExtraBeforeCompInit)
@@ -38,7 +35,7 @@
         fi
 
         # Load Powerlevel10k configuration
-        [[ -f ${config.xdg.configHome}/zsh/.p10k.zsh ]] && source ${config.xdg.configHome}/zsh/.p10k.zsh
+        [[ -f ${config.xdg.configHome}/zsh/p10k.zsh ]] && source ${config.xdg.configHome}/zsh/p10k.zsh
       '')
 
       # Content after compinit (default order)

@@ -6,6 +6,11 @@
 }:
 
 {
+  home.packages = with pkgs; [
+    git
+    git-lfs
+  ];
+
   programs.git = {
     enable = true;
 
@@ -35,13 +40,15 @@
       };
 
       # Include local user-specific configuration
-      # Users should create ~/.dotfiles/git/.gitconfig.local with their user info
+      # Users should create ~/.config/git/.gitconfig.local with their user info
       include = {
-        path = "~/.dotfiles/git/.gitconfig.local";
+        path = "~/.config/git/.gitconfig.local";
       };
     };
   };
 
-  # Note: Template file is available at ~/.dotfiles/config/git/.gitconfig.local.template
-  # Users should manually copy it to ~/.dotfiles/git/.gitconfig.local and customize
+  # Deploy local git config template
+  home.file.".config/git/.gitconfig.local.template".source = ./gitconfig.local.template;
+
+  # Note: Users should manually copy the template to ~/.config/git/.gitconfig.local and customize
 }

@@ -105,22 +105,44 @@ This file is sourced by Home Manager but not tracked in git, allowing for per-ma
 
 ```
 nix/
-├── home.nix           # Main Home Manager configuration
-├── packages.nix       # Package declarations
-├── programs/          # Program-specific configurations
-│   ├── zsh.nix
-│   ├── fzf.nix
-│   ├── git.nix
-│   └── ghostty.nix
-├── modules/           # Custom modules
-│   └── env-vars.nix
-└── platform/          # Platform-specific configurations
-    ├── darwin.nix
-    └── linux.nix
+├── home.nix              # Main Home Manager configuration
+├── packages.nix          # Package declarations
+├── programs/             # Program-specific configurations
+│   ├── fzf/
+│   │   ├── default.nix   # fzf module
+│   │   └── README.md
+│   ├── git/
+│   │   ├── default.nix   # Git module
+│   │   ├── gitconfig.local.template
+│   │   └── README.md
+│   ├── ghostty/
+│   │   ├── default.nix   # Ghostty module
+│   │   ├── config        # Ghostty config file
+│   │   └── README.md
+│   └── zsh/
+│       ├── default.nix   # Zsh module
+│       ├── p10k.zsh      # Powerlevel10k theme
+│       ├── local.zsh.template
+│       ├── functions/    # Custom Zsh functions
+│       └── README.md
+├── modules/              # Custom modules
+│   └── env-vars.nix      # Environment variables and tool initialization
+└── platform/             # Platform-specific configurations
+    ├── darwin.nix        # macOS-specific
+    └── linux.nix         # Linux-specific
 ```
+
+## New Packages
+
+Recent additions to the package set:
+- `aria2`: Multi-protocol download utility
+- `gh`: GitHub CLI for repository and issue management
+- `tree`: Directory tree visualization
+- `jq`: Command-line JSON processor
 
 ## Notes
 
 - **No hardcoded usernames**: The configuration dynamically uses `$USER` and `$HOME`
 - **No sensitive data**: Git user information and credentials are kept in local files
 - **Cross-platform**: Same configuration works on macOS and Linux
+- **Program-centric structure**: Each program has its own folder with module, configs, and docs
