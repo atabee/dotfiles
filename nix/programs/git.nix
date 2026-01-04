@@ -37,6 +37,6 @@
     };
   };
 
-  # Provide a template for local git configuration
-  home.file.".dotfiles/git/.gitconfig.local.template".source = ../../config/git/.gitconfig.local.template;
+  # Note: Template file is available at ~/.dotfiles/config/git/.gitconfig.local.template
+  # Users should manually copy it to ~/.dotfiles/git/.gitconfig.local and customize
 }
