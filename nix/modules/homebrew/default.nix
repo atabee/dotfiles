@@ -47,6 +47,7 @@
       "android-studio"
       "swiftformat-for-xcode"
       "claude-code"
+      "claude" # Claude Desktop
       "font-monaspace"
 
       # Browsers
@@ -60,6 +61,7 @@
       # Utilities
       "rectangle" # Window management
       "the-unarchiver" # Archive utility
+      "tailscale" # VPN/mesh networking
 
       # Add any other casks you need here
     ];

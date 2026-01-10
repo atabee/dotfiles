@@ -190,11 +190,11 @@ nix-darwinを使用してHomebrewパッケージを宣言的に管理します�
 
 #### Casks（GUIアプリケーション）
 
-- **開発ツール**: ghostty, visual-studio-code, android-studio, swiftformat-for-xcode, claude-code
+- **開発ツール**: ghostty, visual-studio-code, android-studio, swiftformat-for-xcode, claude-code, claude
 - **フォント**: font-monaspace
 - **ブラウザ**: google-chrome
 - **生産性**: raycast, 1password, notion
-- **ユーティリティ**: rectangle（ウィンドウ管理）, the-unarchiver（アーカイブ）
+- **ユーティリティ**: rectangle（ウィンドウ管理）, the-unarchiver（アーカイブ）, tailscale（VPN）
 
 ### パッケージの追加方法
 
