@@ -1,3 +1,8 @@
 {
-  "recommendations": ["timonwong.shellcheck", "foxundermoon.shell-format"]
+  "recommendations": [
+    "jnoortheen.nix-ide",
+    "esbenp.prettier-vscode",
+    "timonwong.shellcheck",
+    "foxundermoon.shell-format"
+  ]
 }
