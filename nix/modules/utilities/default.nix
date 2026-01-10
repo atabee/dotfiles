@@ -21,21 +21,8 @@
     # Git tools
     ghq # Git repository organizer
 
-    # Development tools
-    uv # Fast Python package installer
-
     # Nix formatting
     nixfmt
   ];
 
-  # Shell integration for utilities
-  programs.zsh.initContent = lib.mkAfter ''
-    # Python uv shell completion
-    if command -v uv &> /dev/null; then
-      eval "$(${pkgs.uv}/bin/uv generate-shell-completion zsh)"
-    fi
-
-    # Add local bin to PATH (for uv and other tools)
-    export PATH="$HOME/.local/bin:$PATH"
-  '';
 }

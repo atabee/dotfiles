@@ -24,6 +24,7 @@
     ./modules/gh
     ./modules/go
     ./modules/node
+    ./modules/python
     ./modules/ripgrep
     ./modules/ruby
     ./modules/rustup

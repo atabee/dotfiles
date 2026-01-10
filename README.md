@@ -238,6 +238,7 @@ nix/
 │   ├── homebrew/      # Homebrew設定（macOS）
 │   ├── git/           # Git設定（テンプレート含む）
 │   ├── nodejs/        # Node.js設定
+│   ├── python/        # Python設定（uv）
 │   ├── ruby/          # Ruby設定
 │   ├── zsh/           # Zsh設定
 │   ├── fzf/           # fzf設定
