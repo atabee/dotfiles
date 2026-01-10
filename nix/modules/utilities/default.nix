@@ -25,7 +25,7 @@
     uv # Fast Python package installer
 
     # Nix formatting
-    nixfmt-rfc-style
+    nixfmt
   ];
 
   # Shell integration for utilities

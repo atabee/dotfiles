@@ -8,6 +8,9 @@
 {
   # Import module configurations
   imports = [
+    # Platform-specific configurations
+    ./platform/darwin.nix
+
     # Core programs
     ./modules/zsh
     ./modules/fzf

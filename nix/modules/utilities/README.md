@@ -38,7 +38,7 @@
 
 ### Nix
 
-- **nixfmt-rfc-style**: Nixコードフォーマッター
+- **nixfmt**: Nixコードフォーマッター
 
 ## 使用例
 
