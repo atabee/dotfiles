@@ -236,20 +236,16 @@ nix/
 ├── flake.nix           # Flake設定（エントリーポイント）
 ├── modules/            # カスタムモジュール
 │   ├── homebrew/      # Homebrew設定（macOS）
+│   ├── fzf/           # fzf設定
 │   ├── git/           # Git設定（テンプレート含む）
+│   ├── ghostty/       # Ghostty設定
+│   ├── zsh/           # Zsh設定
+│   ├── go/            # Go設定
 │   ├── nodejs/        # Node.js設定
 │   ├── python/        # Python設定（uv）
 │   ├── ruby/          # Ruby設定
-│   ├── zsh/           # Zsh設定
-│   ├── fzf/           # fzf設定
-│   ├── ghostty/       # Ghostty設定
-│   ├── bat/           # bat設定
-│   ├── delta/         # delta設定
-│   ├── eza/           # eza設定
-│   ├── gh/            # GitHub CLI設定
-│   ├── go/            # Go設定
-│   ├── ripgrep/       # ripgrep設定
-│   └── rustup/        # Rust設定
+│   ├── rustup/        # Rust設定
+│   └── utilities/     # CLIツール集（bat, delta, eza, gh, ripgrep等）
 └── platform/           # プラットフォーム固有設定
     ├── darwin.nix     # macOS設定
     └── linux.nix      # Linux設定

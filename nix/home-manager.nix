@@ -18,14 +18,9 @@
     ./modules/ghostty
 
     # Development tools
-    ./modules/bat
-    ./modules/delta
-    ./modules/eza
-    ./modules/gh
     ./modules/go
     ./modules/node
     ./modules/python
-    ./modules/ripgrep
     ./modules/ruby
     ./modules/rustup
 
