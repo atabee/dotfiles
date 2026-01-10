@@ -61,7 +61,8 @@
       # Utilities
       "rectangle" # Window management
       "the-unarchiver" # Archive utility
-      "tailscale" # VPN/mesh networking
+      "tailscale-app" # VPN/mesh networking
+      "google-japanese-ime" # Japanese input method
 
       # Add any other casks you need here
     ];

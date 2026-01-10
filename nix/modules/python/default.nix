@@ -14,7 +14,7 @@
   };
 
   # Shell integration
-  programs.zsh.initExtra = lib.mkAfter ''
+  programs.zsh.initContent = lib.mkAfter ''
     # uv shell completion
     if command -v uv &> /dev/null; then
       eval "$(uv generate-shell-completion zsh)"
