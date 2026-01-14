@@ -1,9 +1,10 @@
-{ pkgs, config, ... }:
+{ pkgs, lib, config, ... }:
 
 {
   home.packages = with pkgs; [
     ruby_3_4 # Ruby programming language
-    cocoapods # iOS dependency manager
+  ] ++ lib.optionals stdenv.isDarwin [
+    cocoapods # iOS dependency manager (macOS only)
   ];
 
   home.sessionVariables = {
