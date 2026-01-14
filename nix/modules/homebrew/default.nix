@@ -45,6 +45,7 @@
       "ghostty"
       "visual-studio-code"
       "android-studio"
+      "xcodes-app"
       "swiftformat-for-xcode"
       "claude-code"
       "claude" # Claude Desktop
