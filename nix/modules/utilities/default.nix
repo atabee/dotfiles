@@ -7,7 +7,6 @@
     fd # fast find alternative
     tree # Directory tree visualization
     trash-cli # Safe rm replacement
-    lv # Powerful file viewer
 
     # Data processing
     jq # JSON processor
