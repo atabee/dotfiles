@@ -45,6 +45,14 @@
   # XDG Base Directory
   xdg.enable = true;
 
+  # Environment variables
+  home.sessionVariables = {
+    EDITOR = "vim";
+    VISUAL = "vim";
+    PAGER = "bat";
+    LANG = "ja_JP.UTF-8";
+  };
+
   # File management - deploy configuration files
   home.file = {
     # Powerlevel10k configuration
