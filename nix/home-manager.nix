@@ -27,8 +27,8 @@
     # Utilities
     ./modules/utilities
 
-    # Mobile development (optional - remove if not needed)
-    # ./modules/mobile-dev
+    # Mobile development
+    ./modules/mobile-dev
   ];
 
   # Dynamic user configuration (requires --impure flag)

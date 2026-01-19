@@ -1,8 +1,15 @@
-{ config, lib, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 {
+  home.packages = with pkgs; [
+    fvm # Flutter Version Manager
+  ];
   # モバイル開発環境設定（Android/Flutter/Gradle）
-  # このモジュールはオプションです。使用しない場合はhome-manager.nixから削除してください。
 
   programs.zsh.sessionVariables = {
     # Gradle
