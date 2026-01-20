@@ -18,6 +18,7 @@
     ./modules/ghostty
 
     # Development tools
+    ./modules/direnv
     ./modules/go
     ./modules/node
     ./modules/python
