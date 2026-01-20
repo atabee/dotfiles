@@ -1,8 +1,9 @@
 {
   "[json]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": true,
     "editor.insertSpaces": true,
-    "editor.formatOnSave": true
+    "editor.tabSize": 2
   },
   "[shellscript]": {
     "editor.defaultFormatter": "foxundermoon.shell-format",
@@ -13,5 +14,15 @@
   "[nix]": {
     "editor.defaultFormatter": "jnoortheen.nix-ide",
     "editor.formatOnSave": true
+  },
+  "[markdown]": {
+    "editor.defaultFormatter": "DavidAnson.vscode-markdownlint",
+    "editor.formatOnSave": true,
+    "editor.insertSpaces": true,
+    "editor.tabSize": 2
+  },
+  "markdownlint.config": {
+    "default": true, // すべてのルールを有効にする
+    "MD018": false // 複数の空白を許可しないルールを無効にする
   }
 }
