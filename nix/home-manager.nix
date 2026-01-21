@@ -19,6 +19,7 @@
 
     # Development tools
     ./modules/direnv
+    ./modules/mise
     ./modules/go
     ./modules/node
     ./modules/python
