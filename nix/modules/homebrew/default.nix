@@ -43,6 +43,7 @@
     casks = [
       # Development tools
       "ghostty"
+      "iterm2"
       "visual-studio-code"
       "android-studio"
       "xcodes-app"
