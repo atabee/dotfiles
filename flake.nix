@@ -71,11 +71,8 @@
               {
                 home-manager.useGlobalPkgs = true;
                 home-manager.useUserPackages = true;
-                home-manager.users.${username} = { pkgs, lib, ... }: {
+                home-manager.users.${username} = {
                   imports = [ ./nix/home-manager.nix ];
-                  home.username = lib.mkForce username;
-                  home.homeDirectory = lib.mkForce "/Users/${username}";
-                  home.stateVersion = "24.05";
                 };
               }
             )
