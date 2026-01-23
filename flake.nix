@@ -73,13 +73,13 @@
               {
                 home-manager.useGlobalPkgs = true;
                 home-manager.useUserPackages = true;
+                # Backup file extension for conflicting files
+                home-manager.backupFileExtension = "backup";
                 home-manager.users.${username} = { pkgs, lib, ... }: {
                   imports = [ ./nix/home-manager.nix ];
                   home.username = lib.mkForce username;
                   home.homeDirectory = lib.mkForce "/Users/${username}";
                   home.stateVersion = "24.05";
-                  # Backup file extension for conflicting files
-                  home.backupFileExtension = "backup";
                 };
               }
             )
