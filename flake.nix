@@ -38,10 +38,6 @@
           };
           modules = [
             ./nix/home-manager.nix
-            {
-              # Backup file extension for conflicting files
-              home.backupFileExtension = "backup";
-            }
           ];
         };
     in
