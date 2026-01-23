@@ -35,6 +35,9 @@
       # Development tools
       "jenv" # Java version manager
 
+      # Git tools
+      "git-wt" # Git worktree manager
+
       # Other tools that may not be available via Nix
       # Add any other brews you need here
     ];
