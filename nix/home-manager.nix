@@ -41,9 +41,6 @@
   # Home Manager version
   home.stateVersion = "24.05";
 
-  # Backup file extension for conflicting files
-  home.backupFileExtension = "backup";
-
   # Let Home Manager manage itself
   programs.home-manager.enable = true;
 

@@ -36,7 +36,13 @@
             # Apple Silicon specific optimizations
             config.allowUnsupportedSystem = false;
           };
-          modules = [ ./nix/home-manager.nix ];
+          modules = [
+            ./nix/home-manager.nix
+            {
+              # Backup file extension for conflicting files
+              home.backupFileExtension = "backup";
+            }
+          ];
         };
     in
     {
@@ -76,6 +82,8 @@
                   home.username = lib.mkForce username;
                   home.homeDirectory = lib.mkForce "/Users/${username}";
                   home.stateVersion = "24.05";
+                  # Backup file extension for conflicting files
+                  home.backupFileExtension = "backup";
                 };
               }
             )
