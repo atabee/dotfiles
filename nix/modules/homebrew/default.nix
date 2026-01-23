@@ -27,6 +27,7 @@
     # Note: homebrew/bundle, homebrew/cask, and homebrew/core are no longer needed
     # as they are now built-in to Homebrew
     taps = [
+      "k1LoW/tap" # For git-wt
       # Add any third-party taps you need here
     ];
 
@@ -34,6 +35,9 @@
     brews = [
       # Development tools
       "jenv" # Java version manager
+
+      # Git tools
+      "k1LoW/tap/git-wt" # Git worktree manager
 
       # Other tools that may not be available via Nix
       # Add any other brews you need here
