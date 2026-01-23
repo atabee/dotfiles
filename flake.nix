@@ -36,7 +36,9 @@
             # Apple Silicon specific optimizations
             config.allowUnsupportedSystem = false;
           };
-          modules = [ ./nix/home-manager.nix ];
+          modules = [
+            ./nix/home-manager.nix
+          ];
         };
     in
     {
@@ -71,6 +73,8 @@
               {
                 home-manager.useGlobalPkgs = true;
                 home-manager.useUserPackages = true;
+                # Backup file extension for conflicting files
+                home-manager.backupFileExtension = "backup";
                 home-manager.users.${username} = { pkgs, lib, ... }: {
                   imports = [ ./nix/home-manager.nix ];
                   home.username = lib.mkForce username;
