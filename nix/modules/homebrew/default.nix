@@ -2,8 +2,53 @@
   config,
   pkgs,
   lib,
+  profile ? "personal",
   ...
 }:
+
+let
+  # Common casks for both personal and work
+  commonCasks = [
+    # Development tools
+    "ghostty"
+    "iterm2"
+    "visual-studio-code"
+    "android-studio"
+    "xcodes-app"
+    "swiftformat-for-xcode"
+    "claude-code"
+    "claude" # Claude Desktop
+    "font-monaspace"
+
+    # Browsers
+    "google-chrome"
+
+    # Productivity
+    "raycast"
+
+    # Utilities
+    "rectangle" # Window management
+    "the-unarchiver" # Archive utility
+    "google-japanese-ime" # Japanese input method
+  ];
+
+  # Personal-only casks (forbidden for work)
+  personalCasks = [
+    "1password"
+    "notion"
+    "tailscale-app" # VPN/mesh networking
+  ];
+
+  # Work-only casks (can be extended in the future)
+  workCasks = [
+    # Add work-specific applications here if needed
+  ];
+
+  # Select casks based on profile
+  selectedCasks = commonCasks
+    ++ lib.optionals (profile == "personal") personalCasks
+    ++ lib.optionals (profile == "work") workCasks;
+in
 
 {
   # Homebrew configuration for macOS
@@ -44,34 +89,8 @@
     ];
 
     # Homebrew casks (GUI applications)
-    casks = [
-      # Development tools
-      "ghostty"
-      "iterm2"
-      "visual-studio-code"
-      "android-studio"
-      "xcodes-app"
-      "swiftformat-for-xcode"
-      "claude-code"
-      "claude" # Claude Desktop
-      "font-monaspace"
-
-      # Browsers
-      "google-chrome"
-
-      # Productivity
-      "raycast"
-      "1password"
-      "notion"
-
-      # Utilities
-      "rectangle" # Window management
-      "the-unarchiver" # Archive utility
-      "tailscale-app" # VPN/mesh networking
-      "google-japanese-ime" # Japanese input method
-
-      # Add any other casks you need here
-    ];
+    # Automatically filtered based on profile (personal/work)
+    casks = selectedCasks;
 
     # Mac App Store applications
     # Use `mas search <app name>` to find app IDs
