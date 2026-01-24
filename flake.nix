@@ -27,7 +27,7 @@
     let
       # Helper function to create Home Manager configuration for a system
       mkHomeConfiguration =
-        system:
+        system: profile:
         home-manager.lib.homeManagerConfiguration {
           pkgs = import nixpkgs {
             inherit system;
@@ -38,29 +38,16 @@
           };
           modules = [
             ./nix/home-manager.nix
+            { _module.args = { inherit profile; }; }
           ];
         };
-    in
-    {
-      homeConfigurations = {
-        # macOS Apple Silicon
-        "aarch64-darwin" = mkHomeConfiguration "aarch64-darwin";
-        # Alias for uname -m compatibility
-        "arm64-darwin" = mkHomeConfiguration "aarch64-darwin";
 
-        # Linux x86_64
-        "x86_64-linux" = mkHomeConfiguration "x86_64-linux";
-
-        # Linux ARM64
-        "aarch64-linux" = mkHomeConfiguration "aarch64-linux";
-        # Alias for uname -m compatibility
-        "arm64-linux" = mkHomeConfiguration "aarch64-linux";
-      };
-
-      # nix-darwin configuration for macOS (Apple Silicon only)
-      darwinConfigurations = {
-        "aarch64-darwin" = nix-darwin.lib.darwinSystem {
-          system = "aarch64-darwin";
+      # Helper function to create nix-darwin configuration
+      mkDarwinConfiguration =
+        system: profile:
+        nix-darwin.lib.darwinSystem {
+          inherit system;
+          specialArgs = { inherit profile; };
           modules = [
             # Home Manager integration
             home-manager.darwinModules.home-manager
@@ -81,6 +68,7 @@
                   home.homeDirectory = lib.mkForce "/Users/${username}";
                   home.stateVersion = "24.05";
                 };
+                home-manager.extraSpecialArgs = { inherit profile; };
               }
             )
             # Homebrew management
@@ -118,6 +106,43 @@
             ./nix/modules/homebrew
           ];
         };
+    in
+    {
+      homeConfigurations = {
+        # macOS Apple Silicon (backward compatibility - defaults to personal)
+        "aarch64-darwin" = mkHomeConfiguration "aarch64-darwin" "personal";
+        # Alias for uname -m compatibility
+        "arm64-darwin" = mkHomeConfiguration "aarch64-darwin" "personal";
+
+        # Linux x86_64 (backward compatibility - defaults to personal)
+        "x86_64-linux" = mkHomeConfiguration "x86_64-linux" "personal";
+
+        # Linux ARM64 (backward compatibility - defaults to personal)
+        "aarch64-linux" = mkHomeConfiguration "aarch64-linux" "personal";
+        # Alias for uname -m compatibility
+        "arm64-linux" = mkHomeConfiguration "aarch64-linux" "personal";
+
+        # Personal configurations (explicit)
+        "personal-aarch64-darwin" = mkHomeConfiguration "aarch64-darwin" "personal";
+        "personal-x86_64-linux" = mkHomeConfiguration "x86_64-linux" "personal";
+        "personal-aarch64-linux" = mkHomeConfiguration "aarch64-linux" "personal";
+
+        # Work configurations
+        "work-aarch64-darwin" = mkHomeConfiguration "aarch64-darwin" "work";
+        "work-x86_64-linux" = mkHomeConfiguration "x86_64-linux" "work";
+        "work-aarch64-linux" = mkHomeConfiguration "aarch64-linux" "work";
+      };
+
+      # nix-darwin configuration for macOS (Apple Silicon only)
+      darwinConfigurations = {
+        # Backward compatibility - defaults to personal
+        "aarch64-darwin" = mkDarwinConfiguration "aarch64-darwin" "personal";
+
+        # Personal configuration (explicit)
+        "personal-aarch64-darwin" = mkDarwinConfiguration "aarch64-darwin" "personal";
+
+        # Work configuration
+        "work-aarch64-darwin" = mkDarwinConfiguration "aarch64-darwin" "work";
       };
     };
 }

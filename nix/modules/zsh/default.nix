@@ -89,24 +89,39 @@
     ];
 
     # Shell aliases (Prezto-style ls aliases using eza)
-    shellAliases = {
-      # ls aliases using eza (modern ls replacement)
-      ls = "eza --icons --git";
-      l = "eza -1 --icons"; # One column
-      la = "eza -lah --icons --git"; # All files, long format
-      ll = "eza -lh --icons --git"; # Long format
-      lt = "eza -lh --icons --git -snew"; # Sort by modified time
-      lr = "eza -lhR --icons --git"; # Recursive
-      tree = "eza --tree --icons"; # Tree view
+    shellAliases = lib.mkMerge [
+      # Common aliases for all platforms
+      {
+        # ls aliases using eza (modern ls replacement)
+        ls = "eza --icons --git";
+        l = "eza -1 --icons"; # One column
+        la = "eza -lah --icons --git"; # All files, long format
+        ll = "eza -lh --icons --git"; # Long format
+        lt = "eza -lh --icons --git -snew"; # Sort by modified time
+        lr = "eza -lhR --icons --git"; # Recursive
+        tree = "eza --tree --icons"; # Tree view
 
-      # Safety aliases
-      rm = "trash-put"; # Use trash instead of rm
+        # Safety aliases
+        rm = "trash-put"; # Use trash instead of rm
 
-      # Other common aliases
-      ".." = "cd ..";
-      "..." = "cd ../..";
-      "...." = "cd ../../..";
-    };
+        # Other common aliases
+        ".." = "cd ..";
+        "..." = "cd ../..";
+        "...." = "cd ../../..";
+      }
+
+      # macOS-specific aliases
+      (lib.mkIf pkgs.stdenv.isDarwin {
+        nixup-p = "sudo darwin-rebuild switch --flake ~/.dotfiles#personal-aarch64-darwin --impure";
+        nixup-w = "sudo darwin-rebuild switch --flake ~/.dotfiles#work-aarch64-darwin --impure";
+      })
+
+      # Linux-specific aliases
+      (lib.mkIf pkgs.stdenv.isLinux {
+        nixup-p = "home-manager switch --flake ~/.dotfiles#personal-$(uname -m)-linux --impure";
+        nixup-w = "home-manager switch --flake ~/.dotfiles#work-$(uname -m)-linux --impure";
+      })
+    ];
 
     # Zsh plugins (replacing Prezto)
     plugins = [

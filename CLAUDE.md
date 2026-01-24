@@ -10,18 +10,37 @@ Cross-platform dotfiles repository using Nix Flakes, Home Manager, and nix-darwi
 
 ### Apply Configuration Changes
 
-**macOS:**
+**Quick aliases (recommended - works after first setup):**
 
 ```bash
-cd ~/.dotfiles
-sudo darwin-rebuild switch --flake '.#aarch64-darwin' --impure
+nixup-p  # Apply personal configuration
+nixup-w  # Apply work configuration
 ```
 
-**Linux:**
+**macOS (full commands):**
 
 ```bash
 cd ~/.dotfiles
+# Personal machine (default - backward compatible)
+sudo darwin-rebuild switch --flake '.#aarch64-darwin' --impure
+# or explicitly
+sudo darwin-rebuild switch --flake '.#personal-aarch64-darwin' --impure
+
+# Work machine
+sudo darwin-rebuild switch --flake '.#work-aarch64-darwin' --impure
+```
+
+**Linux (full commands):**
+
+```bash
+cd ~/.dotfiles
+# Personal machine (default - backward compatible)
 home-manager switch --flake ".#$(uname -m)-linux" --impure
+# or explicitly
+home-manager switch --flake ".#personal-$(uname -m)-linux" --impure
+
+# Work machine
+home-manager switch --flake ".#work-$(uname -m)-linux" --impure
 ```
 
 ### Update Dependencies
@@ -46,6 +65,34 @@ home-manager generations
 - **Entry point:** `flake.nix` defines configurations for all supported platforms
 - **User config:** `nix/home-manager.nix` aggregates all modules (works on all platforms)
 - **System config:** nix-darwin configuration embedded in `flake.nix` (macOS only)
+
+### Profile System (Personal/Work)
+
+The configuration supports two profiles: `personal` and `work`.
+
+**Profile differences:**
+
+- **Personal profile:** Includes all packages (1password, notion, tailscale-app, etc.)
+- **Work profile:** Excludes forbidden software (1password, notion, tailscale-app on macOS)
+
+**Implementation:**
+
+- `flake.nix` defines separate configurations for each profile:
+  - `personal-aarch64-darwin` / `work-aarch64-darwin` (macOS)
+  - `personal-{arch}-linux` / `work-{arch}-linux` (Linux)
+- Backward compatibility: `aarch64-darwin` and `{arch}-linux` default to personal profile
+- Profile passed via `specialArgs` to all modules
+- Homebrew module (`nix/modules/homebrew/default.nix`) filters casks based on profile
+- Shell aliases `nixup-p` / `nixup-w` automatically select the correct profile
+
+**Adding profile-specific packages:**
+
+Edit `nix/modules/homebrew/default.nix` (macOS) or create profile logic in other modules:
+
+```nix
+personalCasks = [ "notion" "1password" "tailscale-app" ];
+workCasks = [ "work-specific-app" ];
+```
 
 ### Dynamic User Resolution
 
@@ -139,7 +186,9 @@ Git configuration templates are deployed via `modules/git/default.nix`.
 **Homebrew (macOS):** Edit `nix/modules/homebrew/default.nix`:
 
 - `brews` list for CLI tools
-- `casks` list for GUI applications
+- `commonCasks` for applications available in all profiles
+- `personalCasks` for personal-only applications
+- `workCasks` for work-only applications
 
 **Language-specific:** Edit or create module in `nix/modules/`
 
