@@ -6,18 +6,29 @@
 }:
 
 {
-  # Install mise package
-  home.packages = with pkgs; [
-    mise
-  ];
+  # Configure mise with Home Manager
+  programs.mise = {
+    enable = true;
 
-  # Zsh integration
-  programs.zsh = {
-    initContent = ''
-      # Initialize mise (polyglot runtime manager)
-      if command -v mise &> /dev/null; then
-        eval "$(mise activate zsh)"
-      fi
-    '';
+    # Global tool versions and settings
+    globalConfig = {
+      tools = {
+        ruby = "3.2.10";
+      };
+
+      settings = {
+        experimental = true;
+      };
+    };
   };
+
+  # Auto-install tools on activation
+  home.activation.miseInstall = lib.hm.dag.entryAfter ["writeBoundary"] ''
+    # Add mise to PATH
+    export PATH="${pkgs.mise}/bin:$PATH"
+
+    if command -v mise &> /dev/null; then
+      $DRY_RUN_CMD mise install --yes
+    fi
+  '';
 }

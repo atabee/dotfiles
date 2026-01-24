@@ -112,14 +112,14 @@
 
       # macOS-specific aliases
       (lib.mkIf pkgs.stdenv.isDarwin {
-        nixup-p = "sudo darwin-rebuild switch --flake ~/.dotfiles#personal-aarch64-darwin --impure";
-        nixup-w = "sudo darwin-rebuild switch --flake ~/.dotfiles#work-aarch64-darwin --impure";
+        nixup-p = "sudo darwin-rebuild switch --flake ~/.dotfiles\\#personal-aarch64-darwin --impure";
+        nixup-w = "sudo darwin-rebuild switch --flake ~/.dotfiles\\#work-aarch64-darwin --impure";
       })
 
       # Linux-specific aliases
       (lib.mkIf pkgs.stdenv.isLinux {
-        nixup-p = "home-manager switch --flake ~/.dotfiles#personal-$(uname -m)-linux --impure";
-        nixup-w = "home-manager switch --flake ~/.dotfiles#work-$(uname -m)-linux --impure";
+        nixup-p = "home-manager switch --flake ~/.dotfiles\\#personal-$(uname -m)-linux --impure";
+        nixup-w = "home-manager switch --flake ~/.dotfiles\\#work-$(uname -m)-linux --impure";
       })
     ];
 

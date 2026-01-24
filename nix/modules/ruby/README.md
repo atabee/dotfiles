@@ -1,15 +1,18 @@
 # Ruby
 
-Ruby開発環境とパッケージマネージャー
+Ruby開発環境の環境変数設定
 
 ## ファイル
 
 - `default.nix`: Nixモジュール設定
 
+## 概要
+
+Rubyのインストールは**mise**で管理します。このモジュールはGem関連の環境変数を設定し、CocoaPods（macOSのみ）をインストールします。
+
 ## インストールされるパッケージ
 
-- **ruby**: Ruby言語本体
-- **cocoapods**: iOS/macOSアプリの依存関係管理ツール
+- **cocoapods**: iOS/macOSアプリの依存関係管理ツール（macOSのみ、Nixパッケージ）
 
 ## 環境変数
 
@@ -19,7 +22,28 @@ Ruby開発環境とパッケージマネージャー
 
 ## 使用方法
 
-### CocoaPods
+### Rubyのインストール（miseを使用）
+
+Rubyは`mise`モジュールで管理されています。バージョンを変更する場合は`nix/modules/mise/default.nix`を編集してください。
+
+### Bundler
+
+BundlerはRuby 2.6以降に標準で含まれています：
+
+```bash
+# Gemfileを作成
+bundle init
+
+# 依存関係をインストール
+bundle install
+
+# アプリケーションを実行
+bundle exec ruby app.rb
+```
+
+### CocoaPods（macOS）
+
+CocoaPodsはNixパッケージとしてインストールされます（macOSのみ）：
 
 ```bash
 # Podfileを作成
