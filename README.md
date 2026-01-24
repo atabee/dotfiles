@@ -88,29 +88,53 @@ nix run home-manager/master -- switch --flake ".#$(uname -m)-linux" --impure
 
 ## 設定の更新
 
-### macOS
+### 簡単な更新方法（推奨）
+
+設定適用後、以下のエイリアスが使用可能になります:
+
+```bash
+# 個人用マシン
+nixup-p
+
+# 業務用マシン
+nixup-w
+```
+
+### macOS（フルコマンド）
 
 設定ファイルを変更した後は、以下のコマンドで全ての設定を反映できます:
 
 ```bash
 cd ~/.dotfiles
+# 個人用マシン（デフォルト、後方互換性維持）
 sudo darwin-rebuild switch --flake '.#aarch64-darwin' --impure
+# または明示的に
+sudo darwin-rebuild switch --flake '.#personal-aarch64-darwin' --impure
+
+# 業務用マシン
+sudo darwin-rebuild switch --flake '.#work-aarch64-darwin' --impure
 ```
 
 このコマンド一回で以下の設定が全て適用されます:
 
 - システム設定（nix-darwin）
-- Homebrewパッケージ
+- Homebrewパッケージ（プロファイルに応じてフィルタリング）
 - ユーザー環境設定（Home Manager）
 - シェル設定、Git設定など
 
-### Linux
+### Linux（フルコマンド）
 
 Linuxではnix-darwinは使用せず、Home Managerのみで管理します:
 
 ```bash
 cd ~/.dotfiles
+# 個人用マシン（デフォルト、後方互換性維持）
 home-manager switch --flake ".#$(uname -m)-linux" --impure
+# または明示的に
+home-manager switch --flake ".#personal-$(uname -m)-linux" --impure
+
+# 業務用マシン
+home-manager switch --flake ".#work-$(uname -m)-linux" --impure
 ```
 
 **注意**: Linuxではシステムレベルの設定管理（nix-darwin相当）は含まれません。Home Managerのユーザー環境設定のみが適用されます。
@@ -126,8 +150,15 @@ nix flake update
 
 その後、設定を再適用:
 
-- **macOS**: `sudo darwin-rebuild switch --flake '.#aarch64-darwin' --impure`
-- **Linux**: `home-manager switch --flake ".#$(uname -m)-linux" --impure`
+```bash
+# 簡単な方法
+nixup-p  # 個人用
+nixup-w  # 業務用
+
+# またはフルコマンド
+# macOS: sudo darwin-rebuild switch --flake '.#personal-aarch64-darwin' --impure
+# Linux: home-manager switch --flake ".#personal-$(uname -m)-linux" --impure
+```
 
 ## ロールバック
 
@@ -178,6 +209,35 @@ alias local-command='...'
 
 このファイルはHome Managerによって読み込まれますが、gitで追跡されません。
 
+## プロファイルシステム（個人用/業務用）
+
+このdotfilesは個人用マシンと業務用マシンで異なるパッケージセットを使用できる**プロファイルシステム**を実装しています。
+
+### プロファイルの種類
+
+- **個人用（personal）**: 全てのパッケージをインストール
+- **業務用（work）**: 業務で使用禁止のソフトウェアを除外
+
+### 業務用で除外されるパッケージ（macOS）
+
+- `1password` - パスワードマネージャー
+- `notion` - ノートアプリ
+- `tailscale-app` - VPN/メッシュネットワーク
+
+### 使い分け方法
+
+初回インストール時、または設定更新時にプロファイルを指定:
+
+```bash
+# 個人用マシン
+nixup-p  # または sudo darwin-rebuild switch --flake '.#personal-aarch64-darwin' --impure
+
+# 業務用マシン
+nixup-w  # または sudo darwin-rebuild switch --flake '.#work-aarch64-darwin' --impure
+```
+
+**後方互換性**: 既存の`.#aarch64-darwin`は個人用プロファイルをデフォルトとします。
+
 ## Homebrewパッケージ管理（macOS）
 
 nix-darwinを使用してHomebrewパッケージを宣言的に管理します。設定は`nix/modules/homebrew/default.nix`にあります。
@@ -187,32 +247,44 @@ nix-darwinを使用してHomebrewパッケージを宣言的に管理します�
 #### Brews（CLIツール）
 
 - `jenv` - Java version manager
+- `k1LoW/tap/git-wt` - Git worktree manager
 
 #### Casks（GUIアプリケーション）
 
-- **開発ツール**: ghostty, visual-studio-code, android-studio, swiftformat-for-xcode, claude-code, claude
+**全プロファイル共通:**
+- **開発ツール**: ghostty, iterm2, visual-studio-code, android-studio, xcodes-app, swiftformat-for-xcode, claude-code, claude
 - **フォント**: font-monaspace
 - **ブラウザ**: google-chrome
-- **生産性**: raycast, 1password, notion
-- **ユーティリティ**: rectangle（ウィンドウ管理）, the-unarchiver（アーカイブ）, tailscale（VPN）
+- **生産性**: raycast
+- **ユーティリティ**: rectangle（ウィンドウ管理）, the-unarchiver（アーカイブ）, google-japanese-ime
+
+**個人用プロファイルのみ:**
+- **生産性**: 1password, notion
+- **ネットワーク**: tailscale-app
 
 ### パッケージの追加方法
 
 1. `nix/modules/homebrew/default.nix`を編集
-2. `brews`リスト（CLIツール）または`casks`リスト（GUIアプリ）に追加
-3. 設定を適用: `sudo darwin-rebuild switch --flake '~/.dotfiles#aarch64-darwin' --impure`
+2. パッケージの種類に応じて追加:
+   - `brews`: CLIツール
+   - `commonCasks`: 全プロファイル共通のGUIアプリ
+   - `personalCasks`: 個人用のみのGUIアプリ
+   - `workCasks`: 業務用のみのGUIアプリ
+3. 設定を適用: `nixup-p` または `nixup-w`
 
 ### Homebrew設定の特徴
 
 - `autoUpdate = true`: 設定適用時にHomebrewを自動更新
 - `upgrade = true`: インストール済みパッケージを自動アップグレード
 - `cleanup = "zap"`: キャッシュと古いバージョンを自動削除
+- **プロファイルベースのフィルタリング**: 業務用マシンでは禁止ソフトウェアを自動除外
 
 ## 主な機能
 
 - ✅ 宣言的なパッケージ管理（Nix + Homebrew）
 - ✅ クロスプラットフォーム対応
 - ✅ macOSシステム設定の宣言的管理（nix-darwin）
+- ✅ **個人用/業務用プロファイルシステム**（禁止ソフトウェアの自動除外）
 - ✅ ユーザー名のハードコーディングなし
 - ✅ センシティブデータの分離
 - ✅ 簡単なロールバック機能
