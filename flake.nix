@@ -77,6 +77,10 @@
               # System version (set once, never change)
               system.stateVersion = 6;
 
+              # Disable zsh completion in nix-darwin (managed by Home Manager instead)
+              # This prevents /etc/zshrc from calling compinit without -u flag
+              programs.zsh.enableCompletion = false;
+
               # Primary user for system activation
               # Use SUDO_USER when running with sudo, otherwise fall back to USER
               system.primaryUser =
@@ -86,14 +90,21 @@
                 in
                   if sudoUser != "" then sudoUser else currentUser;
 
-              # Disable nix-darwin's Nix management when using Determinate Nix
-              # Determinate Nix uses its own daemon that conflicts with nix-darwin
-              nix.enable = false;
+              # Determinate Nix (Apple Silicon) vs 標準Nix (Intel Mac)
+              # Apple Silicon: Determinate Nixを使用するため無効化
+              # Intel Mac: 公式Nixを使用するため有効化
+              nix.enable = system != "aarch64-darwin";
 
-              # Homebrew configuration
+              # 公式Nix使用時はFlakesを有効化（experimental feature）
+              nix.settings = nixpkgs.lib.mkIf (system != "aarch64-darwin") {
+                experimental-features = [ "nix-command" "flakes" ];
+              };
+
+              # Homebrew configuration (Apple Silicon only)
               nix-homebrew = {
-                enable = true;
-                enableRosetta = true; # Enable Rosetta 2 for x86_64 compatibility
+                enable = system == "aarch64-darwin";
+                # Rosetta 2 is only for Apple Silicon (x86_64 compatibility layer)
+                enableRosetta = system == "aarch64-darwin";
                 user =
                   let
                     sudoUser = builtins.getEnv "SUDO_USER";
@@ -103,8 +114,9 @@
                 autoMigrate = true; # Auto-migrate existing Homebrew installations
               };
             }
-            ./nix/modules/homebrew
-          ];
+          ]
+          # Homebrew module only for Apple Silicon
+          ++ (if system == "aarch64-darwin" then [ ./nix/modules/homebrew ] else []);
         };
     in
     {
@@ -113,6 +125,9 @@
         "aarch64-darwin" = mkHomeConfiguration "aarch64-darwin" "personal";
         # Alias for uname -m compatibility
         "arm64-darwin" = mkHomeConfiguration "aarch64-darwin" "personal";
+
+        # macOS Intel (backward compatibility - defaults to personal)
+        "x86_64-darwin" = mkHomeConfiguration "x86_64-darwin" "personal";
 
         # Linux x86_64 (backward compatibility - defaults to personal)
         "x86_64-linux" = mkHomeConfiguration "x86_64-linux" "personal";
@@ -124,25 +139,36 @@
 
         # Personal configurations (explicit)
         "personal-aarch64-darwin" = mkHomeConfiguration "aarch64-darwin" "personal";
+        "personal-x86_64-darwin" = mkHomeConfiguration "x86_64-darwin" "personal";
         "personal-x86_64-linux" = mkHomeConfiguration "x86_64-linux" "personal";
         "personal-aarch64-linux" = mkHomeConfiguration "aarch64-linux" "personal";
 
         # Work configurations
         "work-aarch64-darwin" = mkHomeConfiguration "aarch64-darwin" "work";
+        "work-x86_64-darwin" = mkHomeConfiguration "x86_64-darwin" "work";
         "work-x86_64-linux" = mkHomeConfiguration "x86_64-linux" "work";
         "work-aarch64-linux" = mkHomeConfiguration "aarch64-linux" "work";
       };
 
-      # nix-darwin configuration for macOS (Apple Silicon only)
+      # nix-darwin configuration for macOS (Apple Silicon and Intel)
       darwinConfigurations = {
-        # Backward compatibility - defaults to personal
+        # Apple Silicon (backward compatibility - defaults to personal)
         "aarch64-darwin" = mkDarwinConfiguration "aarch64-darwin" "personal";
 
-        # Personal configuration (explicit)
+        # Apple Silicon Personal configuration (explicit)
         "personal-aarch64-darwin" = mkDarwinConfiguration "aarch64-darwin" "personal";
 
-        # Work configuration
+        # Apple Silicon Work configuration
         "work-aarch64-darwin" = mkDarwinConfiguration "aarch64-darwin" "work";
+
+        # Intel Mac (backward compatibility - defaults to personal)
+        "x86_64-darwin" = mkDarwinConfiguration "x86_64-darwin" "personal";
+
+        # Intel Mac Personal configuration (explicit)
+        "personal-x86_64-darwin" = mkDarwinConfiguration "x86_64-darwin" "personal";
+
+        # Intel Mac Work configuration
+        "work-x86_64-darwin" = mkDarwinConfiguration "x86_64-darwin" "work";
       };
     };
 }

@@ -110,10 +110,11 @@
         "...." = "cd ../../..";
       }
 
-      # macOS-specific aliases
+      # macOS-specific aliases (dynamic architecture detection)
+      # uname -m returns "arm64" on Apple Silicon, "x86_64" on Intel
       (lib.mkIf pkgs.stdenv.isDarwin {
-        nixup-p = "sudo darwin-rebuild switch --flake ~/.dotfiles\\#personal-aarch64-darwin --impure";
-        nixup-w = "sudo darwin-rebuild switch --flake ~/.dotfiles\\#work-aarch64-darwin --impure";
+        nixup-p = "sudo darwin-rebuild switch --flake ~/.dotfiles\\#personal-$(arch=$(uname -m); [ \"$arch\" = \"arm64\" ] && echo aarch64 || echo $arch)-darwin --impure";
+        nixup-w = "sudo darwin-rebuild switch --flake ~/.dotfiles\\#work-$(arch=$(uname -m); [ \"$arch\" = \"arm64\" ] && echo aarch64 || echo $arch)-darwin --impure";
       })
 
       # Linux-specific aliases
@@ -149,5 +150,8 @@
 
     # Enable completion
     enableCompletion = true;
+
+    # Skip insecure directories check (common with Nix-managed completion paths)
+    completionInit = "autoload -U compinit && compinit -u";
   };
 }
