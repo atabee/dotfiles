@@ -13,7 +13,7 @@
     # Global tool versions and settings
     globalConfig = {
       tools = {
-        ruby = "3.2.10";
+        ruby = "3.4.8";
       };
 
       settings = {
@@ -23,7 +23,7 @@
   };
 
   # Auto-install tools on activation
-  home.activation.miseInstall = lib.hm.dag.entryAfter ["writeBoundary"] ''
+  home.activation.miseInstall = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
     # Add mise to PATH
     export PATH="${pkgs.mise}/bin:$PATH"
 
