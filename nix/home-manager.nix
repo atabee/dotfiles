@@ -16,6 +16,7 @@
     ./modules/fzf
     ./modules/git
     ./modules/ghostty
+    ./modules/tmux
 
     # Development tools
     ./modules/direnv
@@ -46,6 +47,15 @@
 
   # XDG Base Directory
   xdg.enable = true;
+
+  # Nix configuration (enables Flakes for official Nix installer)
+  # Intel Mac uses official Nix which requires explicit experimental-features
+  # Apple Silicon uses Determinate Nix which has this pre-enabled
+  xdg.configFile."nix/nix.conf" = lib.mkIf (pkgs.stdenv.hostPlatform.system == "x86_64-darwin") {
+    text = ''
+      experimental-features = nix-command flakes
+    '';
+  };
 
   # Environment variables
   home.sessionVariables = {
