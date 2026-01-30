@@ -2,6 +2,7 @@
   config,
   pkgs,
   lib,
+  profile ? "personal",
   ...
 }:
 
@@ -28,15 +29,67 @@
     # Zsh initialization content (replaces initExtra and initExtraBeforeCompInit)
     initContent = lib.mkMerge [
       # Content before compinit (lib.mkOrder 550)
-      (lib.mkOrder 550 ''
-        # Enable Powerlevel10k instant prompt
-        if [[ -r "''${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-''${(%):-%n}.zsh" ]]; then
-          source "''${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-''${(%):-%n}.zsh"
-        fi
+      # Personal profile: Powerlevel10k instant prompt
+      # Work profile: Custom vcs_info prompt setup
+      (lib.mkOrder 550 (
+        if profile == "personal" then ''
+          # Enable Powerlevel10k instant prompt
+          if [[ -r "''${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-''${(%):-%n}.zsh" ]]; then
+            source "''${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-''${(%):-%n}.zsh"
+          fi
 
-        # Load Powerlevel10k configuration
-        [[ -f ${config.xdg.configHome}/zsh/p10k.zsh ]] && source ${config.xdg.configHome}/zsh/p10k.zsh
-      '')
+          # Load Powerlevel10k configuration
+          [[ -f ${config.xdg.configHome}/zsh/p10k.zsh ]] && source ${config.xdg.configHome}/zsh/p10k.zsh
+        '' else ''
+          # Work profile: Custom prompt with vcs_info
+          autoload -Uz vcs_info add-zsh-hook
+
+          # vcs_info configuration
+          zstyle ':vcs_info:*' enable git
+          zstyle ':vcs_info:*' check-for-changes true
+          zstyle ':vcs_info:*' stagedstr '%F{10}+%f'
+          zstyle ':vcs_info:*' unstagedstr '%F{11}*%f'
+          zstyle ':vcs_info:git:*' formats '%F{10}%b%f%c%u'
+          zstyle ':vcs_info:git:*' actionformats '%F{10}%b%f|%F{9}%a%f%c%u'
+
+          # Function to get ahead/behind count
+          function _git_ahead_behind() {
+              local ahead behind
+              ahead=$(git rev-list --count @{upstream}..HEAD 2>/dev/null)
+              behind=$(git rev-list --count HEAD..@{upstream} 2>/dev/null)
+              local result=""
+              [[ $ahead -gt 0 ]] && result+="%F{10}↑''${ahead}%f"
+              [[ $behind -gt 0 ]] && result+="%F{9}↓''${behind}%f"
+              echo $result
+          }
+
+          # Function to check for untracked files
+          function _git_untracked() {
+              if git status --porcelain 2>/dev/null | grep -q '^??'; then
+                  echo '%F{11}?%f'
+              fi
+          }
+
+          # precmd hook for vcs_info
+          function precmd_vcs_info() {
+              vcs_info
+              if [[ -n ''${vcs_info_msg_0_} ]]; then
+                  local git_status="''${vcs_info_msg_0_}"
+                  git_status+="$(_git_untracked)"
+                  git_status+="$(_git_ahead_behind)"
+                  WORK_GIT_STATUS=" %F{8}git:%f''${git_status}"
+              else
+                  WORK_GIT_STATUS=""
+              fi
+          }
+          add-zsh-hook precmd precmd_vcs_info
+
+          # Prompt configuration
+          setopt PROMPT_SUBST
+          PROMPT=$'\n%F{12}%~%f''${WORK_GIT_STATUS}\n%(?.%F{10}.%F{9})>%f '
+          RPROMPT='%F{8}%*%f'
+        ''
+      ))
 
       # Content after compinit (default order)
       ''
@@ -125,28 +178,36 @@
     ];
 
     # Zsh plugins (replacing Prezto)
-    plugins = [
-      {
-        name = "powerlevel10k";
-        src = pkgs.zsh-powerlevel10k;
-        file = "share/zsh-powerlevel10k/powerlevel10k.zsh-theme";
-      }
-      {
-        name = "zsh-syntax-highlighting";
-        src = pkgs.zsh-syntax-highlighting;
-        file = "share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh";
-      }
-      {
-        name = "zsh-autosuggestions";
-        src = pkgs.zsh-autosuggestions;
-        file = "share/zsh-autosuggestions/zsh-autosuggestions.zsh";
-      }
-      {
-        name = "zsh-history-substring-search";
-        src = pkgs.zsh-history-substring-search;
-        file = "share/zsh-history-substring-search/zsh-history-substring-search.zsh";
-      }
-    ];
+    # Personal profile: includes Powerlevel10k
+    # Work profile: common plugins only (no Powerlevel10k)
+    plugins =
+      let
+        commonPlugins = [
+          {
+            name = "zsh-syntax-highlighting";
+            src = pkgs.zsh-syntax-highlighting;
+            file = "share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh";
+          }
+          {
+            name = "zsh-autosuggestions";
+            src = pkgs.zsh-autosuggestions;
+            file = "share/zsh-autosuggestions/zsh-autosuggestions.zsh";
+          }
+          {
+            name = "zsh-history-substring-search";
+            src = pkgs.zsh-history-substring-search;
+            file = "share/zsh-history-substring-search/zsh-history-substring-search.zsh";
+          }
+        ];
+        p10kPlugin = [
+          {
+            name = "powerlevel10k";
+            src = pkgs.zsh-powerlevel10k;
+            file = "share/zsh-powerlevel10k/powerlevel10k.zsh-theme";
+          }
+        ];
+      in
+      if profile == "personal" then p10kPlugin ++ commonPlugins else commonPlugins;
 
     # Enable completion
     enableCompletion = true;
