@@ -2,6 +2,7 @@
   config,
   pkgs,
   lib,
+  profile ? "personal",
   ...
 }:
 
@@ -66,15 +67,20 @@
   };
 
   # File management - deploy configuration files
-  home.file = {
-    # Powerlevel10k configuration
-    ".config/zsh/p10k.zsh".source = ./modules/zsh/p10k.zsh;
+  home.file = lib.mkMerge [
+    # Common files for all profiles
+    {
+      # Custom Zsh functions
+      ".config/zsh/functions".source = ./modules/zsh/functions;
 
-    # Custom Zsh functions
-    ".config/zsh/functions".source = ./modules/zsh/functions;
+      # Local Zsh configuration template
+      # Users should copy this to ~/.config/zsh/local.zsh and customize
+      ".config/zsh/local.zsh.template".source = ./modules/zsh/local.zsh.template;
+    }
 
-    # Local Zsh configuration template
-    # Users should copy this to ~/.config/zsh/local.zsh and customize
-    ".config/zsh/local.zsh.template".source = ./modules/zsh/local.zsh.template;
-  };
+    # Personal profile only: Powerlevel10k configuration
+    (lib.mkIf (profile == "personal") {
+      ".config/zsh/p10k.zsh".source = ./modules/zsh/p10k.zsh;
+    })
+  ];
 }
