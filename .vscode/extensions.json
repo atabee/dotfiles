@@ -1,7 +1,6 @@
 {
   "recommendations": [
     "jnoortheen.nix-ide",
-    "esbenp.prettier-vscode",
     "timonwong.shellcheck",
     "foxundermoon.shell-format"
   ]

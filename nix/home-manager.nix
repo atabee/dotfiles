@@ -33,6 +33,9 @@
 
     # Mobile development
     ./modules/mobile-dev
+
+    # Claude Code
+    ./modules/claude-code
   ];
 
   # Dynamic user configuration (requires --impure flag)
