@@ -93,6 +93,9 @@
 
       # Content after compinit (default order)
       ''
+        # Emacs keybindings (explicitly set regardless of $EDITOR)
+        bindkey -e
+
         # Japanese filename support
         setopt print_eight_bit
 
