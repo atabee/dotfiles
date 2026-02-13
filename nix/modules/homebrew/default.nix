@@ -15,6 +15,7 @@ let
     "visual-studio-code"
     "android-studio"
     "temurin@11"
+    "temurin@17"
     "xcodes-app"
     "swiftformat-for-xcode"
     "claude-code"
