@@ -32,6 +32,10 @@
         ];
       };
 
+      alias = {
+        show-graph = "log --graph --decorate --abbrev-commit --format=format:'%C(blue)%h%C(reset) - %C(green)(%ar)%C(reset)%C(yellow)%d%C(reset)\n  %C(white)%s%C(reset) %C(dim white)- %an%C(reset)'";
+      };
+
       filter.lfs = {
         required = true;
         clean = "git-lfs clean -- %f";
