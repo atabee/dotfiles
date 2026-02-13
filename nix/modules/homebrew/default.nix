@@ -14,6 +14,7 @@ let
     "iterm2"
     "visual-studio-code"
     "android-studio"
+    "temurin@11"
     "xcodes-app"
     "swiftformat-for-xcode"
     "claude-code"
