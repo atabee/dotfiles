@@ -14,6 +14,8 @@
     globalConfig = {
       tools = {
         ruby = "3.4.8";
+        pinact = "latest";
+        firebase = "latest";
       };
 
       settings = {
