@@ -12,33 +12,48 @@
 - **高速**: Rustで書かれており、asdfより高速に動作
 - **互換性**: `.tool-versions` ファイルをサポート（asdf互換）
 - **Zsh統合**: シェル起動時に自動的にactivate
-- **宣言的管理**: `globalConfig`で指定したツールを自動インストール
+- **書き込み可能な設定**: `config.toml` は通常ファイルとしてデプロイされ、`mise use -g` で自由に変更可能
 
 ## グローバル設定
 
-現在、以下のツールがグローバルに設定されています：
+`~/.config/mise/config.toml` は初回セットアップ時に `default.nix` の `miseConfigContent` から自動生成されます。
+以降は通常の書き込み可能ファイルとして管理され、`mise use -g` での変更も Nix 更新時に上書きされません。
 
-- **Ruby**: `latest`（最新の安定版）
+現在のデフォルト設定：
 
-設定は`default.nix`の`programs.mise.globalConfig.tools`で管理されています。
+- **Ruby**: `3.4.8`
+- **pinact**: `latest`
+- **firebase**: `latest`
 
-### バージョンの変更方法
+### ツールの追加方法
 
-`default.nix`を編集してバージョンを指定：
+**方法1: `mise use -g` で直接追加（推奨）:**
 
-```nix
-globalConfig = {
-  tools = {
-    ruby = "3.3.0";  # 特定のバージョン
-    # ruby = "latest";  # 最新版
-    # 他のツールも追加可能
-    # node = "20";
-    # python = "3.12";
-  };
-};
+```bash
+mise use -g node@20
+mise use -g python@3.12
 ```
 
-変更後、`nixup-p`または`nixup-w`で適用すると、自動的に`mise install`が実行されます。
+これにより `~/.config/mise/config.toml` が更新され、Nix の再適用でも保持されます。
+
+**方法2: `default.nix` を編集して初期設定を変更:**
+
+`miseConfigContent` を編集してバージョンを指定：
+
+```nix
+miseConfigContent = ''
+  [tools]
+  ruby = "3.4.8"
+  node = "20"
+  python = "3.12"
+
+  [settings]
+  experimental = true
+'';
+```
+
+> **注意:** `default.nix` の変更は `config.toml` が存在しない場合のみ反映されます。
+> 既存の `config.toml` を更新するには、ファイルを削除してから `nixup-p` / `nixup-w` を実行してください。
 
 ## 使い方
 
