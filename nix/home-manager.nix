@@ -49,6 +49,10 @@
   # Let Home Manager manage itself
   programs.home-manager.enable = true;
 
+  # Bash - AIコーディングエージェント（Copilot CLI等）がbashを起動したとき
+  # Nix管理のパッケージがPATHに含まれるよう最小限の設定を有効化
+  programs.bash.enable = true;
+
   # XDG Base Directory
   xdg.enable = true;
 
