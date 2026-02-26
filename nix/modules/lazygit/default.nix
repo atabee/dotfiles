@@ -12,9 +12,9 @@
 
       git = {
         paging = {
-          # deltaをpagerとして使用（side-by-sideはdelta側で設定済み）
+          # deltaをpagerとして使用（グローバル設定が引き継がれないため--side-by-sideを直接指定）
           colorArg = "always";
-          pager = "delta --dark --pager \"less -RF\"";
+          pager = "delta --dark --side-by-side --pager \"less -RF\"";
         };
       };
     };
