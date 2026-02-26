@@ -50,6 +50,24 @@ let
   selectedCasks = commonCasks
     ++ lib.optionals (profile == "personal") personalCasks
     ++ lib.optionals (profile == "work") workCasks;
+
+  # Common brews for both personal and work
+  commonBrews = [
+    # Development tools
+    "jenv" # Java version manager
+
+    # Git tools
+    "k1LoW/tap/git-wt" # Git worktree manager
+  ];
+
+  # Work-only brews
+  workBrews = [
+    "copilot-cli" # GitHub Copilot CLI
+  ];
+
+  # Select brews based on profile
+  selectedBrews = commonBrews
+    ++ lib.optionals (profile == "work") workBrews;
 in
 
 {
@@ -79,16 +97,8 @@ in
     ];
 
     # Homebrew packages (CLI tools)
-    brews = [
-      # Development tools
-      "jenv" # Java version manager
-
-      # Git tools
-      "k1LoW/tap/git-wt" # Git worktree manager
-
-      # Other tools that may not be available via Nix
-      # Add any other brews you need here
-    ];
+    # Automatically filtered based on profile (personal/work)
+    brews = selectedBrews;
 
     # Homebrew casks (GUI applications)
     # Automatically filtered based on profile (personal/work)
