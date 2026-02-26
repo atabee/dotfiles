@@ -16,6 +16,7 @@
     ./modules/zsh
     ./modules/fzf
     ./modules/git
+    ./modules/lazygit
     ./modules/ghostty
     ./modules/tmux
 
