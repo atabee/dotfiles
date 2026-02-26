@@ -12,9 +12,9 @@
 
       git = {
         paging = {
-          # deltaをpagerとして使用（side-by-sideはdelta側で設定済み）
+          # deltaをpagerとして使用。--side-by-sideを明示指定（グローバル設定はlazygit経由では引き継がれないため）
           colorArg = "always";
-          pager = "delta --dark --pager \"less -RF\"";
+          pager = "delta --side-by-side --pager \"less -RF\"";
         };
       };
     };
