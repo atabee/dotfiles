@@ -19,6 +19,7 @@
       size = 100000;
       save = 100000;
       share = true;
+      append = true;
     };
 
     # Session variables
