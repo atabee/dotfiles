@@ -58,11 +58,13 @@ let
 
     # Git tools
     "k1LoW/tap/git-wt" # Git worktree manager
+
+    # GitHub Copilot CLI
+    "copilot-cli"
   ];
 
   # Work-only brews
   workBrews = [
-    "copilot-cli" # GitHub Copilot CLI
   ];
 
   # Select brews based on profile
