@@ -55,6 +55,7 @@ let
   commonBrews = [
     # Development tools
     "jenv" # Java version manager
+    "copilot-cli" # GitHub Copilot CLI
 
     # Git tools
     "k1LoW/tap/git-wt" # Git worktree manager
@@ -62,7 +63,6 @@ let
 
   # Work-only brews
   workBrews = [
-    "copilot-cli" # GitHub Copilot CLI
   ];
 
   # Select brews based on profile
