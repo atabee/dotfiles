@@ -16,8 +16,9 @@
     # History configuration (from env.zsh)
     history = {
       path = "${config.home.homeDirectory}/.zsh_history";
-      size = 10000;
+      size = 100000;
       save = 100000;
+      share = true;
     };
 
     # Session variables
@@ -107,9 +108,6 @@
 
         # Enable comments in interactive shell
         setopt interactive_comments
-
-        # Share history between sessions
-        setopt share_history
 
         # Remove extra spaces from history
         setopt hist_reduce_blanks
