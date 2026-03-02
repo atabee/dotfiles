@@ -20,6 +20,7 @@ let
     "swiftformat-for-xcode"
     "claude-code"
     "claude" # Claude Desktop
+    "copilot-cli" # GitHub Copilot CLI
     "font-monaspace"
 
     # Browsers
@@ -59,8 +60,6 @@ let
     # Git tools
     "k1LoW/tap/git-wt" # Git worktree manager
 
-    # GitHub Copilot CLI
-    "copilot-cli"
   ];
 
   # Work-only brews
