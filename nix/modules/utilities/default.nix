@@ -22,6 +22,9 @@
 
     # Nix formatting
     nixfmt
+
+    # AWS CLI
+    awscli2
   ];
 
   # bat - cat with syntax highlighting
