@@ -11,9 +11,6 @@
     # Data processing
     jq # JSON processor
 
-    # Download tools
-    aria2 # Multi-protocol download utility
-
     # Search tools
     silver-searcher # ag - code search tool (used by fzf)
 
