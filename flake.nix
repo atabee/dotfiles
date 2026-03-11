@@ -80,6 +80,7 @@
               # Disable zsh completion in nix-darwin (managed by Home Manager instead)
               # This prevents /etc/zshrc from calling compinit without -u flag
               programs.zsh.enableCompletion = false;
+              programs.zsh.histSize = 100000;
 
               # Primary user for system activation
               # Use SUDO_USER when running with sudo, otherwise fall back to USER
