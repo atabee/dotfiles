@@ -24,8 +24,6 @@
 
     # Session variables
     sessionVariables = {
-      # XDG Base Directory (already set in home.nix, but can override here)
-      HISTFILE = "${config.home.homeDirectory}/.zsh_history";
     };
 
     # Zsh initialization content (replaces initExtra and initExtraBeforeCompInit)
