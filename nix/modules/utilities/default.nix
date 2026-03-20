@@ -22,6 +22,9 @@
 
     # AWS CLI
     awscli2
+  ] ++ lib.optionals pkgs.stdenv.isDarwin [
+    # macOS notifications
+    terminal-notifier
   ];
 
   # bat - cat with syntax highlighting
