@@ -29,67 +29,16 @@
     # Zsh initialization content (replaces initExtra and initExtraBeforeCompInit)
     initContent = lib.mkMerge [
       # Content before compinit (lib.mkOrder 550)
-      # Personal profile: Powerlevel10k instant prompt
-      # Work profile: Custom vcs_info prompt setup
-      (lib.mkOrder 550 (
-        if profile == "personal" then ''
-          # Enable Powerlevel10k instant prompt
-          if [[ -r "''${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-''${(%):-%n}.zsh" ]]; then
-            source "''${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-''${(%):-%n}.zsh"
-          fi
+      # Powerlevel10k instant prompt
+      (lib.mkOrder 550 ''
+        # Enable Powerlevel10k instant prompt
+        if [[ -r "''${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-''${(%):-%n}.zsh" ]]; then
+          source "''${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-''${(%):-%n}.zsh"
+        fi
 
-          # Load Powerlevel10k configuration
-          [[ -f ${config.xdg.configHome}/zsh/p10k.zsh ]] && source ${config.xdg.configHome}/zsh/p10k.zsh
-        '' else ''
-          # Work profile: Custom prompt with vcs_info
-          autoload -Uz vcs_info add-zsh-hook
-
-          # vcs_info configuration
-          zstyle ':vcs_info:*' enable git
-          zstyle ':vcs_info:*' check-for-changes true
-          zstyle ':vcs_info:*' stagedstr '%F{10}+%f'
-          zstyle ':vcs_info:*' unstagedstr '%F{11}*%f'
-          zstyle ':vcs_info:git:*' formats '%F{10}%b%f%c%u'
-          zstyle ':vcs_info:git:*' actionformats '%F{10}%b%f|%F{9}%a%f%c%u'
-
-          # Function to get ahead/behind count
-          function _git_ahead_behind() {
-              local ahead behind
-              ahead=$(git rev-list --count @{upstream}..HEAD 2>/dev/null)
-              behind=$(git rev-list --count HEAD..@{upstream} 2>/dev/null)
-              local result=""
-              [[ $ahead -gt 0 ]] && result+="%F{10}↑''${ahead}%f"
-              [[ $behind -gt 0 ]] && result+="%F{9}↓''${behind}%f"
-              echo $result
-          }
-
-          # Function to check for untracked files
-          function _git_untracked() {
-              if git status --porcelain 2>/dev/null | grep -q '^??'; then
-                  echo '%F{11}?%f'
-              fi
-          }
-
-          # precmd hook for vcs_info
-          function precmd_vcs_info() {
-              vcs_info
-              if [[ -n ''${vcs_info_msg_0_} ]]; then
-                  local git_status="''${vcs_info_msg_0_}"
-                  git_status+="$(_git_untracked)"
-                  git_status+="$(_git_ahead_behind)"
-                  WORK_GIT_STATUS=" %F{8}git:%f''${git_status}"
-              else
-                  WORK_GIT_STATUS=""
-              fi
-          }
-          add-zsh-hook precmd precmd_vcs_info
-
-          # Prompt configuration
-          setopt PROMPT_SUBST
-          PROMPT=$'\n%F{12}%~%f''${WORK_GIT_STATUS}\n%(?.%F{10}.%F{9})>%f '
-          RPROMPT='%F{8}%*%f'
-        ''
-      ))
+        # Load Powerlevel10k configuration
+        [[ -f ${config.xdg.configHome}/zsh/p10k.zsh ]] && source ${config.xdg.configHome}/zsh/p10k.zsh
+      '')
 
       # Content after compinit (default order)
       ''
@@ -178,8 +127,7 @@
     ];
 
     # Zsh plugins (replacing Prezto)
-    # Personal profile: includes Powerlevel10k
-    # Work profile: common plugins only (no Powerlevel10k)
+    # Powerlevel10k + common plugins
     plugins =
       let
         commonPlugins = [
@@ -207,7 +155,7 @@
           }
         ];
       in
-      if profile == "personal" then p10kPlugin ++ commonPlugins else commonPlugins;
+      p10kPlugin ++ commonPlugins;
 
     # Enable completion
     enableCompletion = true;
