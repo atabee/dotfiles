@@ -10,8 +10,3 @@
 
 # Example: Machine-specific aliases
 # alias work='cd ~/work/project'
-
-# Example: Manual tool installations
-# If jenv is installed manually:
-#   export PATH="$HOME/.jenv/bin:$PATH"
-#   eval "$(jenv init -)"

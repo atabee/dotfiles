@@ -73,9 +73,4 @@
       "--smart-case"
     ];
   };
-
-  # Shell aliases
-  home.shellAliases = {
-    cat = "bat";
-  };
 }
