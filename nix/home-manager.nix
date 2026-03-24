@@ -82,9 +82,9 @@
       ".config/zsh/local.zsh.template".source = ./modules/zsh/local.zsh.template;
     }
 
-    # Personal profile only: Powerlevel10k configuration
-    (lib.mkIf (profile == "personal") {
+    # Powerlevel10k configuration
+    {
       ".config/zsh/p10k.zsh".source = ./modules/zsh/p10k.zsh;
-    })
+    }
   ];
 }
