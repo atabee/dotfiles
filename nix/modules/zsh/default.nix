@@ -78,6 +78,41 @@
         zstyle ':completion:*' use-cache on
         zstyle ':completion:*' cache-path "${config.xdg.cacheHome}/zsh/compcache"
 
+        # jenv (Java version manager)
+        export PATH="$HOME/.jenv/bin:$PATH"
+        eval "$(jenv init -)"
+
+        # git-wt (git worktree helper)
+        eval "$(git wt --init zsh)"
+
+        ${lib.optionalString (profile == "work") ''
+          # Copilot CLI (work profile only)
+          # Claude Codeのdeny設定に合わせたツール制限:
+          #   - shell: sudo, rm, git reset, git rebaseを禁止
+          #   - ファイルパターン単位の制限(.env, secret, keyなど)は
+          #     Copilot CLIの仕様上サポートされないため適用不可
+          copilot() {
+            HISTFILE=/dev/null command copilot \
+              --allow-all-tools \
+              --deny-tool='shell(sudo)' \
+              --deny-tool='shell(rm)' \
+              --deny-tool='shell(dd)' \
+              --deny-tool='shell(diskutil)' \
+              --deny-tool='shell(mkfs)' \
+              --deny-tool='shell(shutdown)' \
+              --deny-tool='shell(reboot)' \
+              --deny-tool='shell(kill)' \
+              --deny-tool='shell(killall)' \
+              --deny-tool='shell(launchctl)' \
+              --deny-tool='shell(git reset)' \
+              --deny-tool='shell(git rebase)' \
+              --deny-tool='shell(git clean)' \
+              --deny-tool='shell(git push)' \
+              --deny-tool='shell(nc)' \
+              "$@"
+          }
+        ''}
+
         # Source local config if exists
         [ -f ${config.xdg.configHome}/zsh/local.zsh ] && source ${config.xdg.configHome}/zsh/local.zsh
 

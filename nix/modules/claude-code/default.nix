@@ -128,18 +128,34 @@ let
         "mcp__pencil"
       ];
       deny = [
+        # 危険なシェルコマンド
         "Bash(sudo:*)"
-        "Bash(git reset:*)"
-        "Bash(git rebase:*)"
-        "Read(id_rsa)"
-        "Read(id_ed25519)"
-        "Read(**/*token*)"
-        "Read(**/*key*)"
         "Bash(rm -rf:*)"
         "Bash(rm -rf /)"
         "Bash(rm -rf ~)"
         "Bash(rm -rf ~/*)"
         "Bash(rm -rf /*)"
+        "Bash(dd:*)"
+        "Bash(diskutil:*)"
+        "Bash(mkfs:*)"
+        # システム制御
+        "Bash(shutdown:*)"
+        "Bash(reboot:*)"
+        "Bash(kill:*)"
+        "Bash(killall:*)"
+        "Bash(launchctl:*)"
+        # Git の危険な操作
+        "Bash(git reset:*)"
+        "Bash(git rebase:*)"
+        "Bash(git clean:*)"
+        "Bash(git push:*)"
+        # ネットワーク
+        "Bash(nc:*)"
+        # 機密ファイルの読み取り
+        "Read(id_rsa)"
+        "Read(id_ed25519)"
+        "Read(**/*token*)"
+        "Read(**/*key*)"
         "Read(.env)"
         "Read(.env.local)"
         "Read(.env.development)"
