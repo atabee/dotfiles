@@ -88,7 +88,7 @@
         ${lib.optionalString (profile == "work") ''
           # Copilot CLI (work profile only)
           # Claude Codeのdeny設定に合わせたツール制限:
-          #   - shell: sudo, rm, git reset, git rebaseを禁止
+          #   - shell: sudo, rm, git resetなどを禁止
           #   - ファイルパターン単位の制限(.env, secret, keyなど)は
           #     Copilot CLIの仕様上サポートされないため適用不可
           copilot() {
@@ -105,9 +105,7 @@
               --deny-tool='shell(killall)' \
               --deny-tool='shell(launchctl)' \
               --deny-tool='shell(git reset)' \
-              --deny-tool='shell(git rebase)' \
               --deny-tool='shell(git clean)' \
-              --deny-tool='shell(git push)' \
               --deny-tool='shell(nc)' \
               "$@"
           }

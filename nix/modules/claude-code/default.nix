@@ -146,9 +146,7 @@ let
         "Bash(launchctl:*)"
         # Git の危険な操作
         "Bash(git reset:*)"
-        "Bash(git rebase:*)"
         "Bash(git clean:*)"
-        "Bash(git push:*)"
         # ネットワーク
         "Bash(nc:*)"
         # 機密ファイルの読み取り
