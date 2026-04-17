@@ -30,9 +30,8 @@
     if [[ "$(uname)" == "Darwin" ]]; then
       # macOS-specific
       # Android SDK tools
-      if [ -d "$ANDROID_HOME" ]; then
+      if [ -d "$ANDROID_HOME/platform-tools" ]; then
         export PATH="$ANDROID_HOME/platform-tools:$PATH"
-        export PATH="$ANDROID_HOME/tools:$PATH"
       fi
 
       # Dart pub cache
