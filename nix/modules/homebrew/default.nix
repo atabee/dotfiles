@@ -40,6 +40,7 @@ let
     "1password"
     "notion"
     "tailscale-app" # VPN/mesh networking
+    "codex"
   ];
 
   # Work-only casks (can be extended in the future)
