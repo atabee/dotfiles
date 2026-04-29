@@ -6,9 +6,14 @@
 }:
 
 {
-  home.packages = with pkgs; [
-    fvm # Flutter Version Manager
-  ];
+  home.packages =
+    with pkgs;
+    [
+      fvm # Flutter Version Manager
+    ]
+    ++ lib.optionals pkgs.stdenv.isDarwin [
+      xcodegen # Xcode project generator
+    ];
   # モバイル開発環境設定（Android/Flutter/Gradle）
 
   programs.zsh.sessionVariables = {
