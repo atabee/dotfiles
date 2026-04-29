@@ -12,6 +12,7 @@
 - **Android SDK**: Android開発キット
 - **Flutter/Dart**: クロスプラットフォームアプリ開発
 - **fvm**: Flutter Version Management（手動インストール）
+- **XcodeGen**: Xcodeプロジェクト生成ツール（macOSのみ）
 
 ## 使用方法
 
