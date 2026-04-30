@@ -27,6 +27,7 @@ let
     "google-chrome"
 
     # Productivity
+    "chatgpt"
     "raycast"
 
     # Utilities
