@@ -12,17 +12,16 @@ pnpmパッケージマネージャー
 
 ## 設定
 
-`~/.config/pnpm/config.yaml` をHome Managerで管理します。
+`~/.config/pnpm/rc` をHome Managerで管理します。
 
-```yaml
-minimumReleaseAge: 1440
-blockExoticSubdeps: true
-onlyBuiltDependencies: []
+```ini
+minimum-release-age=1440
+block-exotic-subdeps=true
 ```
 
 - `minimumReleaseAge`: 公開から1440分（1日）未満のパッケージバージョンを避ける
 - `blockExoticSubdeps`: 推移依存のgit/tarball URLなどのexotic sourceをブロックする
-- `onlyBuiltDependencies`: install scriptの実行を許可する依存を明示する（初期値は空）
+- `onlyBuiltDependencies`: pnpm 10では未指定時も依存パッケージのinstall scriptは許可リスト方式で扱われる。プロジェクトごとに`pnpm-workspace.yaml`で明示する
 
 ## Node.js
 

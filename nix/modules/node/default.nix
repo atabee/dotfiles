@@ -5,9 +5,8 @@
     pnpm
   ];
 
-  xdg.configFile."pnpm/config.yaml".text = ''
-    minimumReleaseAge: 1440
-    blockExoticSubdeps: true
-    onlyBuiltDependencies: []
+  xdg.configFile."pnpm/rc".text = ''
+    minimum-release-age=1440
+    block-exotic-subdeps=true
   '';
 }
