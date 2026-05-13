@@ -6,7 +6,7 @@
   ];
 
   xdg.configFile."pnpm/rc".text = ''
-    minimum-release-age=1440
+    minimum-release-age=10080
     block-exotic-subdeps=true
   '';
 }

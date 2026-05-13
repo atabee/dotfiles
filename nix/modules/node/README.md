@@ -15,11 +15,11 @@ pnpmパッケージマネージャー
 `~/.config/pnpm/rc` をHome Managerで管理します。
 
 ```ini
-minimum-release-age=1440
+minimum-release-age=10080
 block-exotic-subdeps=true
 ```
 
-- `minimumReleaseAge`: 公開から1440分（1日）未満のパッケージバージョンを避ける
+- `minimumReleaseAge`: 公開から10080分（1週間）未満のパッケージバージョンを避ける
 - `blockExoticSubdeps`: 推移依存のgit/tarball URLなどのexotic sourceをブロックする
 - `onlyBuiltDependencies`: pnpm 10では未指定時も依存パッケージのinstall scriptは許可リスト方式で扱われる。プロジェクトごとに`pnpm-workspace.yaml`で明示する
 
