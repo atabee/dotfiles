@@ -1,6 +1,6 @@
-# Node.js
+# pnpm
 
-Node.js開発環境とグローバルパッケージ
+pnpmパッケージマネージャー
 
 ## ファイル
 
@@ -8,30 +8,42 @@ Node.js開発環境とグローバルパッケージ
 
 ## インストールされるパッケージ
 
-- **nodejs_22**: Node.js v24 (LTS)
-- **npm**: Node Package Manager
+- **pnpm**: Fast, disk space efficient package manager
 
-## 環境変数
+## 設定
 
-- `NPM_CONFIG_PREFIX`: `~/.npm-global`
-- PATH: `~/.npm-global/bin` を追加
+`~/.config/pnpm/config.yaml` をHome Managerで管理します。
+
+```yaml
+minimumReleaseAge: 1440
+blockExoticSubdeps: true
+onlyBuiltDependencies: []
+```
+
+- `minimumReleaseAge`: 公開から1440分（1日）未満のパッケージバージョンを避ける
+- `blockExoticSubdeps`: 推移依存のgit/tarball URLなどのexotic sourceをブロックする
+- `onlyBuiltDependencies`: install scriptの実行を許可する依存を明示する（初期値は空）
+
+## Node.js
+
+Node.js本体はNixではインストールせず、`mise`モジュールで管理します。
+バージョンを変更する場合は`nix/modules/mise/default.nix`を編集してください。
 
 ## 使用方法
 
-### npm（グローバルインストール）
+### pnpm
 
 ```bash
-# グローバルパッケージをインストール
-npm install -g <package-name>
+# 依存関係をインストール
+pnpm install
 
-# インストール済みグローバルパッケージを確認
-npm list -g --depth=0
+# パッケージを追加
+pnpm add <package-name>
 
-# パッケージを更新
-npm update -g <package-name>
+# スクリプトを実行
+pnpm run <script>
 ```
 
 ## ディレクトリ
 
-- グローバルパッケージ: `~/.npm-global/`
-- npmキャッシュ: `~/.npm/`
+- pnpmストア: `~/.local/share/pnpm/store/`

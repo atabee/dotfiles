@@ -116,7 +116,7 @@ Active modules (imported in `nix/home-manager.nix`):
 
 - **Platform:** `platform/darwin.nix` (macOS-specific)
 - **Core:** zsh, fzf, git, ghostty, direnv, utilities
-- **Languages:** go, node, python, ruby, rustup
+- **Languages:** go, node/pnpm, python, ruby, rustup
 - **Mobile:** mobile-dev (Flutter/Android)
 - **Homebrew:** `modules/homebrew` (managed via nix-darwin)
 
@@ -159,7 +159,7 @@ This repository is configured for Determinate Nix:
 **Environment variable patterns:**
 
 - Go: `GOPATH=~/go`, `GOBIN=~/go/bin`
-- Node: npm global prefix at `~/.npm-global`
+- Node: Managed by mise (`node@24`), pnpm installed via Nix
 - Python: Uses `uv` package manager, `UV_PYTHON_PREFERENCE=only-managed`
 - Ruby: Gems at `~/.gem`
 - Rust: `RUSTUP_HOME` and `CARGO_HOME` in XDG data directories

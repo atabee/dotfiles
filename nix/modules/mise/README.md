@@ -21,6 +21,7 @@
 
 現在のデフォルト設定：
 
+- **Node.js**: `24`
 - **Ruby**: `3.4.8`
 - **pinact**: `latest`
 - **firebase**: `latest`

@@ -17,7 +17,7 @@
 
     if command -v mise &> /dev/null; then
       # グローバルツールを宣言（既存のユーザー追加ツールは保持される）
-      $DRY_RUN_CMD mise use --global ruby@3.4.8 pinact@latest firebase@latest
+      $DRY_RUN_CMD mise use --global node@24 ruby@3.4.8 pinact@latest firebase@latest
 
       # settings を設定
       $DRY_RUN_CMD mise settings set experimental true
