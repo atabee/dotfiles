@@ -82,6 +82,13 @@
               programs.zsh.enableCompletion = false;
               programs.zsh.histSize = 100000;
 
+              # Enable Touch ID authentication for sudo on macOS
+              # reattach fixes Touch ID inside tmux and screen.
+              security.pam.services.sudo_local = {
+                touchIdAuth = true;
+                reattach = true;
+              };
+
               # Primary user for system activation
               # Use SUDO_USER when running with sudo, otherwise fall back to USER
               system.primaryUser =
