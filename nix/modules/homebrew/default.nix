@@ -21,6 +21,7 @@ let
     "claude-code"
     "claude" # Claude Desktop
     "copilot-cli" # GitHub Copilot CLI
+    "zed"
     "font-monaspace"
 
     # Browsers
@@ -51,7 +52,8 @@ let
   ];
 
   # Select casks based on profile
-  selectedCasks = commonCasks
+  selectedCasks =
+    commonCasks
     ++ lib.optionals (profile == "personal") personalCasks
     ++ lib.optionals (profile == "work") workCasks;
 
@@ -70,8 +72,7 @@ let
   ];
 
   # Select brews based on profile
-  selectedBrews = commonBrews
-    ++ lib.optionals (profile == "work") workBrews;
+  selectedBrews = commonBrews ++ lib.optionals (profile == "work") workBrews;
 in
 
 {
