@@ -23,6 +23,7 @@ let
     "copilot-cli" # GitHub Copilot CLI
     "zed"
     "font-monaspace"
+    "font-moralerspace"
 
     # Browsers
     "google-chrome"
