@@ -62,6 +62,7 @@ let
   commonBrews = [
     # Development tools
     "jenv" # Java version manager
+    "xcodegen" # Xcode project generator
 
     # Git tools
     "k1LoW/tap/git-wt" # Git worktree manager
