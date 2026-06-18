@@ -61,6 +61,7 @@ let
   # Common brews for both personal and work
   commonBrews = [
     # Development tools
+    "microsoft/apm/apm" # Microsoft APM
     "jenv" # Java version manager
     "xcodegen" # Xcode project generator
 
@@ -100,6 +101,7 @@ in
     # as they are now built-in to Homebrew
     taps = [
       "k1LoW/tap" # For git-wt
+      "microsoft/apm" # For Microsoft APM
       # Add any third-party taps you need here
     ];
 
