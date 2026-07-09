@@ -64,6 +64,7 @@ let
     "microsoft/apm/apm" # Microsoft APM
     "jenv" # Java version manager
     "xcodegen" # Xcode project generator
+    "herdr"
 
     # Git tools
     "k1LoW/tap/git-wt" # Git worktree manager

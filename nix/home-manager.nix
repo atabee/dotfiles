@@ -18,6 +18,7 @@
     ./modules/git
     ./modules/lazygit
     ./modules/ghostty
+    ./modules/herdr
     ./modules/tmux
 
     # Development tools
