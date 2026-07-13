@@ -86,12 +86,45 @@ nix run home-manager/master -- switch --flake ".#$(uname -m)-linux" --impure
 
 このコマンドで、ユーザー環境設定（パッケージ、シェル設定、Git設定など）が適用されます。
 
+### WSL2: Windows側アプリのセットアップ
+
+WSL内のCLIとシェル設定はHome Manager、Windows側のGUIアプリと連携ツールはWinGet Configurationで管理します。
+
+~~~bash
+# personal: 共通アプリ + personal専用アプリ
+wingetup-p
+
+# work: 共通アプリのみ
+wingetup-w
+~~~
+
+PowerShellから直接適用する場合:
+
+初回のみ、Configuration拡張機能を有効にします（Microsoft Storeへのアクセスが必要です）。
+
+~~~powershell
+winget configure --enable
+~~~
+
+~~~powershell
+# 共通構成（personal/work）
+winget configure --file "\\wsl.localhost\Ubuntu\home\<WSLユーザー>\.dotfiles\.config\configuration.winget"
+
+# personal専用（1Password、Notion、Tailscale、Codex CLI）
+winget configure --file "\\wsl.localhost\Ubuntu\home\<WSLユーザー>\.dotfiles\.config\configuration-personal.winget"
+~~~
+
+- 共通構成にはWindows Terminal、PowerShell、VS Code、Android Studio、JDK、Chrome、Zed、Claude、ChatGPT、Copilot CLI、7-Zipが含まれます。
+- Windows側のAndroid Studio/JDKと、WSL側のAndroid SDK（~/Android/Sdk）は分離して管理します。
+- work構成はpersonal専用アプリを新規導入しませんが、既にインストール済みのpersonal専用アプリを自動削除はしません。
+- GhosttyとMonaspace/Moralerspaceは公式WinGetパッケージを確認できないため、この構成には含めていません。
 ## 設定の更新
 
 ### 簡単な更新方法（推奨）
 
-設定適用後、以下のエイリアスが使用可能になります:
 
+
+設定適用後、以下のエイリアスが使用可能になります:
 ```bash
 # 個人用マシン
 nixup-p

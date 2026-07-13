@@ -1,5 +1,11 @@
 # Claude Code 設定モジュール
-{ config, pkgs, lib, profile ? "personal", ... }:
+{
+  config,
+  pkgs,
+  lib,
+  profile ? "personal",
+  ...
+}:
 
 let
   # 共通プラグイン
@@ -180,7 +186,7 @@ let
       padding = 0;
     };
     inherit enabledPlugins;
-    hooks = {
+    hooks = lib.optionalAttrs pkgs.stdenv.isDarwin {
       Notification = [
         {
           matcher = "";

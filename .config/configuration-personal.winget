@@ -1,0 +1,21 @@
+$schema: https://raw.githubusercontent.com/PowerShell/DSC/main/schemas/2023/08/config/document.json
+metadata:
+  winget:
+    processor:
+      identifier: dscv3
+resources:
+  # personalプロファイル専用。共通構成の適用後に実行する。
+  - type: Microsoft.WinGet/Package
+    name: OnePassword
+    properties: { id: AgileBits.1Password, source: winget, useLatest: true }
+  - type: Microsoft.WinGet/Package
+    name: Notion
+    properties: { id: Notion.Notion, source: winget, useLatest: true }
+  - type: Microsoft.WinGet/Package
+    name: Tailscale
+    properties: { id: Tailscale.Tailscale, source: winget, useLatest: true }
+    metadata:
+      winget: { securityContext: elevated }
+  - type: Microsoft.WinGet/Package
+    name: CodexCLI
+    properties: { id: OpenAI.Codex, source: winget, useLatest: true }

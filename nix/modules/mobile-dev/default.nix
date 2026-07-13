@@ -5,6 +5,13 @@
   ...
 }:
 
+let
+  androidSdkHome =
+    if pkgs.stdenv.isDarwin then
+      "${config.home.homeDirectory}/Library/Android/sdk"
+    else
+      "${config.home.homeDirectory}/Android/Sdk";
+in
 {
   home.packages = with pkgs; [
     fvm # Flutter Version Manager
@@ -15,9 +22,9 @@
     # Gradle
     GRADLE_USER_HOME = "${config.xdg.dataHome}/gradle";
 
-    # Android SDK (macOS)
-    ANDROID_HOME = "${config.home.homeDirectory}/Library/Android/sdk";
-    NDK_HOME = "${config.home.homeDirectory}/Library/Android/sdk/ndk/26.1.10909125";
+    # Android SDK（Windows側のSDKとは分離して管理する）
+    ANDROID_HOME = androidSdkHome;
+    NDK_HOME = "${androidSdkHome}/ndk/26.1.10909125";
   };
 
   programs.zsh.initContent = lib.mkAfter ''
@@ -26,14 +33,12 @@
       export PATH="$PATH:$HOME/fvm/default/bin"
     fi
 
-    # Platform-specific PATH additions
-    if [[ "$(uname)" == "Darwin" ]]; then
-      # macOS-specific
-      # Android SDK tools
-      if [ -d "$ANDROID_HOME/platform-tools" ]; then
-        export PATH="$ANDROID_HOME/platform-tools:$PATH"
-      fi
+    # Android SDK tools
+    if [ -d "$ANDROID_HOME/platform-tools" ]; then
+      export PATH="$ANDROID_HOME/platform-tools:$PATH"
+    fi
 
+    if [[ "$(uname)" == "Darwin" ]]; then
       # Dart pub cache
       if [ -d "$HOME/.pub-cache/bin" ]; then
         export PATH="$HOME/.pub-cache/bin:$PATH"

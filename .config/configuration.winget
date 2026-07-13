@@ -1,0 +1,52 @@
+$schema: https://raw.githubusercontent.com/PowerShell/DSC/main/schemas/2023/08/config/document.json
+metadata:
+  winget:
+    processor:
+      identifier: dscv3
+resources:
+  # WSL内のCLIはHome Manager、Windows側のアプリはWinGetで管理する。
+  - type: Microsoft.WinGet/Package
+    name: PowerShell
+    properties: { id: Microsoft.PowerShell, source: winget, useLatest: true }
+  - type: Microsoft.WinGet/Package
+    name: WindowsTerminal
+    properties: { id: Microsoft.WindowsTerminal, source: winget, useLatest: true }
+  - type: Microsoft.WinGet/Package
+    name: VisualStudioCode
+    properties: { id: Microsoft.VisualStudioCode, source: winget, useLatest: true }
+  - type: Microsoft.WinGet/Package
+    name: AndroidStudio
+    properties: { id: Google.AndroidStudio, source: winget, useLatest: true }
+  - type: Microsoft.WinGet/Package
+    name: Temurin11
+    properties: { id: EclipseAdoptium.Temurin.11.JDK, source: winget, useLatest: true }
+    metadata:
+      winget: { securityContext: elevated }
+  - type: Microsoft.WinGet/Package
+    name: Temurin17
+    properties: { id: EclipseAdoptium.Temurin.17.JDK, source: winget, useLatest: true }
+    metadata:
+      winget: { securityContext: elevated }
+  - type: Microsoft.WinGet/Package
+    name: Zed
+    properties: { id: ZedIndustries.Zed, source: winget, useLatest: true }
+  - type: Microsoft.WinGet/Package
+    name: GoogleChrome
+    properties: { id: Google.Chrome, source: winget, useLatest: true }
+  - type: Microsoft.WinGet/Package
+    name: ClaudeDesktop
+    properties: { id: Anthropic.Claude, source: winget, useLatest: true }
+  - type: Microsoft.WinGet/Package
+    name: ClaudeCode
+    properties: { id: Anthropic.ClaudeCode, source: winget, useLatest: true }
+  - type: Microsoft.WinGet/Package
+    name: CopilotCLI
+    properties: { id: GitHub.Copilot, source: winget, useLatest: true }
+  - type: Microsoft.WinGet/Package
+    name: ChatGPT
+    properties: { id: 9NT1R1C2HH7J, source: msstore, useLatest: true }
+  - type: Microsoft.WinGet/Package
+    name: SevenZip
+    properties: { id: 7zip.7zip, source: winget, useLatest: true }
+    metadata:
+      winget: { securityContext: elevated }

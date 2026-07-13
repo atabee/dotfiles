@@ -80,10 +80,14 @@
 
         # jenv (Java version manager)
         export PATH="$HOME/.jenv/bin:$PATH"
-        eval "$(jenv init -)"
+        if (( $+commands[jenv] )); then
+          eval "$(jenv init -)"
+        fi
 
         # git-wt (git worktree helper)
-        eval "$(git wt --init zsh)"
+        if git wt --help >/dev/null 2>&1; then
+          eval "$(git wt --init zsh)"
+        fi
 
         ${lib.optionalString (profile == "work") ''
           # Copilot CLI (work profile only)
