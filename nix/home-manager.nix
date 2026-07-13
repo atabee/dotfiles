@@ -11,6 +11,7 @@
   imports = [
     # Platform-specific configurations
     ./platform/darwin.nix
+    ./platform/linux.nix
 
     # Core programs
     ./modules/zsh

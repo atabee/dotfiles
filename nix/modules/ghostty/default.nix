@@ -10,5 +10,7 @@
   # Since Home Manager doesn't have a native Ghostty module yet,
   # we manage the config file directly
 
-  home.file.".config/ghostty/config".source = ./config;
+  home.file.".config/ghostty/config" = lib.mkIf pkgs.stdenv.isDarwin {
+    source = ./config;
+  };
 }

@@ -3,6 +3,9 @@
 if (( $+commands[pbcopy] )); then
   # Mac
   alias -g C='| pbcopy'
+elif (( $+commands[clip.exe] )); then
+  # WSL
+  alias -g C='| clip.exe'
 elif (( $+commands[xsel] )); then
   # Linux
   alias -g C='| xsel --input --clipboard'

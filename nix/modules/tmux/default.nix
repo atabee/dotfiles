@@ -5,6 +5,13 @@
   ...
 }:
 
+let
+  clipboardCommand =
+    if pkgs.stdenv.isDarwin then
+      "pbcopy"
+    else
+      "if command -v clip.exe >/dev/null 2>&1; then clip.exe; elif command -v wl-copy >/dev/null 2>&1; then wl-copy; else xsel --input --clipboard; fi";
+in
 {
   programs.tmux = {
     enable = true;
@@ -64,10 +71,10 @@
       setw -g mode-keys vi
       bind-key -T copy-mode-vi v send -X begin-selection
 
-      # クリップボートとの連携 (macOS)
-      bind-key -T copy-mode-vi y send-keys -X copy-pipe-and-cancel "pbcopy"
-      bind-key -T copy-mode-vi MouseDragEnd1Pane send-keys -X copy-pipe-and-cancel "pbcopy"
-      bind-key -T copy-mode-vi Enter send-keys -X copy-pipe-and-cancel "pbcopy"
+      # クリップボードとの連携 (macOS / WSL / Linux)
+      bind-key -T copy-mode-vi y send-keys -X copy-pipe-and-cancel "${clipboardCommand}"
+      bind-key -T copy-mode-vi MouseDragEnd1Pane send-keys -X copy-pipe-and-cancel "${clipboardCommand}"
+      bind-key -T copy-mode-vi Enter send-keys -X copy-pipe-and-cancel "${clipboardCommand}"
     '';
   };
 }
