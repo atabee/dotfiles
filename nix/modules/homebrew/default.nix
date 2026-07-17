@@ -67,6 +67,7 @@ let
     "herdr"
 
     # Git tools
+    "hunk" # Review-first terminal diff viewer
     "k1LoW/tap/git-wt" # Git worktree manager
 
   ];

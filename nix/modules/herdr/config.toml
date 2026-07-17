@@ -122,6 +122,12 @@ prefix = "ctrl+o"
 # type = "pane"
 # command = "lazygit"
 
+[[keys.command]]
+key = "prefix+d"
+type = "plugin_action"
+command = "hunk.diff.worktree-split"
+description = "作業ツリーの差分をHunkで開く"
+
 # Legacy indexed shortcut config is still parsed for compatibility.
 # Prefer switch_tab, switch_workspace, and focus_agent for new configs.
 # [keys.indexed]
