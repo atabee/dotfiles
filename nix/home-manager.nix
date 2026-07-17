@@ -17,6 +17,7 @@
     ./modules/fzf
     ./modules/git
     ./modules/lazygit
+    ./modules/hunk
     ./modules/ghostty
     ./modules/herdr
     ./modules/tmux
