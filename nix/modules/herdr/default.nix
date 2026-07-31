@@ -1,7 +1,18 @@
-{ lib, ... }:
+{ config, lib, ... }:
 
 {
-  home.file.".config/herdr/config.toml".source = ./config.toml;
+  # Herdr はオンボーディング完了や設定画面の変更を config.toml に書き戻す。
+  # Nix store への読み取り専用リンクにせず、未作成の場合だけ初期設定をコピーする。
+  home.activation.initializeHerdrConfig = lib.hm.dag.entryAfter [ "linkGeneration" ] ''
+    config_dir="${config.home.homeDirectory}/.config/herdr"
+    config_file="$config_dir/config.toml"
+
+    run mkdir -p "$config_dir"
+    if [ ! -e "$config_file" ]; then
+      run cp "${./config.toml}" "$config_file"
+      run chmod u+w "$config_file"
+    fi
+  '';
 
   # HerdrのGitHubプラグインは専用レジストリで管理されるため、未導入時だけ追加する。
   home.activation.installHerdrHunkPlugin = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
