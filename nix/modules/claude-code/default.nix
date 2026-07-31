@@ -1,5 +1,11 @@
 # Claude Code 設定モジュール
-{ config, pkgs, lib, profile ? "personal", ... }:
+{
+  config,
+  pkgs,
+  lib,
+  profile ? "personal",
+  ...
+}:
 
 let
   # 共通プラグイン
@@ -180,30 +186,6 @@ let
       padding = 0;
     };
     inherit enabledPlugins;
-    hooks = {
-      Notification = [
-        {
-          matcher = "";
-          hooks = [
-            {
-              type = "command";
-              command = "terminal-notifier -title 'Claude Code' -message 'Input needed' -sound Glass";
-            }
-          ];
-        }
-      ];
-      Stop = [
-        {
-          matcher = "";
-          hooks = [
-            {
-              type = "command";
-              command = "terminal-notifier -title 'Claude Code' -message 'Task completed' -sound Hero";
-            }
-          ];
-        }
-      ];
-    };
   };
 
   settingsJson = pkgs.writeText "claude-settings.json" (builtins.toJSON settings);

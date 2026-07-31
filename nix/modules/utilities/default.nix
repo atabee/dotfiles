@@ -1,4 +1,4 @@
-{ pkgs, lib, ... }:
+{ pkgs, ... }:
 
 {
   # Collection of small utilities and tools
@@ -22,9 +22,6 @@
 
     # AWS CLI
     awscli2
-  ] ++ lib.optionals pkgs.stdenv.isDarwin [
-    # macOS notifications
-    terminal-notifier
   ];
 
   # bat - cat with syntax highlighting
