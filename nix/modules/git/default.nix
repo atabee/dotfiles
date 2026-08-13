@@ -1,18 +1,19 @@
 {
-  config,
   pkgs,
-  lib,
   ...
 }:
 
 {
-  home.packages = with pkgs; [
-    git
-    git-lfs
-  ];
-
   programs.git = {
     enable = true;
+
+    # macOSではnix-darwinのenvironment.systemPackagesから提供する
+    package = if pkgs.stdenv.isDarwin then null else pkgs.git;
+
+    lfs = {
+      enable = true;
+      package = if pkgs.stdenv.isDarwin then null else pkgs.git-lfs;
+    };
 
     # Common Git configuration (from .gitconfig.template)
     settings = {
@@ -34,13 +35,6 @@
 
       alias = {
         show-graph = "log --graph --decorate --abbrev-commit --format=format:'%C(blue)%h%C(reset) - %C(green)(%ar)%C(reset)%C(yellow)%d%C(reset)\n  %C(white)%s%C(reset) %C(dim white)- %an%C(reset)'";
-      };
-
-      filter.lfs = {
-        required = true;
-        clean = "git-lfs clean -- %f";
-        smudge = "git-lfs smudge -- %f";
-        process = "git-lfs filter-process";
       };
 
       # Include local user-specific configuration

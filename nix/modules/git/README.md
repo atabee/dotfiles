@@ -44,3 +44,5 @@ cp ~/.config/git/.gitconfig.local.template ~/.config/git/.gitconfig.local
 
 - **git**: Gitバージョン管理システム
 - **git-lfs**: Git Large File Storage
+
+macOSではnix-darwinの`environment.systemPackages`、LinuxではHome Managerから提供されます。

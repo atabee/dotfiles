@@ -77,6 +77,15 @@
               # System version (set once, never change)
               system.stateVersion = 6;
 
+              # 基盤CLIは全ユーザーとシステム処理から利用できるようにする
+              environment.systemPackages = with nixpkgs.legacyPackages.${system}; [
+                git
+                git-lfs
+                gh
+                curl
+                openssh
+              ];
+
               # Disable zsh completion in nix-darwin (managed by Home Manager instead)
               # This prevents /etc/zshrc from calling compinit without -u flag
               programs.zsh.enableCompletion = false;

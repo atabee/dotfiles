@@ -41,6 +41,7 @@
 - **gh**: GitHub CLI
   - SSH protocol使用
   - プロンプト有効
+  - macOSではnix-darwinの`environment.systemPackages`から提供
 
 ### データ処理
 

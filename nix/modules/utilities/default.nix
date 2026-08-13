@@ -1,4 +1,16 @@
-{ pkgs, ... }:
+{
+  pkgs,
+  lib,
+  ...
+}:
+
+let
+  ghSettings = {
+    git_protocol = "ssh";
+    prompt = "enabled";
+  };
+  yamlFormat = pkgs.formats.yaml { };
+in
 
 {
   # Collection of small utilities and tools
@@ -52,12 +64,26 @@
   };
 
   # gh - GitHub CLI
-  programs.gh = {
+  programs.gh = lib.mkIf pkgs.stdenv.isLinux {
     enable = true;
-    settings = {
-      git_protocol = "ssh";
-      prompt = "enabled";
-    };
+    settings = ghSettings;
+  };
+
+  # macOSではシステムパッケージのghを使い、設定ファイルだけを管理する
+  xdg.configFile."gh/config.yml" = lib.mkIf pkgs.stdenv.isDarwin {
+    source = yamlFormat.generate "gh-config.yml" ({ version = "1"; } // ghSettings);
+  };
+
+  # programs.ghを使わないmacOSでも既存のcredential helper設定を維持する
+  programs.git.settings.credential = lib.mkIf pkgs.stdenv.isDarwin {
+    "https://github.com".helper = [
+      ""
+      "!gh auth git-credential"
+    ];
+    "https://gist.github.com".helper = [
+      ""
+      "!gh auth git-credential"
+    ];
   };
 
   # ripgrep - fast grep alternative
