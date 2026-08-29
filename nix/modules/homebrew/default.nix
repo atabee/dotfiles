@@ -61,14 +61,20 @@ let
   # Common brews for both personal and work
   commonBrews = [
     # Development tools
-    "microsoft/apm/apm" # Microsoft APM
+    {
+      name = "microsoft/apm/apm"; # Microsoft APM
+      trusted = true;
+    }
     "jenv" # Java version manager
     "xcodegen" # Xcode project generator
     "herdr"
 
     # Git tools
     "hunk" # Review-first terminal diff viewer
-    "k1LoW/tap/git-wt" # Git worktree manager
+    {
+      name = "k1LoW/tap/git-wt"; # Git worktree manager
+      trusted = true;
+    }
 
   ];
 
