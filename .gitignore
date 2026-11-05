@@ -1,8 +1,4 @@
-#
-# .gitignore
-#
-
-# command history directory
+# シェルの履歴・キャッシュ
 .zcompcache
 .zcompdump*
 .zsh_history
@@ -10,11 +6,11 @@
 # macOS
 .DS_Store
 
-# local dependent settings
-zsh/local.zsh.template
+# 端末固有の設定・認証情報
+local.zsh
+.gitconfig.local
+.chezmoi.toml
 
-# git local configuration
-git/.gitconfig.local
-
-# nix
-result
+# 検証用キャッシュ
+__pycache__/
+*.pyc

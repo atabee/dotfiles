@@ -1,0 +1,5 @@
+# macOSのpath_helperが並べ替えたPATHにHomebrewを再反映する。
+if [[ "$OSTYPE" == darwin* && -n ${HOMEBREW_PREFIX:-} && -x "$HOMEBREW_PREFIX/bin/brew" ]]; then
+  eval "$("$HOMEBREW_PREFIX/bin/brew" shellenv)"
+fi
+source "$ZDOTDIR/.zshenv"

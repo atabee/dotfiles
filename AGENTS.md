@@ -1,261 +1,76 @@
 # AGENTS.md
 
-This file provides guidance to Codex (Codex.ai/code) when working with code in this repository.
+このリポジトリはchezmoi + OS別パッケージ管理 + miseで管理する開発環境のdotfilesです。
+macOSとUbuntu 24.04以降（WSL2上のUbuntuを含む）を対象とします。
 
-## Overview
+## 基本方針
 
-Cross-platform dotfiles repository using Nix Flakes, Home Manager, and nix-darwin for declarative system and user environment management across macOS (Apple Silicon) and Linux (x86_64/ARM64/WSL2).
+- ドキュメントと新しいコメントは日本語で記述する。
+- dotfilesの適用・パッケージ管理にNix / Home Manager / nix-darwinを導入しない。
+- 個別プロジェクトではNixを利用できる。Nix本体やdaemonを削除しない。
+- ツール・環境変数・テーマ・キーバインドを依頼なしに変更しない。
+- 既存のローカル設定・認証情報を読み出したりGitへ追加したりしない。
 
-## Key Commands
+## 構成
 
-### Apply Configuration Changes
+- UbuntuではHomebrewをインストール・検出・実行しない。aptとmiseを使用する。
+- `.chezmoiroot`: chezmoiのsource rootを`home/`にする。
+- `home/dot_config/dotfiles/Brewfile`: macOSの全Homebrewパッケージ。
+- `home/dot_config/dotfiles/apt-packages.tmpl`: Ubuntuの基盤パッケージ。
+- `home/dot_config/dotfiles/mise-tools.ubuntu.tmpl`: Ubuntuの開発CLI。
+- `home/dot_config/dotfiles/platform.tmpl`: OSの判定・対応外OSの拒否。
+- `home/dot_config/dotfiles/mise-tools`: 共通のmise宣言（Node 24・pinact・Firebase）。
+- `home/dot_config/zsh/`: シェル・Powerlevel10k・関数。
+- `home/dot_local/bin/executable_dotfiles`: パッケージ導入・更新・整理コマンド。
+- `home/dot_local/bin/executable_delta`: 既存のdeltaオプションを付加するラッパー。
+- `home/run_after_10-install-tools.sh.tmpl`: 設定反映後の不足ツール導入。
+- `scripts/bootstrap.sh`: OS別の初期セットアップ（--prepareで管理ツールだけ導入）。
+- `scripts/migrate-from-nix.sh`: 旧管理リンクのプレビュー・バックアップ。
+- `scripts/setup-macos.sh`: Touch ID / pam-reattach / Rosettaのシステム設定。
+- `docs/`: 設定の詳細・パッケージ一覧・環境の移行。
+- `vendor/nix-direnv/`: プロジェクト向け連携の上流情報・ライセンス。
 
-**Quick aliases (recommended - works after first setup):**
+chezmoiの`dot_`、`executable_`、`create_`、`.tmpl`の規約に従う。
+rootのドキュメント・scripts・testsはホームへ配布しない。
 
-```bash
-nixup-p  # Apply personal configuration
-nixup-w  # Apply work configuration
-```
-
-**macOS (full commands):**
-
-```bash
-cd ~/.dotfiles
-# Personal machine (default - backward compatible)
-sudo darwin-rebuild switch --flake '.#aarch64-darwin' --impure
-# or explicitly
-sudo darwin-rebuild switch --flake '.#personal-aarch64-darwin' --impure
-
-# Work machine
-sudo darwin-rebuild switch --flake '.#work-aarch64-darwin' --impure
-```
-
-**Linux (full commands):**
-
-```bash
-cd ~/.dotfiles
-# Personal machine (default - backward compatible)
-home-manager switch --flake ".#$(uname -m)-linux" --impure
-# or explicitly
-home-manager switch --flake ".#personal-$(uname -m)-linux" --impure
-
-# Work machine
-home-manager switch --flake ".#work-$(uname -m)-linux" --impure
-```
-
-### Update Dependencies
+## 操作
 
 ```bash
-cd ~/.dotfiles
-nix flake update  # Updates flake.lock
-# Then apply changes with darwin-rebuild or home-manager switch
+bash scripts/bootstrap.sh
+chezmoi diff
+chezmoi apply
+# 短縮形: dotup
+
+dotfiles update            # OSの管理対象 + グローバルmise
+dotfiles update system
+dotfiles update mise
+dotfiles update bootstrap  # Ubuntuのchezmoi・mise・rustup本体
+dotfiles cleanup           # 削除候補の表示のみ
+dotfiles cleanup --force   # 確認後の削除
 ```
 
-### Rollback
+設定反映時はmacOSでHomebrewの更新・zap、Ubuntuでは宣言したaptパッケージの更新を行う。
+両OSでmiseの宣言・導入・pruneを行う。Ubuntuで宣言外のOSパッケージを自動削除しない。
+apt autoremoveはcleanup --forceで明示的に実行する。
+macOSのシステム設定は`setup-macos.sh`で明示的に適用する。
+
+## 設定の扱い
+
+- `~/.config/git/.gitconfig.local`と`~/.config/zsh/local.zsh`は端末固有で管理外。
+- Claude Code / Herdrはアプリが書き換えるため`create_`で初期配置だけ行う。
+- miseのグローバル設定は書き込み可能な実ファイル。共通宣言以外の追加ツールを保持する。
+- Ruby / Java / Flutterはmise / jenv / FVM。CocoaPodsは共通CLI。
+- NDK指定は`26.1.10909125`。依頼なしに最新SDKへ切り替えない。
+- プロジェクト用nix-direnvは同梱元・バージョン・ライセンスを維持する。
+
+## 検証
 
 ```bash
-home-manager generations
-/nix/store/XXXXX-home-manager-generation/activate
+python3 -m unittest discover -s tests -v
 ```
 
-## Architecture
-
-### Flake Structure
-
-- **Entry point:** `flake.nix` defines configurations for all supported platforms
-- **User config:** `nix/home-manager.nix` aggregates all modules (works on all platforms)
-- **System config:** nix-darwin configuration embedded in `flake.nix` (macOS only)
-
-### Profile System (Personal/Work)
-
-The configuration supports two profiles: `personal` and `work`.
-
-**Profile differences:**
-
-- **Personal profile:** Includes all packages (1password, notion, tailscale-app, etc.)
-- **Work profile:** Excludes forbidden software (1password, notion, tailscale-app on macOS)
-
-**Implementation:**
-
-- `flake.nix` defines separate configurations for each profile:
-  - `personal-aarch64-darwin` / `work-aarch64-darwin` (macOS)
-  - `personal-{arch}-linux` / `work-{arch}-linux` (Linux)
-- Backward compatibility: `aarch64-darwin` and `{arch}-linux` default to personal profile
-- Profile passed via `specialArgs` to all modules
-- Homebrew module (`nix/modules/homebrew/default.nix`) filters casks based on profile
-- Shell aliases `nixup-p` / `nixup-w` automatically select the correct profile
-
-**Adding profile-specific packages:**
-
-Edit `nix/modules/homebrew/default.nix` (macOS) or create profile logic in other modules:
-
-```nix
-personalCasks = [ "notion" "1password" "tailscale-app" ];
-workCasks = [ "work-specific-app" ];
-```
-
-### Dynamic User Resolution
-
-The configuration uses environment variables instead of hardcoded usernames:
-
-- `home.username = builtins.getEnv "USER"`
-- `home.homeDirectory = builtins.getEnv "HOME"`
-- nix-darwin uses `SUDO_USER` fallback for system-level operations
-
-**Critical:** Always use `--impure` flag when running build commands to access environment variables.
-
-### Module System
-
-All modules are in `nix/modules/` with consistent structure:
-
-- `default.nix`: Package installation and program configuration
-- Optional: Templates, config files, custom scripts
-- Platform conditionals use `lib.mkIf pkgs.stdenv.isDarwin`
-
-Active modules (imported in `nix/home-manager.nix`):
-
-- **Platform:** `platform/darwin.nix` (macOS-specific)
-- **Core:** zsh, fzf, git, ghostty, direnv, utilities
-- **Languages:** go, node/pnpm, python, ruby, rustup
-- **Mobile:** mobile-dev (Flutter/Android)
-- **Homebrew:** `modules/homebrew` (managed via nix-darwin)
-
-### Platform-Specific Behavior
-
-**macOS (via nix-darwin):**
-
-- System-level configuration + Homebrew + Home Manager in one command
-- Homebrew managed declaratively via nix-homebrew
-- Uses `darwin-rebuild switch` command
-- Manages `/etc` shell files (bashrc, zshrc, zshenv)
-
-**Linux (Home Manager only):**
-
-- User environment only, no system-level management
-- Uses `home-manager switch` command
-- Architecture detection via `$(uname -m)-linux`
-
-## Important Configuration Details
-
-### User Customization Files
-
-These files are NOT tracked by git and must be created manually:
-
-- `~/.config/git/.gitconfig.local` - Git user credentials (template provided)
-- `~/.config/zsh/local.zsh` - Machine-specific Zsh config (template provided)
-
-Templates are deployed to `.template` suffix and users must copy/edit them.
-
-### Determinate Nix
-
-This repository is configured for Determinate Nix:
-
-- `nix.enable = false` in nix-darwin config (flake.nix:99)
-- Determinate Nix uses its own daemon that conflicts with nix-darwin's Nix management
-- Flakes and experimental features are pre-enabled
-
-### Language Environments
-
-**Environment variable patterns:**
-
-- Go: `GOPATH=~/go`, `GOBIN=~/go/bin`
-- Node: Managed by mise (`node@24`), pnpm installed via Nix
-- Python: Uses `uv` package manager, `UV_PYTHON_PREFERENCE=only-managed`
-- Ruby: Gems at `~/.gem`
-- Rust: `RUSTUP_HOME` and `CARGO_HOME` in XDG data directories
-- Mobile: `ANDROID_HOME=~/Library/Android/sdk` (macOS), Flutter via FVM
-
-**Project isolation:** direnv with nix-direnv integration for per-project environments
-
-### File Deployment
-
-Home Manager's `home.file` (in `nix/home-manager.nix:58-68`) deploys:
-
-- `p10k.zsh`: Powerlevel10k theme configuration
-- `functions/`: Custom Zsh functions
-- `.template` files for user customization
-
-Git configuration templates are deployed via `modules/git/default.nix`.
-
-## Common Development Workflows
-
-### Adding Packages
-
-**CLI utilities:** Edit `nix/modules/utilities/default.nix`, add to `home.packages`
-
-**Homebrew (macOS):** Edit `nix/modules/homebrew/default.nix`:
-
-- `brews` list for CLI tools
-- `commonCasks` for applications available in all profiles
-- `personalCasks` for personal-only applications
-- `workCasks` for work-only applications
-
-**Language-specific:** Edit or create module in `nix/modules/`
-
-### Creating New Modules
-
-1. Create `nix/modules/<name>/default.nix`
-2. Add import to `nix/home-manager.nix`
-3. Optional: Add README.md following existing module patterns
-4. Use platform conditionals if needed: `lib.mkIf pkgs.stdenv.isDarwin { ... }`
-
-### Module README Pattern
-
-Each module should have `README.md` with:
-
-- Brief description in heading
-- **ファイル** section listing files
-- **機能** section describing features
-- **使い方** or setup instructions (if applicable)
-- **パッケージ** section listing installed packages
-
-### Shell Integration
-
-**Zsh customization:**
-
-- Shell aliases: `programs.zsh.shellAliases` in modules/zsh/default.nix
-- Custom functions: Place in `modules/zsh/functions/` directory
-- Init extra: `programs.zsh.initExtra` for shell code
-
-**Common integrations:**
-
-- direnv: Auto-activates project environments
-- fzf: Ctrl+R (history), Ctrl+T (files), Ctrl+] (ghq repos)
-- ghq: Repository management with roots at `~/go/src` and `~/src`
-
-## Troubleshooting
-
-### "primary user does not exist" Error
-
-The `--impure` flag is required to read environment variables like `$USER` and `$SUDO_USER`.
-
-### "Unexpected files in /etc" (macOS first install)
-
-Backup existing files before first nix-darwin installation:
-
-```bash
-sudo mv /etc/bashrc /etc/bashrc.before-nix-darwin
-sudo mv /etc/zshrc /etc/zshrc.before-nix-darwin
-sudo mv /etc/zshenv /etc/zshenv.before-nix-darwin
-```
-
-### darwin-rebuild Command Not Found
-
-Use the full nix-darwin bootstrap command first:
-
-```bash
-sudo nix run nix-darwin -- switch --flake '.#aarch64-darwin' --impure
-```
-
-### Configuration Not Applied
-
-On macOS, ensure you're using `darwin-rebuild` (not `home-manager switch`).
-This applies all configurations including Homebrew and system settings.
-
-## Repository Conventions
-
-- **Language:** Documentation and comments in Japanese
-- **State version:** `24.05` (set once, do not change)
-- **Unfree packages:** Allowed via `config.allowUnfree = true`
-- **System state version:** `6` for nix-darwin (flake.nix:86)
-- **Homebrew:** Auto-update and auto-upgrade enabled, cleanup="zap"
+テストは一時ホームとbrew / apt / sudo / miseなどの代替コマンドで実行する。
+Ubuntuの導入・更新・delta呼び出しでbrewが実行されないことを確認する。
+実際のパッケージ導入・アプリ起動・sudoによるシステム設定変更をテストに含めない。
+chezmoi実行ファイルは`CHEZMOI_BIN`で指定できる。
+パッケージを変更した場合はOS別の一覧とREADME・パッケージ一覧の整合も確認する。

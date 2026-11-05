@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+# 共通の表示オプションをすべてのdelta呼び出しに適用する。
+set -euo pipefail
+if [ "$(cat "${XDG_CONFIG_HOME:-$HOME/.config}/dotfiles/platform")" = ubuntu ]; then
+  binary=$(mise --cd "$HOME" which delta)
+else
+  brew_prefix=${HOMEBREW_PREFIX:-$(brew --prefix)}
+  binary="$brew_prefix/opt/git-delta/bin/delta"
+fi
+exec "$binary" \
+  --config "${XDG_CONFIG_HOME:-$HOME/.config}/delta/config" "$@"

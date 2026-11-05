@@ -1,0 +1,9 @@
+# 端末固有のGit設定（実ファイルはGit管理しない）
+# ~/.config/git/.gitconfig.local にコピーして編集する。
+[user]
+    name = Your Name
+    email = your.email@example.com
+
+[credential]
+    # macOS: osxkeychain / Linux: cacheなど、端末に合わせて選ぶ。
+    helper = osxkeychain

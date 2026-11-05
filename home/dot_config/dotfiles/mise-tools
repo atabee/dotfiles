@@ -1,0 +1,4 @@
+# グローバルツール。1行に1ツールを指定する。
+node@24
+pinact@latest
+firebase@latest

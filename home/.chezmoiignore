@@ -1,0 +1,6 @@
+{{ if eq .chezmoi.os "darwin" }}
+.config/dotfiles/apt-packages
+.config/dotfiles/mise-tools.ubuntu
+{{ else }}
+.config/dotfiles/Brewfile
+{{ end }}
