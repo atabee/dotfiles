@@ -1,0 +1,11 @@
+# nix-direnvはBash 4.4以上が必要。macOS付属のBash 3.2を使わない。
+[global]
+{{ if eq .chezmoi.os "darwin" -}}
+{{ if eq .chezmoi.arch "arm64" -}}
+bash_path = "/opt/homebrew/bin/bash"
+{{ else -}}
+bash_path = "/usr/local/bin/bash"
+{{ end -}}
+{{ else -}}
+bash_path = "/bin/bash"
+{{ end -}}

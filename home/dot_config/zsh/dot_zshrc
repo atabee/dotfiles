@@ -1,0 +1,115 @@
+typeset -U path cdpath fpath manpath
+
+if [[ -r "${XDG_CACHE_HOME}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+  source "${XDG_CACHE_HOME}/p10k-instant-prompt-${(%):-%n}.zsh"
+fi
+[[ -r "$ZDOTDIR/p10k.zsh" ]] && source "$ZDOTDIR/p10k.zsh"
+
+if [[ "$OSTYPE" == darwin* && -n ${HOMEBREW_PREFIX:-} ]]; then
+  fpath=("$HOMEBREW_PREFIX/share/zsh/site-functions" $fpath)
+fi
+autoload -U compinit && compinit -u
+
+if [[ "$OSTYPE" == darwin* ]]; then
+  plugin_files=(
+    "$HOMEBREW_PREFIX/share/powerlevel10k/powerlevel10k.zsh-theme"
+    "$HOMEBREW_PREFIX/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
+    "$HOMEBREW_PREFIX/share/zsh-autosuggestions/zsh-autosuggestions.zsh"
+    "$HOMEBREW_PREFIX/share/zsh-history-substring-search/zsh-history-substring-search.zsh"
+  )
+else
+  plugin_files=(
+    "$XDG_DATA_HOME/zsh/plugins/powerlevel10k/powerlevel10k.zsh-theme"
+    /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+    /usr/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+    "$XDG_DATA_HOME/zsh/plugins/zsh-history-substring-search/zsh-history-substring-search.zsh"
+  )
+fi
+for plugin in "${plugin_files[@]}"; do
+  [[ -r "$plugin" ]] && source "$plugin"
+done
+unset plugin plugin_files
+
+HISTSIZE=100000
+SAVEHIST=100000
+HISTFILE="$HOME/.zsh_history"
+setopt hist_fcntl_lock append_history hist_ignore_dups hist_ignore_space share_history
+unsetopt extended_history hist_expire_dups_first hist_find_no_dups hist_ignore_all_dups hist_save_no_dups
+
+export FZF_DEFAULT_OPTS='--height 40% --reverse --border'
+export FZF_ALT_C_COMMAND='fd --type d'
+export FZF_CTRL_T_COMMAND='fd --type f'
+if (( $+commands[fzf] )) && [[ -o zle ]]; then
+  source <(fzf --zsh)
+fi
+bindkey -e
+setopt print_eight_bit no_beep no_flow_control interactive_comments hist_reduce_blanks
+setopt auto_param_keys brace_ccl complete_in_word extended_glob
+zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
+zstyle ':completion:*' ignore-parents parent pwd ..
+zstyle ':completion:*' use-cache on
+zstyle ':completion:*' cache-path "$XDG_CACHE_HOME/zsh/compcache"
+
+# Javaの管理にはjenvを使用する。
+path=("$HOME/.jenv/bin" $path)
+(( $+commands[jenv] )) && eval "$(jenv init -)"
+if (( $+commands[git-wt] )); then
+  eval "$(git wt --init zsh)"
+fi
+
+[[ -f "$ZDOTDIR/local.zsh" ]] && source "$ZDOTDIR/local.zsh"
+for func in "$ZDOTDIR"/functions/*(N.); do
+  source "$func"
+done
+unset func
+
+(( $+commands[mise] )) && eval "$(mise activate zsh)"
+
+# lazygitで選択したディレクトリへ移動する。
+lg() {
+  export LAZYGIT_NEW_DIR_FILE="$HOME/.lazygit/newdir"
+  mkdir -p "${LAZYGIT_NEW_DIR_FILE:h}"
+  command lazygit "$@"
+  if [[ -f "$LAZYGIT_NEW_DIR_FILE" ]]; then
+    cd "$(cat "$LAZYGIT_NEW_DIR_FILE")" || return
+    command rm -f "$LAZYGIT_NEW_DIR_FILE"
+  fi
+}
+(( $+commands[direnv] )) && eval "$(direnv hook zsh)"
+
+alias eza='eza --icons auto --git'
+alias ls='eza --icons --git'
+alias l='eza -1 --icons'
+alias la='eza -lah --icons --git'
+alias ll='eza -lh --icons --git'
+alias lla='eza -la'
+alias lt='eza -lh --icons --git -snew'
+alias lr='eza -lhR --icons --git'
+alias tree='eza --tree --icons'
+alias rm='trash-put'
+alias ..='cd ..'
+alias ...='cd ../..'
+alias ....='cd ../../..'
+alias dotup='chezmoi apply'
+
+[[ -d "$HOME/fvm/default/bin" ]] && path+=("$HOME/fvm/default/bin")
+if [[ "$OSTYPE" == darwin* ]]; then
+  [[ -d "$ANDROID_HOME/platform-tools" ]] && path=("$ANDROID_HOME/platform-tools" $path)
+  [[ -d "$HOME/.pub-cache/bin" ]] && path=("$HOME/.pub-cache/bin" $path)
+fi
+(( $+commands[uv] )) && eval "$(uv generate-shell-completion zsh)"
+path=("$HOME/.local/bin" $path)
+
+export FZF_COMPLETION_OPTS='+c -x'
+_fzf_compgen_path() {
+  ag -g "" "$1"
+}
+if (( $+commands[ghq] )); then
+  _fast_move_git_repo() {
+    local dir
+    dir=$(ghq list | fzf --reverse +m) && cd "$(ghq root)/$dir"
+    zle reset-prompt
+  }
+  zle -N _fast_move_git_repo
+  bindkey '^]' _fast_move_git_repo
+fi

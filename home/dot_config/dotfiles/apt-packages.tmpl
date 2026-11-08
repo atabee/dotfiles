@@ -1,0 +1,32 @@
+# Ubuntuの基盤ツール。開発CLIはmise-tools.ubuntuで管理する。
+bash
+zsh
+git
+git-lfs
+curl
+openssh-client
+gnupg
+ca-certificates
+build-essential
+unzip
+xz-utils
+locales
+python3
+tree
+trash-cli
+jq
+silversearcher-ag
+direnv
+tmux
+zsh-syntax-highlighting
+zsh-autosuggestions
+{{ if eq .chezmoi.arch "arm64" -}}
+# nixfmtはARM64向け配布バイナリがないため、ソースからビルドする。
+pkg-config
+libffi-dev
+libgmp-dev
+libncurses-dev
+libtinfo6
+libnuma-dev
+zlib1g-dev
+{{ end -}}

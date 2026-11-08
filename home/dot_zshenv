@@ -1,0 +1,5 @@
+# ログイン・非ログイン双方のZshから共通設定を読み込む。
+export ZDOTDIR="${XDG_CONFIG_HOME:-$HOME/.config}/zsh"
+if [[ -r "$ZDOTDIR/.zshenv" ]]; then
+  source "$ZDOTDIR/.zshenv"
+fi
