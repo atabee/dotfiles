@@ -396,7 +396,7 @@ home/
     git/                      # Git設定・ローカル設定テンプレート
     direnv/                   # プロジェクト環境
     ...
-  dot_local/bin/              # dotfilesコマンド・deltaラッパー
+  dot_local/bin/              # dotfilesコマンド・CLIラッパー
   dot_claude/                 # Claude Code設定
 scripts/                      # 初期導入・移行・macOSシステム設定
 docs/                         # 設定・パッケージ一覧・移行ガイド

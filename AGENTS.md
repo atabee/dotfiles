@@ -26,6 +26,7 @@ macOSとUbuntu 24.04以降（WSL2上のUbuntuを含む）を対象とします�
 - `home/run_after_10-install-tools.sh.tmpl`: 設定反映後の不足ツール導入。
 - `scripts/bootstrap.sh`: OS別の初期セットアップ（--prepareで管理ツールだけ導入）。
 - `scripts/migrate-from-nix.sh`: 旧管理リンクのプレビュー・バックアップ。
+- `scripts/migrate-homebrew-from-nix.py`: Apple Siliconのnix-homebrew本体を公式checkoutへ移行。
 - `scripts/setup-macos.sh`: Touch ID / pam-reattach / Rosettaのシステム設定。
 - `docs/`: 設定の詳細・パッケージ一覧・環境の移行。
 - `vendor/nix-direnv/`: プロジェクト向け連携の上流情報・ライセンス。

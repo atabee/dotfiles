@@ -5,7 +5,13 @@ if [ "$(uname -s)" != Darwin ]; then
   echo 'macOS専用のスクリプトです。' >&2
   exit 1
 fi
-brew_prefix=$(brew --prefix)
+if [ -x /opt/homebrew/bin/brew ]; then
+  brew_prefix=$(/opt/homebrew/bin/brew --prefix)
+elif [ -x /usr/local/bin/brew ]; then
+  brew_prefix=$(/usr/local/bin/brew --prefix)
+else
+  brew_prefix=$(brew --prefix)
+fi
 pam_module="$brew_prefix/opt/pam-reattach/lib/pam/pam_reattach.so"
 if [ ! -f "$pam_module" ]; then
   echo '先にdotfiles installでpam-reattachをインストールしてください。' >&2
@@ -25,18 +31,19 @@ sudo /bin/sh -s -- "$pam_module" <<'SETUP'
 set -eu
 target=/etc/pam.d/sudo_local
 if [ -e "$target" ] && [ ! -e /etc/pam.d/sudo_local.before-dotfiles ]; then
-  cp -L "$target" /etc/pam.d/sudo_local.before-dotfiles
+  /bin/cp -L "$target" /etc/pam.d/sudo_local.before-dotfiles
 fi
-temporary=$(mktemp /etc/pam.d/sudo_local.dotfiles.XXXXXX)
-trap 'rm -f "$temporary"' EXIT HUP INT TERM
+# PAMの操作はPATHに依存せず、macOS付属のコマンドを使う。
+temporary=$(/usr/bin/mktemp /etc/pam.d/sudo_local.dotfiles.XXXXXX)
+trap '/bin/rm -f "$temporary"' EXIT HUP INT TERM
 printf '# dotfiles: Touch ID / tmux\nauth       optional       %s\nauth       sufficient     pam_tid.so\n' "$1" > "$temporary"
 if [ -f "$target" ]; then
   # 上の2モジュール以外に設定されている認証方法は残す。
-  awk '!/pam_reattach\.so/ && !/pam_tid\.so/ && !/^# dotfiles: Touch ID/' "$target" >> "$temporary"
+  /usr/bin/awk '!/pam_reattach\.so/ && !/pam_tid\.so/ && !/^# dotfiles: Touch ID/' "$target" >> "$temporary"
 fi
-chmod 644 "$temporary"
-chown root:wheel "$temporary"
-mv -f "$temporary" "$target"
+/bin/chmod 644 "$temporary"
+/usr/sbin/chown root:wheel "$temporary"
+/bin/mv -f "$temporary" "$target"
 SETUP
 
 if [ "$(uname -m)" = arm64 ] && ! /usr/bin/pgrep -q oahd \

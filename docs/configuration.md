@@ -17,6 +17,7 @@
 | `home/dot_config/{bat,ripgrep,gh,hunk,pnpm}/` | 各`~/.config/` | CLIの設定 |
 | `home/dot_config/dotfiles/` | `~/.config/dotfiles/` | OS判定・Brewfile・apt・miseのツール一覧 |
 | `home/dot_local/bin/` | `~/.local/bin/` | `dotfiles`コマンド・`delta`ラッパー |
+| `home/dot_local/bin/executable_pod` | `~/.local/bin/pod`（macOS） | CocoaPodsのGem環境を分離 |
 | `home/dot_claude/` | `~/.claude/` | Claude Codeの初期設定・statusline |
 | `home/dot_config/herdr/create_config.toml` | `~/.config/herdr/config.toml` | Herdrの初期設定 |
 
@@ -73,6 +74,9 @@ lazygitのpagerは`delta --dark --side-by-side --paging=never`です。
 FVMの`~/fvm/default/bin`があれば追加し、macOSではAndroid platform-toolsと
 `~/.pub-cache/bin`も追加します。macOSのJavaの選択はjenv、Rubyはmiseを使用します。
 Ubuntuではmiseのshimsと`$XDG_DATA_HOME/dotfiles/bin`もPATHに追加します。
+
+macOSのCocoaPodsは`~/.local/bin/pod`を経由し、`GEM_HOME`と`GEM_PATH`を除いて
+Homebrew付属のRuby/Gem環境で起動します。シェル全体のGem設定はそのまま使用できます。
 OSや端末ごとにSDKの場所が異なる場合は`local.zsh`で上書きしてください。
 
 ## tmux・Ghostty・iTerm2

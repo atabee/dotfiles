@@ -30,6 +30,19 @@ rm -f "$brewfile"
 
 この段階でHomebrew版のgit / zsh / miseなどが利用できるようになります。
 
+Apple Siliconでnix-homebrewを使っていた場合、Homebrew本体もNix storeへのリンクです。
+公式checkoutへ移してから、nix-darwinを解除します。
+
+```bash
+python3 scripts/migrate-homebrew-from-nix.py
+brew --repository
+```
+
+このスクリプトは`/opt/homebrew/bin/brew`と`Library/Homebrew`がNix管理リンクであることを
+確認し、公式Homebrew/brewを取得して置き換えます。Cellar・Caskroom・Tapsは保持します。
+参照元のリンク・上書きしたプログラムファイルは`~/.local/state/dotfiles/homebrew-migration-*`へ退避します。
+すでに通常のHomebrewになっている場合は変更しません。
+
 ### Ubuntu / WSL2
 
 Ubuntu 24.04以降で、aptのGit・Zshと、公式バイナリのchezmoi・miseを用意します。
@@ -83,11 +96,18 @@ chsh -s /bin/zsh
 ```
 
 nix-darwinが管理する`/etc/zshenv`、`/etc/zshrc`、PAM、システムへのリンクを解除します。
+先にPAMを通常ファイルとHomebrewのモジュールへ移し、解除後にも設定を確認します。
 導入済みのuninstallerを使用し、表示される処理内容を確認して実行してください。
 
 ```bash
+sudo /bin/bash scripts/setup-macos.sh
 sudo /run/current-system/sw/bin/darwin-uninstaller
+sudo /bin/bash scripts/setup-macos.sh
 ```
+
+PAMファイルの変更が`Operation not permitted`で拒否される場合は、macOSが実行元アプリの
+操作を制限している可能性があります。ご自身のターミナルから実行してください。
+途中で停止した場合は、そのまま後続の処理へ進まず、バックアップを使って元の参照を復元します。
 
 これはNix本体のアンインストールではありません。既存のHomebrewを削除する操作も
 行いません。実行ファイルが存在しない場合は、使用していたnix-darwinの

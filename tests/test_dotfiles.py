@@ -65,6 +65,9 @@ elif name == 'herdr':
         installed.touch()
 elif name == 'delta':
     print(json.dumps(args))
+elif name == 'pod':
+    print(json.dumps({'args': args, 'GEM_HOME': os.environ.get('GEM_HOME'),
+                      'GEM_PATH': os.environ.get('GEM_PATH')}))
 '''
 
 
@@ -171,6 +174,7 @@ class DotfilesMigrationTests(unittest.TestCase):
         self.apply(override={'os': 'linux', 'arch': 'amd64',
                              'osRelease': {'id': 'ubuntu', 'version_id': '24.04'}})
         self.assertFalse((self.home / '.config/dotfiles/Brewfile').exists())
+        self.assertFalse((self.home / '.local/bin/pod').exists())
         packages = (self.home / '.config/dotfiles/apt-packages').read_text()
         for package in ['zsh', 'git', 'git-lfs', 'openssh-client', 'direnv', 'tmux', 'trash-cli']:
             self.assertIn(package, packages.splitlines())
@@ -284,6 +288,15 @@ class DotfilesMigrationTests(unittest.TestCase):
                          ['--config', str(self.home / '.config/delta/config'), '--paging=never'])
         self.assertIn('side-by-side = true', (self.home / '.config/delta/config').read_text())
 
+    def test_cocoapods_isolates_gem_environment(self):
+        self.apply()
+        self.make_stub(self.prefix / 'bin/pod')
+        self.env.update({'GEM_HOME': str(self.home / '.gem'),
+                         'GEM_PATH': str(self.home / '.gem')})
+        result = self.run_command([str(self.home / '.local/bin/pod'), '--version'])
+        self.assertEqual(json.loads(result.stdout),
+                         {'args': ['--version'], 'GEM_HOME': None, 'GEM_PATH': None})
+
     def test_migration_previews_and_backs_up_only_managed_links(self):
         config = self.home / '.config'
         (config / 'git').mkdir(parents=True)
@@ -335,6 +348,9 @@ class SourceTests(unittest.TestCase):
         paths += [REPO / 'home/dot_claude/executable_statusline.sh']
         for path in paths:
             subprocess.run(['/bin/bash', '-n', str(path)], check=True, capture_output=True)
+        setup = (REPO / 'scripts/setup-macos.sh').read_text()
+        pam_script = setup.split("<<'SETUP'\n", 1)[1].split('\nSETUP', 1)[0]
+        subprocess.run(['/bin/sh', '-n'], input=pam_script, text=True, check=True, capture_output=True)
         self.assertFalse((REPO / 'nix').exists())
         self.assertFalse((REPO / 'flake.nix').exists())
         self.assertFalse((REPO / 'flake.lock').exists())

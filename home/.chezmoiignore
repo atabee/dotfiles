@@ -3,4 +3,5 @@
 .config/dotfiles/mise-tools.ubuntu
 {{ else }}
 .config/dotfiles/Brewfile
+.local/bin/pod
 {{ end }}
