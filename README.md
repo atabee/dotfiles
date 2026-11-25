@@ -177,6 +177,9 @@ miseの指定バージョンの解決・導入は行います。
 
 ### 更新コマンドの選び方
 
+ターミナルで `dotfiles help` を実行すると、設定の反映・管理ツール本体・
+パッケージの更新手順を確認できます。引数なしの `dotfiles` でも同じ案内を表示します。
+
 ```bash
 dotfiles update              # 使用OSの管理対象とmiseツールを更新
 dotfiles update system       # macOSはHomebrew、Ubuntuはaptの管理対象のみ

@@ -2,6 +2,41 @@
 # 設定・ツールの導入、更新、整理。プロジェクトのmise設定は変更しない。
 set -euo pipefail
 
+case "${1:-help}" in
+  help|--help|-h)
+    cat <<'HELP'
+普段の更新
+  dotfiles update         OSの管理対象とグローバルmiseツールを更新
+  dotfiles update system  OSの管理対象だけを更新（macOSはBrewfile、Ubuntuはapt）
+  dotfiles update mise    グローバルmiseツールだけを指定バージョンの範囲で更新
+
+管理ツール本体
+  macOS: dotfiles update brew  Brewfileの対象を更新（chezmoi・mise本体も含む）
+         brew update && brew outdated  Homebrewの情報を更新し、更新候補を表示
+         brew upgrade chezmoi mise     この2つだけを指定して更新
+  Ubuntu: dotfiles update bootstrap    chezmoi・mise・rustup本体を更新
+          dotfiles update apt          宣言済みaptパッケージを更新
+          dotfiles update plugins      Zshプラグインを更新
+          dotfiles update nixfmt       ARM64のnixfmtを更新
+
+設定の反映
+  chezmoi diff            ローカルの設定に反映される差分を確認
+  chezmoi apply           設定を反映（短縮: dotup）
+  chezmoi update          リポジトリの変更を取得して反映
+  設定の反映時は更新と整理も実行します。macOSではBrewfile外の
+  パッケージが削除対象になり、caskの関連データも対象になります。
+
+導入と整理
+  dotfiles install         不足パッケージと既定のmiseツールを導入
+  dotfiles sync            更新・導入・整理（設定反映時に自動実行）
+  dotfiles cleanup         削除候補を表示（Ubuntuではapt autoremove候補も表示）
+  dotfiles cleanup --force 削除を実行（macOSのcaskは関連データも対象）
+  dotfiles help            この案内を表示
+HELP
+    exit 0
+    ;;
+esac
+
 export XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-$HOME/.config}"
 export XDG_DATA_HOME="${XDG_DATA_HOME:-$HOME/.local/share}"
 export RUSTUP_HOME="$XDG_DATA_HOME/rustup"
@@ -166,7 +201,7 @@ cleanup_packages() {
   fi
 }
 
-case "${1:-help}" in
+case "$1" in
   sync)
     "$0" update system
     install_mise_tools
@@ -238,17 +273,6 @@ case "${1:-help}" in
       --force) cleanup_packages --force; mise prune --yes ;;
       *) echo 'dotfiles cleanup [--force]' >&2; exit 2 ;;
     esac
-    ;;
-  help|--help|-h)
-    cat <<'HELP'
-dotfiles install              不足パッケージと既定のmiseツールを導入
-dotfiles sync                 更新・導入・未使用バージョンの整理（設定反映時に実行）
-dotfiles update [対象]        既定はall。system / brew / apt / miseも指定可能
-  Ubuntu追加対象: plugins / nixfmt（ARM64）/ bootstrap（chezmoi・mise・rustup本体）
-dotfiles cleanup              削除候補を表示（UbuntuではOS全体のautoremove候補も表示）
-dotfiles cleanup --force      候補を削除（macOSのcaskは関連データも対象）
-設定反映: chezmoi diff / chezmoi apply（短縮: dotup）
-HELP
     ;;
   *) echo 'dotfiles --helpを参照してください。' >&2; exit 2 ;;
 esac
