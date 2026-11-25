@@ -1,0 +1,4 @@
+#!/bin/sh
+# OS別のパッケージ導入・更新と未使用バージョンの整理を実行する。
+set -eu
+{{ .chezmoi.destDir | quote }}/.local/bin/dotfiles sync

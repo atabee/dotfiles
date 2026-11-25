@@ -1,0 +1,254 @@
+#!/usr/bin/env bash
+# 設定・ツールの導入、更新、整理。プロジェクトのmise設定は変更しない。
+set -euo pipefail
+
+export XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-$HOME/.config}"
+export XDG_DATA_HOME="${XDG_DATA_HOME:-$HOME/.local/share}"
+export RUSTUP_HOME="$XDG_DATA_HOME/rustup"
+export CARGO_HOME="$XDG_DATA_HOME/cargo"
+export MISE_GLOBAL_CONFIG_FILE="$XDG_CONFIG_HOME/mise/config.toml"
+export MISE_CONFIG_DIR="$XDG_CONFIG_HOME/mise"
+config_dir="$XDG_CONFIG_HOME/dotfiles"
+platform=$(cat "$config_dir/platform")
+export PATH="$HOME/.local/bin:$XDG_DATA_HOME/mise/shims:$CARGO_HOME/bin:$XDG_DATA_HOME/dotfiles/bin:$PATH"
+
+case "$platform" in
+  darwin)
+    if ! command -v brew >/dev/null 2>&1; then
+      for candidate in /opt/homebrew/bin/brew /usr/local/bin/brew; do
+        if [ -x "$candidate" ]; then
+          eval "$("$candidate" shellenv)"
+          break
+        fi
+      done
+    fi
+    if ! command -v brew >/dev/null 2>&1; then
+      echo 'Homebrewを先にインストールしてください。' >&2
+      exit 1
+    fi
+    brew_prefix=$(brew --prefix)
+    export PATH="$brew_prefix/bin:$brew_prefix/sbin:$brew_prefix/opt/rustup/bin:$HOME/.local/bin:$CARGO_HOME/bin:$PATH"
+    ;;
+  ubuntu) ;;
+  *) echo '対応OSはmacOSまたはUbuntuです。' >&2; exit 1 ;;
+esac
+
+read_list() {
+  local line
+  while IFS= read -r line || [ -n "$line" ]; do
+    case "$line" in ''|\#*) continue ;; esac
+    printf '%s\n' "$line"
+  done < "$1"
+}
+
+apt_install() {
+  local packages=() package
+  while IFS= read -r package; do
+    if [[ ! "$package" =~ ^[a-z0-9][a-z0-9+.-]*$ ]]; then
+      echo "aptのパッケージ名が不正です: $package" >&2
+      return 1
+    fi
+    packages+=("$package")
+  done < <(read_list "$config_dir/apt-packages")
+  sudo apt-get update
+  if [ "${1:-}" = --no-upgrade ]; then
+    sudo apt-get install --yes --no-upgrade "${packages[@]}"
+  else
+    sudo apt-get install --yes "${packages[@]}"
+  fi
+}
+
+install_mise_tools() {
+  # 共通宣言とUbuntuの追加CLIを反映し、端末で追加したツールは保持する。
+  cd "$HOME"
+  mise settings set experimental true
+  local tools=() tool
+  while IFS= read -r tool; do tools+=("$tool"); done < <(read_list "$config_dir/mise-tools")
+  if [ "$platform" = ubuntu ]; then
+    while IFS= read -r tool; do tools+=("$tool"); done < <(read_list "$config_dir/mise-tools.ubuntu")
+  fi
+  mise use --global "${tools[@]}"
+  mise install --yes
+  mise reshim
+}
+
+install_rustup() {
+  [ -x "$CARGO_HOME/bin/rustup" ] && return 0
+  local installer status=0
+  installer=$(mktemp)
+  if curl --fail --location --silent --show-error https://sh.rustup.rs --output "$installer"; then
+    sh "$installer" -y --no-modify-path --default-toolchain none || status=$?
+  else
+    status=$?
+  fi
+  rm -f "$installer"
+  return "$status"
+}
+
+ubuntu_plugins() {
+  local name url directory
+  for name in powerlevel10k zsh-history-substring-search; do
+    case "$name" in
+      powerlevel10k) url=https://github.com/romkatv/powerlevel10k.git ;;
+      zsh-history-substring-search) url=https://github.com/zsh-users/zsh-history-substring-search.git ;;
+    esac
+    directory="$XDG_DATA_HOME/zsh/plugins/$name"
+    if [ ! -e "$directory" ]; then
+      mkdir -p "$(dirname "$directory")"
+      git clone --depth 1 "$url" "$directory"
+    elif [ "${1:-install}" = update ]; then
+      git -C "$directory" pull --ff-only
+    fi
+  done
+}
+
+ubuntu_nixfmt() {
+  # 公式バイナリのないARM64では、Hackageの同じnixfmtをビルドする。
+  grep -qx 'ghcup@latest' "$config_dir/mise-tools.ubuntu" || return 0
+  local directory="$XDG_DATA_HOME/dotfiles/bin" cabal_dir="$XDG_DATA_HOME/dotfiles/cabal"
+  if [ "${1:-install}" = install ] && [ -x "$directory/nixfmt" ]; then return 0; fi
+  mkdir -p "$directory" "$cabal_dir"
+  if [ ! -f "$cabal_dir/config" ]; then
+    cat > "$cabal_dir/config" <<CONFIG
+repository hackage.haskell.org
+  url: https://hackage.haskell.org/
+  secure: True
+remote-repo-cache: "$cabal_dir/packages"
+store-dir: "$cabal_dir/store"
+CONFIG
+  fi
+  # Ubuntu標準のGHCより新しい言語仕様が必要なため、ビルド用toolchainを分離する。
+  export GHCUP_INSTALL_BASE_PREFIX="$XDG_DATA_HOME/dotfiles/haskell"
+  mkdir -p "$GHCUP_INSTALL_BASE_PREFIX"
+  local compiler cabal_binary
+  if ! compiler=$(ghcup whereis ghc latest 2>/dev/null); then
+    ghcup install ghc latest
+    compiler=$(ghcup whereis ghc latest)
+  fi
+  if ! cabal_binary=$(ghcup whereis cabal latest 2>/dev/null); then
+    ghcup install cabal latest
+    cabal_binary=$(ghcup whereis cabal latest)
+  fi
+  CABAL_DIR="$cabal_dir" "$cabal_binary" update
+  CABAL_DIR="$cabal_dir" "$cabal_binary" install nixfmt --install-method=copy \
+    --with-compiler="$compiler" --flags=-werror \
+    --installdir="$directory" --overwrite-policy=always
+}
+
+install_platform_extras() {
+  if [ "$platform" = ubuntu ]; then
+    install_rustup
+    ubuntu_plugins "${1:-install}"
+    ubuntu_nixfmt "${1:-install}"
+  elif command -v herdr >/dev/null 2>&1; then
+    if ! herdr plugin list --plugin hunk.diff --json \
+      | grep -Eq '"plugin_id"[[:space:]]*:[[:space:]]*"hunk.diff"'; then
+      herdr plugin install edmundmiller/herdr-plugin-hunk --yes
+    fi
+  fi
+}
+
+cleanup_packages() {
+  local status=0
+  if [ "$platform" = darwin ]; then
+    if [ "${1:-}" = --force ]; then
+      brew bundle cleanup --file "$config_dir/Brewfile" --zap --force
+      brew cleanup
+    else
+      brew bundle cleanup --file "$config_dir/Brewfile" --zap || status=$?
+      [ "$status" -le 1 ] || return "$status"
+    fi
+  elif [ "${1:-}" = --force ]; then
+    sudo apt-get autoremove --yes
+    sudo apt-get clean
+  else
+    apt-get --simulate autoremove
+  fi
+}
+
+case "${1:-help}" in
+  sync)
+    "$0" update system
+    install_mise_tools
+    install_platform_extras update
+    mise prune --yes
+    # aptのOSパッケージを、dotfilesの宣言外という理由で削除しない。
+    if [ "$platform" = darwin ]; then
+      brew bundle cleanup --file "$config_dir/Brewfile" --zap --force
+    fi
+    ;;
+  install)
+    if [ "$platform" = darwin ]; then
+      brew bundle install --file "$config_dir/Brewfile" --no-upgrade
+    else
+      apt_install --no-upgrade
+    fi
+    install_mise_tools
+    install_platform_extras
+    ;;
+  update)
+    case "${2:-all}" in
+      all)
+        "$0" update system
+        "$0" update mise
+        if [ "$platform" = ubuntu ]; then
+          "$0" update plugins
+          "$0" update nixfmt
+        fi
+        ;;
+      system|brew|apt)
+        if [ "${2:-}" = brew ] && [ "$platform" != darwin ]; then
+          echo 'brewはmacOS専用です。Ubuntuではupdate aptを使います。' >&2; exit 2
+        fi
+        if [ "${2:-}" = apt ] && [ "$platform" != ubuntu ]; then
+          echo 'aptはUbuntu専用です。macOSではupdate brewを使います。' >&2; exit 2
+        fi
+        if [ "$platform" = darwin ]; then
+          brew update
+          brew bundle install --file "$config_dir/Brewfile"
+        else
+          apt_install
+        fi
+        ;;
+      mise)
+        cd "$HOME"
+        mise upgrade --yes
+        mise reshim
+        ;;
+      plugins|nixfmt|bootstrap)
+        if [ "$platform" != ubuntu ]; then
+          echo 'この更新対象はUbuntu用です。macOSではHomebrewで更新します。' >&2; exit 2
+        fi
+        case "$2" in
+          plugins) ubuntu_plugins update ;;
+          nixfmt) ubuntu_nixfmt update ;;
+          bootstrap)
+            "$HOME/.local/bin/mise" self-update --yes
+            "$HOME/.local/bin/chezmoi" upgrade
+            "$CARGO_HOME/bin/rustup" self update
+            ;;
+        esac
+        ;;
+      *) echo '更新対象: all / system / brew / apt / mise / plugins / nixfmt / bootstrap' >&2; exit 2 ;;
+    esac
+    ;;
+  cleanup)
+    case "${2:-preview}" in
+      preview) cleanup_packages; mise prune --dry-run ;;
+      --force) cleanup_packages --force; mise prune --yes ;;
+      *) echo 'dotfiles cleanup [--force]' >&2; exit 2 ;;
+    esac
+    ;;
+  help|--help|-h)
+    cat <<'HELP'
+dotfiles install              不足パッケージと既定のmiseツールを導入
+dotfiles sync                 更新・導入・未使用バージョンの整理（設定反映時に実行）
+dotfiles update [対象]        既定はall。system / brew / apt / miseも指定可能
+  Ubuntu追加対象: plugins / nixfmt（ARM64）/ bootstrap（chezmoi・mise・rustup本体）
+dotfiles cleanup              削除候補を表示（UbuntuではOS全体のautoremove候補も表示）
+dotfiles cleanup --force      候補を削除（macOSのcaskは関連データも対象）
+設定反映: chezmoi diff / chezmoi apply（短縮: dotup）
+HELP
+    ;;
+  *) echo 'dotfiles --helpを参照してください。' >&2; exit 2 ;;
+esac

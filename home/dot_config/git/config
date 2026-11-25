@@ -1,0 +1,40 @@
+[alias]
+	show-graph = "log --graph --decorate --abbrev-commit --format=format:'%C(blue)%h%C(reset) - %C(green)(%ar)%C(reset)%C(yellow)%d%C(reset)\n  %C(white)%s%C(reset) %C(dim white)- %an%C(reset)'"
+
+[core]
+	autocrlf = "input"
+	editor = "vim -c \"set fenc=utf-8\""
+
+[credential "https://gist.github.com"]
+	helper = ""
+	helper = "!gh auth git-credential"
+
+[credential "https://github.com"]
+	helper = ""
+	helper = "!gh auth git-credential"
+
+[filter "lfs"]
+	clean = "git-lfs clean -- %f"
+	process = "git-lfs filter-process"
+	required = true
+	smudge = "git-lfs smudge -- %f"
+
+[ghq]
+	root = "~/go/src"
+	root = "~/src"
+
+[gpg]
+	format = "openpgp"
+
+[gpg "openpgp"]
+	program = "gpg"
+
+[include]
+	path = "~/.config/git/.gitconfig.local"
+
+[pull]
+	rebase = false
+
+# miseなどから直接deltaが選ばれる場合も、同じ表示設定を読み込む。
+[include]
+	path = "~/.config/delta/config"

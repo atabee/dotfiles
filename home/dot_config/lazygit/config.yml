@@ -1,0 +1,6 @@
+gui:
+  sideBySideDiffs: true
+git:
+  pagers:
+    - colorArg: always
+      pager: delta --dark --side-by-side --paging=never

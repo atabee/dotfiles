@@ -1,0 +1,39 @@
+export XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-$HOME/.config}"
+export XDG_CACHE_HOME="${XDG_CACHE_HOME:-$HOME/.cache}"
+export XDG_DATA_HOME="${XDG_DATA_HOME:-$HOME/.local/share}"
+export XDG_STATE_HOME="${XDG_STATE_HOME:-$HOME/.local/state}"
+
+export EDITOR=vim
+export VISUAL=vim
+export PAGER=bat
+export LANG=ja_JP.UTF-8
+export GOPATH="$HOME/go"
+export GOBIN="$HOME/go/bin"
+export UV_PYTHON_PREFERENCE=only-managed
+export GEM_HOME="$HOME/.gem"
+export GEM_PATH="$HOME/.gem"
+export RUSTUP_HOME="$XDG_DATA_HOME/rustup"
+export CARGO_HOME="$XDG_DATA_HOME/cargo"
+export GRADLE_USER_HOME="$XDG_DATA_HOME/gradle"
+# SDKとNDKのパス。端末固有の上書きはlocal.zshに記述する。
+export ANDROID_HOME="$HOME/Library/Android/sdk"
+export NDK_HOME="$ANDROID_HOME/ndk/26.1.10909125"
+export RIPGREP_CONFIG_PATH="$XDG_CONFIG_HOME/ripgrep/ripgreprc"
+
+# Homebrewをログインシェル以外でも利用する。
+if [[ "$OSTYPE" == darwin* && -z ${HOMEBREW_PREFIX:-} ]]; then
+  if [[ -x /opt/homebrew/bin/brew ]]; then
+    export HOMEBREW_PREFIX=/opt/homebrew
+  elif [[ -x /usr/local/bin/brew ]]; then
+    export HOMEBREW_PREFIX=/usr/local
+  fi
+fi
+typeset -U path
+if [[ "$OSTYPE" == darwin* && -n ${HOMEBREW_PREFIX:-} ]]; then
+  path=("$HOMEBREW_PREFIX/bin" "$HOMEBREW_PREFIX/sbin" "$HOMEBREW_PREFIX/opt/rustup/bin" $path)
+fi
+if [[ "$OSTYPE" == linux* ]]; then
+  path=("$XDG_DATA_HOME/mise/shims" "$XDG_DATA_HOME/dotfiles/bin" $path)
+fi
+path=("$HOME/.local/bin" "$HOME/.gem/bin" "$CARGO_HOME/bin" $path)
+export PATH

@@ -1,0 +1,7 @@
+{{- if eq .chezmoi.os "darwin" -}}
+darwin
+{{- else if and (eq .chezmoi.os "linux") (eq (get .chezmoi.osRelease "id") "ubuntu") -}}
+ubuntu
+{{- else -}}
+{{ fail "対応OSはmacOSまたはUbuntuです。" }}
+{{- end }}

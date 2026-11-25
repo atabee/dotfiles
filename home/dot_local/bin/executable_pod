@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+# CocoaPods付属のRuby/Gem環境を使い、普段のRubyのGem設定は引き継がない。
+set -euo pipefail
+brew_prefix=${HOMEBREW_PREFIX:-$(brew --prefix)}
+exec /usr/bin/env -u GEM_HOME -u GEM_PATH "$brew_prefix/bin/pod" "$@"
